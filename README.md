@@ -2,47 +2,20 @@
 
 Site completo para o casamento de Júlio e Jéssica, conectado ao banco de dados **Neon PostgreSQL** e com painel administrativo exclusivo para os noivos.
 
----
-
-## 📁 Estrutura do Projeto
-
-O repositório é organizado no formato Full Stack com pastas separadas para o frontend e backend:
-
-```
-Casamento Julio e Jessica/
-├── client/                 # Frontend (React + Vite + Tailwind CSS)
-│   ├── public/             # Arquivos públicos e ícones
-│   ├── src/
-│   │   ├── components/     # Componentes da interface (Hero, RSVP, Mural, etc.)
-│   │   ├── pages/          # Páginas (Home, Admin)
-│   │   └── services/       # Integração com a API
-│   ├── .env.example        # Exemplo de variáveis de ambiente do client
-│   └── package.json
-│
-├── server/                 # Backend (Node.js + Express + PostgreSQL)
-│   ├── src/
-│   │   ├── config/         # Conexão com o banco de dados Neon
-│   │   ├── routes/         # Rotas da API (convidados, mensagens, admin)
-│   │   └── index.js        # Ponto de entrada do servidor Express
-│   ├── .env.example        # Exemplo de variáveis de ambiente do server
-│   └── package.json
-│
-├── .gitignore              # Ignora node_modules, dist e arquivos .env
-├── package.json            # Scripts facilitadores na raiz
-└── README.md
-```
+Desenvolvido em **React + Vite**, integrado com **Neon PostgreSQL** e pronto para deploy em 1 clique na **Vercel**.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Tecnologias
 
-- **Frontend (`/client`):** React 18, Vite, Tailwind CSS, Lucide Icons, Canvas Confetti
-- **Backend (`/server`):** Node.js, Express, PostgreSQL (`pg`), CORS, Dotenv
+- **Frontend:** React 18, Vite, Tailwind CSS, Lucide Icons, Canvas Confetti
+- **Backend / API:** Vercel Serverless Functions / Node.js Express (`/api`)
 - **Banco de Dados:** Neon PostgreSQL (Serverless)
+- **Deploy:** Vercel
 
 ---
 
-## 📋 Funcionalidades
+## ✨ Funcionalidades
 
 1. **Página Principal dos Convidados:**
    - Monograma e design elegante com paleta de casamento.
@@ -67,48 +40,39 @@ Casamento Julio e Jessica/
 
 ---
 
-## 🚀 Como Executar o Projeto Localmente
+## 🛠️ Instalação e Uso Local
 
-### 1. Pré-requisitos
-- Node.js instalado (v18+)
-- Conta/Banco configurado no [Neon](https://neon.tech)
-
-### 2. Instalação das Dependências
-
-Instale as dependências de ambos os projetos:
+### 1. Clone o repositório:
 ```bash
-# Na raiz:
-npm run install:all
-
-# Ou manualmente em cada pasta:
-cd client && npm install
-cd ../server && npm install
+git clone https://github.com/JuOlene/Julio-e-Jessica.git
+cd Julio-e-Jessica
 ```
 
-### 3. Configurar as Variáveis de Ambiente
+### 2. Instale as dependências:
+```bash
+npm install
+```
 
-No diretório `server/`, crie um arquivo `.env` baseado no `.env.example`:
+### 3. Configure as variáveis de ambiente:
+Crie um arquivo `.env` na raiz do projeto com base no `.env.example`:
 ```env
-PORT=5000
-DATABASE_URL=sua_connection_string_do_neon_aqui
-ADMIN_PASSWORD=sua_senha_de_admin
+DATABASE_URL=postgresql://usuario:senha@host/neondb?sslmode=require
+ADMIN_PASSWORD=julioejessica2026
 ```
 
-*(Opcional)* No diretório `client/`, caso vá apontar para uma API remota, configure o `.env`:
-```env
-VITE_API_URL=/api
-```
-
-### 4. Executar o Backend:
+### 4. Inicie a aplicação:
 ```bash
-cd server
 npm run dev
-# Servidor disponível em: http://localhost:5000
 ```
+Acesse no seu navegador: `http://localhost:3000`
 
-### 5. Executar o Frontend:
-```bash
-cd client
-npm run dev
-# Aplicação disponível em: http://localhost:3000
-```
+---
+
+## 🌐 Deploy na Vercel
+
+1. Importe o repositório na **Vercel**.
+2. O **Framework Preset** será automaticamente detectado como **Vite**.
+3. Em **Settings > Environment Variables**, adicione:
+   - `DATABASE_URL`: String de conexão do seu banco no Neon.
+   - `ADMIN_PASSWORD`: Senha de acesso para a Área dos Noivos.
+4. Clique em **Deploy**.

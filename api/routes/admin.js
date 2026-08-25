@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import db from '../config/db.js';
+
 const router = express.Router();
-const db = require('../config/db');
 
 // Login de administração para os noivos
 router.post('/login', (req, res) => {
@@ -34,4 +35,4 @@ router.get('/stats', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

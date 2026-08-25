@@ -1,18 +1,14 @@
 # Dependencies
 node_modules/
-*/node_modules/
 
 # Production build
 dist/
-*/dist/
 build/
 
 # Environment Variables & Secrets
 .env
 .env.local
 .env.*.local
-server/.env
-client/.env
 
 # Logs
 npm-debug.log*
