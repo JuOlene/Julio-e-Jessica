@@ -1,7 +1,7 @@
 import React from 'react';
 
-// Símbolo Minimalista Cruz & Coração (conforme Foto 1)
-export function CrossHeartIcon({ className = 'w-6 h-6 text-[#A08055]' }) {
+// Símbolo Minimalista Cruz & Coração
+export function CrossHeartIcon({ className = 'w-6 h-6 text-[#8C6B38]' }) {
   return (
     <svg viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
       {/* Cruz superior */}
@@ -22,27 +22,26 @@ export function CrossHeartIcon({ className = 'w-6 h-6 text-[#A08055]' }) {
   );
 }
 
-// Camada de Fundo: Relevo Seco (Foto 2) + Terço Dourado, Mosquitinhos e Cruz-Coração (Foto 1)
+// Camada de Fundo Suave, Fluida e Harmoniosa
 export function FloralBackgroundLayer({ className = '' }) {
   return (
     <div className={`absolute inset-0 pointer-events-none overflow-hidden select-none z-0 ${className}`}>
-      {/* Fundo de Linho Texturizado com Relevo Floral Seco & Terço */}
+      {/* Fundo floral aquarelado suave */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-85 hidden md:block"
-        style={{ backgroundImage: `url('/wedding_bg_wide.jpg')` }}
+        className="absolute inset-0 bg-cover bg-center opacity-25 hidden md:block"
+        style={{ backgroundImage: `url('/hero_bg.jpg')` }}
       />
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-85 md:hidden"
-        style={{ backgroundImage: `url('/wedding_bg_vertical.jpg')` }}
+        className="absolute inset-0 bg-cover bg-center opacity-25 md:hidden"
+        style={{ backgroundImage: `url('/hero_bg_mobile.jpg')` }}
       />
 
       {/* Overlay suave para integrar perfeitamente com a paleta do site */}
-      <div className="absolute inset-0 bg-[#FDFBF7]/40 backdrop-blur-[0.5px]"></div>
+      <div className="absolute inset-0 bg-[#FDFBF7]/60 backdrop-blur-[0.5px]"></div>
     </div>
   );
 }
 
-// Corner decorativo discreto caso necessário
 export function FloralCorner() {
   return null;
 }
