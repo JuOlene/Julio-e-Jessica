@@ -82,7 +82,8 @@ export default function Mural() {
   };
 
   return (
-    <section id="mural" className="py-20 bg-wedding-cream relative overflow-hidden">
+    <section id="mensagens" className="py-20 bg-wedding-cream relative overflow-hidden">
+      <div id="mural" className="absolute -top-24"></div>
       {/* Camada de Relevo Seco & Flores / Terço de Fundo */}
       <FloralBackgroundLayer className="opacity-75" />
 

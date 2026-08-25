@@ -1,12 +1,10 @@
-import React, { useState } from 'react';
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Location from './components/Location';
 import RSVP from './components/RSVP';
 import Mural from './components/Mural';
 import Footer from './components/Footer';
-import AdminModal from './components/AdminModal';
 import AdminPage from './pages/AdminPage';
 
 // Página pública do site
@@ -24,15 +22,34 @@ function PublicSite() {
 }
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        {/* Site público para convidados */}
-        <Route path="/" element={<PublicSite />} />
+  const [currentHash, setCurrentHash] = useState(window.location.hash);
+  const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-        {/* Página de administração dos noivos */}
-        <Route path="/admin" element={<AdminPage />} />
-      </Routes>
-    </Router>
-  );
+  useEffect(() => {
+    const handleLocationChange = () => {
+      setCurrentHash(window.location.hash);
+      setCurrentPath(window.location.pathname);
+    };
+
+    window.addEventListener('hashchange', handleLocationChange);
+    window.addEventListener('popstate', handleLocationChange);
+
+    return () => {
+      window.removeEventListener('hashchange', handleLocationChange);
+      window.removeEventListener('popstate', handleLocationChange);
+    };
+  }, []);
+
+  // Se a rota for #admin, #/admin ou /admin -> exibe o Painel dos Noivos
+  const isAdmin =
+    currentHash === '#admin' ||
+    currentHash.startsWith('#admin') ||
+    currentHash.startsWith('#/admin') ||
+    currentPath === '/admin';
+
+  if (isAdmin) {
+    return <AdminPage />;
+  }
+
+  return <PublicSite />;
 }

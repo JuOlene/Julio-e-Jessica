@@ -44,7 +44,8 @@ export default function RSVP() {
   };
 
   return (
-    <section id="rsvp" className="py-20 bg-white relative overflow-hidden">
+    <section id="convidados" className="py-20 bg-white relative overflow-hidden">
+      <div id="rsvp" className="absolute -top-24"></div>
       {/* Camada de Relevo Seco & Flores / Terço de Fundo */}
       <FloralBackgroundLayer className="opacity-75" />
 

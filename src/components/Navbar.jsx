@@ -16,8 +16,8 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Início', href: '#inicio' },
     { name: 'Data & Local', href: '#localizacao' },
-    { name: 'Confirmar Presença', href: '#rsvp' },
-    { name: 'Mural de Mensagens', href: '#mural' },
+    { name: 'Convidados', href: '#convidados' },
+    { name: 'Mensagens', href: '#mensagens' },
   ];
 
   return (
@@ -41,7 +41,7 @@ export default function Navbar() {
         </a>
 
         {/* Desktop Links */}
-        <div className="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wider uppercase">
+        <div className="hidden md:flex items-center gap-7 text-xs sm:text-sm font-semibold tracking-wider uppercase">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -51,13 +51,29 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
+
+          {/* Botão Área dos Noivos */}
+          <a
+            href="#admin"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-wedding-gold/60 text-wedding-gold-dark hover:bg-wedding-gold hover:text-white transition-all text-xs font-bold shadow-sm"
+          >
+            <Lock className="w-3.5 h-3.5" />
+            <span>Área dos Noivos</span>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 md:hidden">
+          <a
+            href="#admin"
+            className="p-2 text-wedding-gold-dark hover:text-wedding-gold transition-colors"
+            title="Área dos Noivos"
+          >
+            <Lock className="w-5 h-5" />
+          </a>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-md text-wedding-charcoal hover:text-wedding-gold-dark transition-colors"
+            className="p-2 rounded-md text-wedding-charcoal hover:text-wedding-gold-dark transition-colors cursor-pointer"
             aria-label="Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -67,7 +83,7 @@ export default function Navbar() {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-wedding-cream border-b border-wedding-gold/20 shadow-lg px-6 py-4 flex flex-col gap-4 text-wedding-charcoal">
+        <div className="md:hidden bg-wedding-cream border-b border-wedding-gold/20 shadow-lg px-6 py-4 flex flex-col gap-3 text-wedding-charcoal">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -78,6 +94,14 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
+          <a
+            href="#admin"
+            onClick={() => setMobileMenuOpen(false)}
+            className="flex items-center justify-center gap-2 mt-2 py-3 rounded-xl bg-wedding-gold text-white font-bold text-xs uppercase tracking-wider shadow-sm"
+          >
+            <Lock className="w-4 h-4" />
+            <span>Acessar Área dos Noivos</span>
+          </a>
         </div>
       )}
     </nav>

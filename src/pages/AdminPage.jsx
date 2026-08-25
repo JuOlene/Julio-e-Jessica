@@ -160,8 +160,9 @@ export default function AdminPage() {
             </form>
 
             <a
-              href="/"
-              className="flex items-center justify-center gap-2 mt-6 text-xs text-wedding-charcoal/70 hover:text-wedding-gold-dark font-semibold transition-colors"
+              href="#inicio"
+              onClick={() => { window.location.hash = '#inicio'; }}
+              className="flex items-center justify-center gap-2 mt-6 text-xs text-wedding-charcoal/70 hover:text-wedding-gold-dark font-semibold transition-colors cursor-pointer"
             >
               <Home className="w-4 h-4" />
               <span>Voltar para o site dos noivos</span>
@@ -188,8 +189,9 @@ export default function AdminPage() {
         </div>
         <div className="flex items-center gap-3">
           <a
-            href="/"
-            className="flex items-center gap-1.5 text-xs text-white/90 hover:text-white bg-white/10 px-3 py-2 rounded-lg font-semibold transition-colors"
+            href="#inicio"
+            onClick={() => { window.location.hash = '#inicio'; }}
+            className="flex items-center gap-1.5 text-xs text-white/90 hover:text-white bg-white/10 px-3 py-2 rounded-lg font-semibold transition-colors cursor-pointer"
           >
             <Home className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Ver site público</span>
