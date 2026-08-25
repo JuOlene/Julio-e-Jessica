@@ -1,6 +1,6 @@
 import React from 'react';
 
-// Símbolo Minimalista Cruz & Coração
+// Símbolo Minimalista Sagrado Cruz & Coração
 export function CrossHeartIcon({ className = 'w-6 h-6 text-[#8C6B38]' }) {
   return (
     <svg viewBox="0 0 24 32" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
@@ -22,22 +22,25 @@ export function CrossHeartIcon({ className = 'w-6 h-6 text-[#8C6B38]' }) {
   );
 }
 
-// Camada de Fundo Suave, Fluida e Harmoniosa
-export function FloralBackgroundLayer({ className = '' }) {
+// Camada Simplista e Elegante de Terço & Flores em Linho
+export function FloralBackgroundLayer({ className = '', variant = 'default' }) {
+  const wideBg = variant === 'floral' ? '/hero_bg.jpg' : '/terco_flores_wide.jpg';
+  const mobileBg = variant === 'floral' ? '/hero_bg_mobile.jpg' : '/terco_flores_vertical.jpg';
+
   return (
     <div className={`absolute inset-0 pointer-events-none overflow-hidden select-none z-0 ${className}`}>
-      {/* Fundo floral aquarelado suave */}
+      {/* Imagem do Terço Dourado & Flores sobre Linho com opacidade sutil */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-25 hidden md:block"
-        style={{ backgroundImage: `url('/hero_bg.jpg')` }}
+        className="absolute inset-0 bg-cover bg-right md:bg-center opacity-35 hidden md:block"
+        style={{ backgroundImage: `url('${wideBg}')` }}
       />
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-25 md:hidden"
-        style={{ backgroundImage: `url('/hero_bg_mobile.jpg')` }}
+        className="absolute inset-0 bg-cover bg-center opacity-35 md:hidden"
+        style={{ backgroundImage: `url('${mobileBg}')` }}
       />
 
-      {/* Overlay suave para integrar perfeitamente com a paleta do site */}
-      <div className="absolute inset-0 bg-[#FDFBF7]/60 backdrop-blur-[0.5px]"></div>
+      {/* Véu suave de linho marfim para manter leitura impecável */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#FDFBF7]/80 via-[#FDFBF7]/50 to-[#FDFBF7]/80 backdrop-blur-[0.3px]"></div>
     </div>
   );
 }
