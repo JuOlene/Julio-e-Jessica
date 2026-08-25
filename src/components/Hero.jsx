@@ -35,25 +35,25 @@ export default function Hero({ weddingDate = '2026-11-14T16:00:00' }) {
   }, [weddingDate]);
 
   return (
-    <section id="inicio" className="relative min-h-[92vh] flex items-center justify-center text-center px-4 overflow-hidden pt-24 pb-16 bg-[#FDFBF7]">
-      {/* Imagem de Fundo Suave & Nobre (Desktop & Mobile) */}
+    <section id="inicio" className="relative min-h-[95vh] flex items-center justify-center text-center px-4 overflow-hidden pt-24 pb-16 bg-[#FDFBF7]">
+      {/* Imagem de Fundo em Relevo Seco Floral & Linho (Nítida e Visível desde o Início) */}
       <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
         <div 
-          className="absolute inset-0 bg-cover bg-center hidden md:block"
-          style={{ backgroundImage: `url('/hero_bg.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center hidden md:block opacity-90"
+          style={{ backgroundImage: `url('/relevo_floral_wide.jpg')` }}
         />
         <div 
-          className="absolute inset-0 bg-cover bg-center md:hidden"
-          style={{ backgroundImage: `url('/hero_bg_mobile.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center md:hidden opacity-90"
+          style={{ backgroundImage: `url('/relevo_floral_vertical.jpg')` }}
         />
-        {/* Camada sutil de suavização luminosa */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FDFBF7]/40 via-transparent to-[#FDFBF7]"></div>
+        {/* Realce luminoso suave para garantir contraste impecável */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FDFBF7]/20 via-transparent to-[#FDFBF7]/40"></div>
       </div>
 
       <div className="max-w-4xl mx-auto z-10 py-8">
         {/* Símbolo Sagrado Cruz & Coração */}
         <div className="flex justify-center mb-3">
-          <CrossHeartIcon className="w-7 h-9 text-[#8C6B38]" />
+          <CrossHeartIcon className="w-8 h-10 text-[#8C6B38]" />
         </div>
 
         {/* Monogram tag */}
