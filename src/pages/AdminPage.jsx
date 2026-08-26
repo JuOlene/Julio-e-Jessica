@@ -4,7 +4,8 @@ import {
   Lock, KeyRound, Users, MessageSquare, Download, Trash2,
   Plus, Search, CheckCircle2, RefreshCw, LogOut, Heart,
   Home, Sparkles, Image as ImageIcon, Calendar, Eye, EyeOff,
-  Maximize2, X, Clock, PartyPopper, UserCheck, ShieldCheck
+  Maximize2, X, Clock, PartyPopper, UserCheck, ShieldCheck,
+  ChevronRight, FileSpreadsheet, Layers
 } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner, CrossHeartIcon } from '../components/FloralDecorations';
 
@@ -226,7 +227,7 @@ export default function AdminPage() {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     PAINEL AUTENTICADO PREMIUM
+     PAINEL AUTENTICADO PREMIUM COM MENU SEPARADO
   ───────────────────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-[#F7F3EC] font-sans relative overflow-x-hidden">
@@ -281,7 +282,7 @@ export default function AdminPage() {
       {/* Conteúdo Principal */}
       <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8 relative z-10">
         
-        {/* Banner de Boas-Vindas dos Noivos */}
+        {/* Banner de Boas-Vindas dos Noivos (Mantido no topo) */}
         <div className="bg-gradient-to-r from-[#2D312E] via-[#3B413D] to-[#2D312E] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#C5A880]/30">
           <FloralCorner className="-top-10 -right-10 w-48 h-48 opacity-20" position="top-right" />
           
@@ -313,7 +314,7 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* 4 Cards de Métricas Principais */}
+        {/* 4 Cards de Métricas Principais (Mantidos no topo) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1: Convidados */}
           <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
@@ -366,7 +367,7 @@ export default function AdminPage() {
             </p>
           </div>
 
-          {/* Card 4: Status do Evento */}
+          {/* Card 4: Data & Horário */}
           <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#5A605B]/30 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#5A605B]">Data & Horário</span>
@@ -391,247 +392,357 @@ export default function AdminPage() {
           </div>
         )}
 
-        {/* Navegação por Abas Estilizada */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-white/85 backdrop-blur-md p-2 rounded-2xl border border-[#C5A880]/30 shadow-sm">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setActiveTab('convidados')}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold tracking-wide uppercase transition-all cursor-pointer ${
-                activeTab === 'convidados'
-                  ? 'bg-[#8C6B38] text-white shadow-md'
-                  : 'text-[#2D312E] hover:bg-[#F7F3EC] font-semibold'
-              }`}
-            >
-              <Users className="w-4 h-4" />
-              <span>Lista de Convidados ({convidados.length})</span>
-            </button>
-
-            <button
-              onClick={() => setActiveTab('mensagens')}
-              className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-6 py-3 rounded-xl text-xs sm:text-sm font-bold tracking-wide uppercase transition-all cursor-pointer ${
-                activeTab === 'mensagens'
-                  ? 'bg-[#8C6B38] text-white shadow-md'
-                  : 'text-[#2D312E] hover:bg-[#F7F3EC] font-semibold'
-              }`}
-            >
-              <MessageSquare className="w-4 h-4" />
-              <span>Recados & Fotos ({mensagens.length})</span>
-            </button>
-          </div>
-
-          <button
-            onClick={loadAllData}
-            className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-[#8C6B38] hover:bg-[#F7F3EC] transition-colors border border-[#C5A880]/30 cursor-pointer"
-            title="Atualizar dados do servidor"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
-            <span>{loadingData ? 'Atualizando...' : 'Atualizar Dados'}</span>
-          </button>
-        </div>
-
         {/* ═══════════════════════════════════════════════════════════
-            ABA 1: LISTA DE CONVIDADOS
+            ESTRUTURA EM MENU SEPARADO (Sidebar Menu + Área de Conteúdo)
         ═══════════════════════════════════════════════════════════ */}
-        {activeTab === 'convidados' && (
-          <div className="space-y-6 animate-fadeIn">
-            {/* Barra de Ações Rápidas */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {/* Campo de Busca */}
-              <div className="relative md:col-span-1">
-                <input
-                  type="text"
-                  placeholder="Buscar convidado por nome..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 text-sm rounded-2xl bg-white border border-[#C5A880]/30 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium shadow-sm"
-                />
-                <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                {searchTerm && (
-                  <button
-                    onClick={() => setSearchTerm('')}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                )}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* MENU LATERAL DEDICADO (4 Colunas no Desktop) */}
+          <aside className="lg:col-span-4 space-y-4">
+            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-lg relative overflow-hidden">
+              <FloralCorner className="-bottom-8 -right-8 w-32 h-32 opacity-20" position="bottom-right" />
+
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#8C6B38] mb-4 pb-3 border-b border-[#C5A880]/20">
+                <Layers className="w-4 h-4 text-[#8C6B38]" />
+                <span>Navegação dos Noivos</span>
               </div>
 
-              {/* Formulário Rápido de Adição */}
-              <form onSubmit={handleAddConvidado} className="flex gap-2 md:col-span-1">
-                <input
-                  type="text"
-                  placeholder="Adicionar nome manualmente..."
-                  value={novoConvidado}
-                  onChange={(e) => setNovoConvidado(e.target.value)}
-                  className="flex-1 px-4 py-3 text-sm rounded-2xl border border-[#C5A880]/30 bg-white focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium shadow-sm"
-                />
+              {/* Botões do Menu em formato de Cartões Ricos */}
+              <div className="space-y-3">
+                {/* Opção 1: Lista de Convidados */}
                 <button
-                  type="submit"
-                  className="px-5 py-3 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-md transition-all"
+                  onClick={() => setActiveTab('convidados')}
+                  className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
+                    activeTab === 'convidados'
+                      ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md transform scale-[1.02]'
+                      : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
+                  }`}
                 >
-                  <Plus className="w-4 h-4 text-[#C5A880]" />
-                  <span>Adicionar</span>
-                </button>
-              </form>
-
-              {/* Botão de Exportar CSV */}
-              <div className="md:col-span-1 flex justify-end">
-                <button
-                  onClick={handleExportCSV}
-                  className="w-full md:w-auto flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Baixar Planilha Excel (CSV)</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Tabela de Convidados Estilizada */}
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl border border-[#C5A880]/35 shadow-lg overflow-hidden">
-              <div className="px-6 py-4 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">
-                  Exibindo {filteredConvidados.length} de {convidados.length} convidados
-                </span>
-                {searchTerm && (
-                  <span className="text-xs text-[#5A605B] font-medium">
-                    Filtrando por: "<strong>{searchTerm}</strong>"
-                  </span>
-                )}
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm">
-                  <thead className="bg-[#F7F3EC] border-b border-[#C5A880]/20 text-[#2D312E]">
-                    <tr>
-                      <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold w-16 text-center">#</th>
-                      <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold">Convidado Confirmado</th>
-                      <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-center">Status</th>
-                      <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-right w-28">Remover</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-[#E8DCCF]/50">
-                    {filteredConvidados.length === 0 ? (
-                      <tr>
-                        <td colSpan="4" className="text-center py-16 text-[#5A605B] text-sm font-medium">
-                          <Users className="w-12 h-12 text-[#C5A880]/50 mx-auto mb-3" />
-                          <p>Nenhum convidado encontrado com esse nome.</p>
-                        </td>
-                      </tr>
-                    ) : (
-                      filteredConvidados.map((c, index) => (
-                        <tr key={c.id} className="hover:bg-[#FDFBF7] transition-colors group">
-                          <td className="py-4 px-6 text-center text-[#8C6B38] font-mono text-xs font-bold">
-                            {index + 1}
-                          </td>
-                          <td className="py-4 px-6">
-                            <div className="flex items-center gap-3">
-                              <div className="w-9 h-9 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-sm flex items-center justify-center shadow-xs">
-                                {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
-                              </div>
-                              <span className="font-bold text-base text-[#2D312E]">{c.nome}</span>
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 text-center">
-                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 border border-green-200 text-green-700 text-xs font-bold">
-                              <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                              <span>Confirmado</span>
-                            </span>
-                          </td>
-                          <td className="py-4 px-6 text-right">
-                            <button
-                              onClick={() => handleDeleteConvidado(c.id, c.nome)}
-                              className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
-                              title={`Remover ${c.nome}`}
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* ═══════════════════════════════════════════════════════════
-            ABA 2: MURAL DE RECADOS & FOTOS
-        ═══════════════════════════════════════════════════════════ */}
-        {activeTab === 'mensagens' && (
-          <div className="space-y-6 animate-fadeIn">
-            {mensagens.length === 0 ? (
-              <div className="text-center py-20 bg-white/95 rounded-3xl border border-[#C5A880]/35 shadow-md max-w-lg mx-auto p-8">
-                <Sparkles className="w-12 h-12 text-[#C5A880]/60 mx-auto mb-4" />
-                <h3 className="font-serif text-2xl font-bold text-[#2D312E] mb-2">
-                  Ainda não há recados registrados
-                </h3>
-                <p className="text-[#5A605B] font-medium text-sm">
-                  Assim que os convidados deixarem votos ou fotos pelo site, elas aparecerão aqui exclusivamente para vocês!
-                </p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {mensagens.map((msg) => (
-                  <div
-                    key={msg.id}
-                    className="bg-white/95 backdrop-blur-md rounded-3xl border border-[#C5A880]/35 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
-                  >
-                    <div>
-                      {/* Foto anexada */}
-                      {msg.foto ? (
-                        <div className="relative group/img overflow-hidden bg-[#1C201D]">
-                          <img
-                            src={msg.foto}
-                            alt={`Foto de ${msg.nome}`}
-                            className="w-full h-56 object-cover group-hover/img:scale-105 transition-transform duration-500 cursor-pointer"
-                            onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
-                          />
-                          <button
-                            onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
-                            className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl text-xs flex items-center gap-1 backdrop-blur-sm transition-all"
-                            title="Expandir Foto"
-                          >
-                            <Maximize2 className="w-3.5 h-3.5" />
-                            <span>Ampliar</span>
-                          </button>
-                        </div>
-                      ) : (
-                        <div className="h-3 bg-gradient-to-r from-[#8C6B38] via-[#C5A880] to-[#B87D7A]" />
-                      )}
-
-                      {/* Conteúdo da Mensagem */}
-                      <div className="p-6">
-                        <p className="text-base text-[#2D312E] font-serif italic leading-relaxed whitespace-pre-wrap font-medium">
-                          "{msg.mensagens}"
-                        </p>
-                      </div>
+                  <div className="flex items-center gap-3.5">
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
+                      activeTab === 'convidados'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-white text-[#8C6B38] border border-[#C5A880]/30 shadow-xs'
+                    }`}>
+                      <Users className="w-5 h-5" />
                     </div>
-
-                    {/* Rodapé do Card */}
-                    <div className="px-6 py-4 bg-[#FDFBF7] border-t border-[#C5A880]/20 flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
-                          {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
-                        </div>
-                        <span className="font-bold text-sm text-[#2D312E]">{msg.nome}</span>
-                      </div>
-
-                      <button
-                        onClick={() => handleDeleteMensagem(msg.id, msg.nome)}
-                        className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
-                        title="Excluir mensagem"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                    <div>
+                      <h4 className="font-bold text-sm leading-tight">Lista de Convidados</h4>
+                      <p className={`text-xs mt-0.5 ${activeTab === 'convidados' ? 'text-white/80' : 'text-[#5A605B]'}`}>
+                        Presenças e confirmações
+                      </p>
                     </div>
                   </div>
-                ))}
+
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                      activeTab === 'convidados'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-[#F7F3EC] text-[#8C6B38] border border-[#C5A880]/30'
+                    }`}>
+                      {convidados.length}
+                    </span>
+                    <ChevronRight className={`w-4 h-4 ${activeTab === 'convidados' ? 'text-white' : 'text-gray-400'}`} />
+                  </div>
+                </button>
+
+                {/* Opção 2: Mural de Mensagens */}
+                <button
+                  onClick={() => setActiveTab('mensagens')}
+                  className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
+                    activeTab === 'mensagens'
+                      ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md transform scale-[1.02]'
+                      : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
+                  }`}
+                >
+                  <div className="flex items-center gap-3.5">
+                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
+                      activeTab === 'mensagens'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-white text-[#B87D7A] border border-[#B87D7A]/30 shadow-xs'
+                    }`}>
+                      <MessageSquare className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-sm leading-tight">Recados & Memórias</h4>
+                      <p className={`text-xs mt-0.5 ${activeTab === 'mensagens' ? 'text-white/80' : 'text-[#5A605B]'}`}>
+                        Mensagens privadas e fotos
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                      activeTab === 'mensagens'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-[#FDF5F5] text-[#B87D7A] border border-[#B87D7A]/30'
+                    }`}>
+                      {mensagens.length}
+                    </span>
+                    <ChevronRight className={`w-4 h-4 ${activeTab === 'mensagens' ? 'text-white' : 'text-gray-400'}`} />
+                  </div>
+                </button>
+              </div>
+
+              {/* Ações Rápidas no Rodapé do Menu */}
+              <div className="mt-6 pt-5 border-t border-[#C5A880]/20 space-y-2.5">
+                <button
+                  onClick={loadAllData}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] text-xs font-bold uppercase tracking-wider transition-colors border border-[#C5A880]/30 cursor-pointer"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
+                  <span>{loadingData ? 'Atualizando...' : 'Atualizar Dados'}</span>
+                </button>
+
+                <button
+                  onClick={handleExportCSV}
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-[#FDFBF7] text-[#2D312E] text-xs font-bold uppercase tracking-wider transition-colors border border-[#C5A880]/30 shadow-xs cursor-pointer"
+                >
+                  <FileSpreadsheet className="w-4 h-4 text-green-700" />
+                  <span>Exportar Excel (CSV)</span>
+                </button>
+              </div>
+            </div>
+          </aside>
+
+          {/* ÁREA DE CONTEÚDO PRINCIPAL (8 Colunas no Desktop) */}
+          <div className="lg:col-span-8">
+            
+            {/* ── MODULO 1: LISTA DE CONVIDADOS ── */}
+            {activeTab === 'convidados' && (
+              <div className="space-y-6 animate-fadeIn">
+                {/* Header do Módulo */}
+                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+                    <div>
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8C6B38] mb-1">
+                        <Users className="w-4 h-4" />
+                        <span>Módulo de Presenças</span>
+                      </div>
+                      <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
+                        Lista de Convidados Confirmados
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#5A605B] mt-1 font-medium">
+                        Total de {convidados.length} pessoas confirmadas no evento.
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={handleExportCSV}
+                      className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer shrink-0"
+                    >
+                      <Download className="w-4 h-4" />
+                      <span>Baixar CSV</span>
+                    </button>
+                  </div>
+
+                  {/* Barra de Ações Rápidas (Busca & Adição) */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
+                    {/* Campo de Busca */}
+                    <div className="relative">
+                      <input
+                        type="text"
+                        placeholder="Buscar convidado por nome..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="w-full pl-10 pr-9 py-3 text-sm rounded-2xl bg-[#FDFBF7] border border-[#C5A880]/35 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                      />
+                      <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                      {searchTerm && (
+                        <button
+                          onClick={() => setSearchTerm('')}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+
+                    {/* Formulário Rápido de Adição */}
+                    <form onSubmit={handleAddConvidado} className="flex gap-2">
+                      <input
+                        type="text"
+                        placeholder="Adicionar nome manualmente..."
+                        value={novoConvidado}
+                        onChange={(e) => setNovoConvidado(e.target.value)}
+                        className="flex-1 px-4 py-3 text-sm rounded-2xl border border-[#C5A880]/35 bg-[#FDFBF7] focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                      />
+                      <button
+                        type="submit"
+                        className="px-4 py-3 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm transition-all"
+                      >
+                        <Plus className="w-4 h-4 text-[#C5A880]" />
+                        <span>Adicionar</span>
+                      </button>
+                    </form>
+                  </div>
+
+                  {/* Tabela de Convidados */}
+                  <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
+                    <div className="px-5 py-3 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex items-center justify-between text-xs font-bold text-[#8C6B38]">
+                      <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
+                      {searchTerm && (
+                        <span className="text-[#5A605B]">Filtrado por: "{searchTerm}"</span>
+                      )}
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-sm">
+                        <thead className="bg-[#F7F3EC] border-b border-[#C5A880]/20 text-[#2D312E]">
+                          <tr>
+                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold w-14 text-center">#</th>
+                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold">Nome do Convidado</th>
+                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold text-center">Status</th>
+                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold text-right w-24">Remover</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-[#E8DCCF]/50 bg-white">
+                          {filteredConvidados.length === 0 ? (
+                            <tr>
+                              <td colSpan="4" className="text-center py-12 text-[#5A605B] text-sm font-medium">
+                                <Users className="w-10 h-10 text-[#C5A880]/50 mx-auto mb-2" />
+                                <p>Nenhum convidado encontrado.</p>
+                              </td>
+                            </tr>
+                          ) : (
+                            filteredConvidados.map((c, index) => (
+                              <tr key={c.id} className="hover:bg-[#FDFBF7] transition-colors">
+                                <td className="py-3.5 px-5 text-center text-[#8C6B38] font-mono text-xs font-bold">
+                                  {index + 1}
+                                </td>
+                                <td className="py-3.5 px-5">
+                                  <div className="flex items-center gap-3">
+                                    <div className="w-8 h-8 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
+                                      {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
+                                    </div>
+                                    <span className="font-bold text-sm text-[#2D312E]">{c.nome}</span>
+                                  </div>
+                                </td>
+                                <td className="py-3.5 px-5 text-center">
+                                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-50 border border-green-200 text-green-700 text-[11px] font-bold">
+                                    <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                    <span>Confirmado</span>
+                                  </span>
+                                </td>
+                                <td className="py-3.5 px-5 text-right">
+                                  <button
+                                    onClick={() => handleDeleteConvidado(c.id, c.nome)}
+                                    className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                                    title={`Remover ${c.nome}`}
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── MODULO 2: MURAL DE RECADOS & FOTOS ── */}
+            {activeTab === 'mensagens' && (
+              <div className="space-y-6 animate-fadeIn">
+                {/* Header do Módulo */}
+                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#B87D7A] mb-1">
+                        <MessageSquare className="w-4 h-4" />
+                        <span>Livro de Memórias & Votos</span>
+                      </div>
+                      <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
+                        Recados e Fotos dos Convidados
+                      </h3>
+                      <p className="text-xs sm:text-sm text-[#5A605B] mt-1 font-medium">
+                        Total de {mensagens.length} mensagens privadas recebidas com carinho.
+                      </p>
+                    </div>
+
+                    <div className="hidden sm:flex items-center gap-2 bg-[#FDF5F5] border border-[#B87D7A]/30 px-4 py-2 rounded-2xl text-xs font-bold text-[#B87D7A]">
+                      <Sparkles className="w-3.5 h-3.5" />
+                      <span>{fotosCount} fotos anexadas</span>
+                    </div>
+                  </div>
+
+                  {mensagens.length === 0 ? (
+                    <div className="text-center py-16 bg-[#FDFBF7] rounded-2xl border border-[#C5A880]/30 p-8">
+                      <Sparkles className="w-10 h-10 text-[#C5A880]/60 mx-auto mb-3" />
+                      <h4 className="font-serif text-xl font-bold text-[#2D312E] mb-1">
+                        Nenhum recado recebido até o momento
+                      </h4>
+                      <p className="text-[#5A605B] text-xs font-medium max-w-sm mx-auto">
+                        Assim que os convidados deixarem mensagens ou fotos pelo site, elas aparecerão aqui exclusivamente para vocês!
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                      {mensagens.map((msg) => (
+                        <div
+                          key={msg.id}
+                          className="bg-white rounded-3xl border border-[#C5A880]/30 shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group"
+                        >
+                          <div>
+                            {/* Foto anexada */}
+                            {msg.foto ? (
+                              <div className="relative group/img overflow-hidden bg-[#1C201D]">
+                                <img
+                                  src={msg.foto}
+                                  alt={`Foto de ${msg.nome}`}
+                                  className="w-full h-48 object-cover group-hover/img:scale-105 transition-transform duration-500 cursor-pointer"
+                                  onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
+                                />
+                                <button
+                                  onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
+                                  className="absolute bottom-2.5 right-2.5 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl text-xs flex items-center gap-1 backdrop-blur-sm transition-all"
+                                  title="Ampliar Foto"
+                                >
+                                  <Maximize2 className="w-3.5 h-3.5" />
+                                  <span>Ampliar</span>
+                                </button>
+                              </div>
+                            ) : (
+                              <div className="h-2.5 bg-gradient-to-r from-[#8C6B38] via-[#C5A880] to-[#B87D7A]" />
+                            )}
+
+                            {/* Conteúdo da Mensagem */}
+                            <div className="p-5">
+                              <p className="text-sm text-[#2D312E] font-serif italic leading-relaxed whitespace-pre-wrap font-medium">
+                                "{msg.mensagens}"
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Rodapé do Card */}
+                          <div className="px-5 py-3.5 bg-[#FDFBF7] border-t border-[#C5A880]/20 flex items-center justify-between">
+                            <div className="flex items-center gap-2.5">
+                              <div className="w-7 h-7 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
+                                {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
+                              </div>
+                              <span className="font-bold text-xs text-[#2D312E]">{msg.nome}</span>
+                            </div>
+
+                            <button
+                              onClick={() => handleDeleteMensagem(msg.id, msg.nome)}
+                              className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
+                              title="Excluir mensagem"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
-        )}
+        </div>
       </main>
 
       {/* Modal de Foto em Alta Resolução */}
