@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import {
   Lock, KeyRound, Users, MessageSquare, Download, Trash2,
-  Plus, Search, CheckCircle2, RefreshCw, LogOut, Heart,
+  Search, CheckCircle2, RefreshCw, LogOut, Heart,
   Home, Sparkles, Image as ImageIcon, Calendar, Eye, EyeOff,
-  Maximize2, X, Clock, PartyPopper, UserCheck, ShieldCheck,
-  ChevronRight, FileSpreadsheet, Layers, Menu, ArrowLeft,
-  LayoutDashboard, ExternalLink, Clock3, AlertCircle, Check
+  Maximize2, X, Clock, UserCheck, ChevronRight, FileSpreadsheet,
+  Menu, ArrowLeft, LayoutDashboard
 } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner, CrossHeartIcon } from '../components/FloralDecorations';
 
@@ -23,7 +22,6 @@ export default function AdminPage() {
   const [stats, setStats] = useState({ 
     totalConvidados: 0, 
     totalConfirmados: 0, 
-    totalPendentes: 0, 
     totalMensagens: 0 
   });
   const [convidados, setConvidados] = useState([]);
@@ -31,7 +29,6 @@ export default function AdminPage() {
   const [loadingData, setLoadingData] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
-  const [novoConvidado, setNovoConvidado] = useState('');
   const [actionMessage, setActionMessage] = useState('');
   const [selectedPhoto, setSelectedPhoto] = useState(null);
 
@@ -84,34 +81,8 @@ export default function AdminPage() {
     }
   };
 
-  const handleAddConvidado = async (e) => {
-    e.preventDefault();
-    if (!novoConvidado.trim()) return;
-    try {
-      // Por padrão, convidado cadastrado manualmente pelos noivos inicia como Pendente (aguardando confirmação)
-      await api.addConvidado(novoConvidado.trim(), false);
-      setNovoConvidado('');
-      setActionMessage(`"${novoConvidado.trim()}" cadastrado na lista (Aguardando confirmação).`);
-      setTimeout(() => setActionMessage(''), 4000);
-      await loadAllData();
-    } catch (err) {
-      alert(err.message);
-    }
-  };
-
-  const handleToggleStatus = async (id, nome, currentStatus) => {
-    try {
-      await api.toggleConvidadoStatus(id);
-      setActionMessage(`Status de "${nome}" alterado para ${!currentStatus ? 'CONFIRMADO' : 'PENDENTE'}.`);
-      setTimeout(() => setActionMessage(''), 4000);
-      await loadAllData();
-    } catch (err) {
-      alert(err.message);
-    }
-  };
-
   const handleDeleteConvidado = async (id, nome) => {
-    if (window.confirm(`Deseja remover "${nome}" da lista de convidados?`)) {
+    if (window.confirm(`Deseja remover "${nome}" da lista de presenças confirmadas?`)) {
       try {
         await api.deleteConvidado(id);
         setActionMessage(`"${nome}" removido com sucesso.`);
@@ -138,18 +109,18 @@ export default function AdminPage() {
 
   const handleExportCSV = () => {
     if (convidados.length === 0) {
-      alert('Nenhum convidado cadastrado para exportar.');
+      alert('Nenhum convidado confirmado para exportar.');
       return;
     }
-    const headers = 'ID,Nome do Convidado,Status de Presença\n';
+    const headers = 'ID,Nome do Convidado,Status de Confirmacao\n';
     const rows = convidados.map(c => 
-      `"${c.id}","${c.nome.replace(/"/g, '""')}","${c.confirmado ? 'Confirmado' : 'Pendente'}"`
+      `"${c.id}","${c.nome.replace(/"/g, '""')}","Confirmado pelo Convidado"`
     ).join('\n');
     const blob = new Blob(["\ufeff" + headers + rows], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.setAttribute('href', url);
-    link.setAttribute('download', 'Lista_Convidados_Jessica_e_Julio.csv');
+    link.setAttribute('download', 'Lista_Presencas_Jessica_e_Julio.csv');
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -159,8 +130,6 @@ export default function AdminPage() {
     c.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const confirmadosCount = convidados.filter(c => c.confirmado).length;
-  const pendentesCount = convidados.filter(c => !c.confirmado).length;
   const fotosCount = mensagens.filter(m => m.foto).length;
 
   /* ─────────────────────────────────────────────────────────────
@@ -253,7 +222,7 @@ export default function AdminPage() {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     PAINEL AUTENTICADO: TOPBAR LIMPA + NAVEGAÇÃO TOTALMENTE RESPONSIVA
+     PAINEL AUTENTICADO: TOPBAR LIMPA + CONTROLE EXCLUSIVO
   ───────────────────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-[#F7F3EC] font-sans relative overflow-x-hidden">
@@ -416,9 +385,9 @@ export default function AdminPage() {
                         <Users className="w-5 h-5" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-sm leading-tight">Lista de Convidados</h4>
+                        <h4 className="font-bold text-sm leading-tight">Presenças Confirmadas</h4>
                         <p className={`text-xs mt-0.5 ${activeTab === 'convidados' ? 'text-white/80' : 'text-[#5A605B]'}`}>
-                          {confirmadosCount} confirmados • {pendentesCount} pendentes
+                          {convidados.length} confirmados via site
                         </p>
                       </div>
                     </div>
@@ -562,7 +531,7 @@ export default function AdminPage() {
                     Olá, Jéssica & Júlio! ❤️
                   </h2>
                   <p className="text-sm text-white/80 mt-1 max-w-xl font-medium">
-                    Aqui vocês acompanham em tempo real todas as presenças confirmadas e as mensagens carinhosas que os convidados estão enviando para vocês.
+                    Aqui vocês acompanham as confirmações de presença enviadas pelos convidados através do site e as mensagens carinhosas recebidas.
                   </p>
                 </div>
 
@@ -594,11 +563,11 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
-                  {confirmadosCount}
+                  {convidados.length}
                 </div>
                 <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                  <span>Confirmados ({pendentesCount} pendentes)</span>
+                  <span>Confirmados pelo site</span>
                 </p>
               </div>
 
@@ -677,24 +646,17 @@ export default function AdminPage() {
                     Módulo de Presenças
                   </span>
                   <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E] mb-2 group-hover:text-[#8C6B38] transition-colors">
-                    Lista de Convidados
+                    Presenças Confirmadas
                   </h3>
                   <p className="text-xs sm:text-sm text-[#5A605B] font-medium leading-relaxed mb-6">
-                    Acompanhe quem confirmou presença, quem está pendente, adicione nomes manualmente ou baixe a planilha para o buffet.
+                    Acompanhe em tempo real os convidados que confirmaram presença pelo site ou baixe a planilha para o buffet.
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-[#C5A880]/20 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold text-green-800 bg-green-50 px-3 py-1 rounded-full border border-green-200">
-                      {confirmadosCount} Confirmados
-                    </span>
-                    {pendentesCount > 0 && (
-                      <span className="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
-                        {pendentesCount} Pendentes
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-xs font-bold text-green-800 bg-green-50 px-3.5 py-1.5 rounded-full border border-green-200">
+                    {convidados.length} Confirmados via Site
+                  </span>
                   <div className="flex items-center gap-1 text-sm font-bold text-[#8C6B38] group-hover:translate-x-1 transition-transform">
                     <span>Acessar Lista</span>
                     <ChevronRight className="w-4 h-4" />
@@ -743,7 +705,7 @@ export default function AdminPage() {
                 <FileSpreadsheet className="w-6 h-6 text-green-700 shrink-0" />
                 <div>
                   <h4 className="font-bold text-sm text-[#2D312E]">Exportação dos Dados</h4>
-                  <p className="text-xs text-[#5A605B] font-medium">Baixe a relação completa com status de presença de cada convidado.</p>
+                  <p className="text-xs text-[#5A605B] font-medium">Baixe a relação completa com a lista de todos os convidados confirmados.</p>
                 </div>
               </div>
 
@@ -769,7 +731,7 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            TELA 2: LISTA DE CONVIDADOS (COM STATUS CONFIRMADO / PENDENTE)
+            TELA 2: LISTA DE PRESENÇAS CONFIRMADAS PELOS CONVIDADOS
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === 'convidados' && (
           <div className="space-y-6 animate-fadeIn max-w-4xl mx-auto">
@@ -793,10 +755,10 @@ export default function AdminPage() {
                       <span>Módulo de Presenças</span>
                     </div>
                     <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
-                      Lista de Convidados
+                      Presenças Confirmadas
                     </h3>
                     <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
-                      <strong className="text-green-700 font-bold">{confirmadosCount} confirmados</strong> e <strong className="text-amber-700 font-bold">{pendentesCount} pendentes</strong> (Total: {convidados.length}).
+                      Total de <strong className="text-green-700 font-bold">{convidados.length}</strong> pessoas que confirmaram presença diretamente pelo site.
                     </p>
                   </div>
                 </div>
@@ -820,9 +782,8 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Barra de Ações Rápidas (Busca & Adição Encaixadas) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
-                {/* Campo de Busca Encaixado */}
+              {/* Barra de Busca Centralizada */}
+              <div className="mb-6">
                 <div className="relative flex items-center bg-[#FDFBF7] border border-[#C5A880]/35 rounded-2xl p-1.5 focus-within:border-[#8C6B38] focus-within:ring-2 focus-within:ring-[#8C6B38]/20 transition-all shadow-xs">
                   <Search className="w-4 h-4 text-[#8C6B38] ml-2.5 shrink-0" />
                   <input
@@ -842,33 +803,12 @@ export default function AdminPage() {
                     </button>
                   )}
                 </div>
-
-                {/* Formulário Rápido de Adição Perfeitamente Encaixado */}
-                <form 
-                  onSubmit={handleAddConvidado} 
-                  className="relative flex items-center bg-[#FDFBF7] border border-[#C5A880]/35 rounded-2xl p-1.5 focus-within:border-[#8C6B38] focus-within:ring-2 focus-within:ring-[#8C6B38]/20 transition-all shadow-xs"
-                >
-                  <input
-                    type="text"
-                    placeholder="Adicionar novo convidado..."
-                    value={novoConvidado}
-                    onChange={(e) => setNovoConvidado(e.target.value)}
-                    className="flex-1 min-w-0 bg-transparent pl-3.5 pr-2 py-2 text-sm outline-none font-medium text-[#2D312E]"
-                  />
-                  <button
-                    type="submit"
-                    className="px-4 py-2 rounded-xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs transition-all"
-                  >
-                    <Plus className="w-3.5 h-3.5 text-[#C5A880]" />
-                    <span>Adicionar</span>
-                  </button>
-                </form>
               </div>
 
-              {/* Lista Centralizada de Convidados com Status Dinâmico */}
+              {/* Lista Centralizada de Convidados Confirmados */}
               <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
                 <div className="px-5 py-3.5 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex flex-col sm:flex-row items-center justify-between gap-1 text-xs font-bold text-[#8C6B38] text-center sm:text-left">
-                  <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
+                  <span>Exibindo {filteredConvidados.length} de {convidados.length} confirmados</span>
                   {searchTerm && (
                     <span className="text-[#5A605B]">Filtrado por: "{searchTerm}"</span>
                   )}
@@ -879,7 +819,8 @@ export default function AdminPage() {
                   {filteredConvidados.length === 0 ? (
                     <div className="text-center py-16 px-4 text-[#5A605B]">
                       <Users className="w-12 h-12 text-[#C5A880]/50 mx-auto mb-3" />
-                      <p className="text-sm font-medium">Nenhum convidado encontrado.</p>
+                      <p className="text-sm font-medium">Nenhuma confirmação de presença encontrada.</p>
+                      <p className="text-xs text-gray-400 mt-1">Quando os convidados confirmarem presença no site, eles aparecerão aqui automaticamente.</p>
                     </div>
                   ) : (
                     filteredConvidados.map((c, index) => (
@@ -892,11 +833,7 @@ export default function AdminPage() {
                           <span className="text-xs font-mono font-bold text-[#8C6B38] w-6 text-center shrink-0">
                             {index + 1}
                           </span>
-                          <div className={`w-10 h-10 rounded-full border font-serif font-bold text-sm flex items-center justify-center shrink-0 shadow-xs ${
-                            c.confirmado 
-                              ? 'bg-green-50 border-green-300 text-green-800' 
-                              : 'bg-[#F7F3EC] border-[#C5A880]/40 text-[#8C6B38]'
-                          }`}>
+                          <div className="w-10 h-10 rounded-full border border-green-300 bg-green-50 text-green-800 font-serif font-bold text-sm flex items-center justify-center shrink-0 shadow-xs">
                             {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
                           </div>
                           <div className="min-w-0">
@@ -904,49 +841,19 @@ export default function AdminPage() {
                               {c.nome}
                             </span>
                             {/* Badge Mobile */}
-                            <div className="sm:hidden mt-0.5">
-                              {c.confirmado ? (
-                                <button
-                                  onClick={() => handleToggleStatus(c.id, c.nome, c.confirmado)}
-                                  className="inline-flex items-center gap-1 text-[10px] text-green-700 font-bold uppercase cursor-pointer"
-                                  title="Clique para alternar para pendente"
-                                >
-                                  <CheckCircle2 className="w-3 h-3 text-green-600" />
-                                  <span>Presença confirmada</span>
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => handleToggleStatus(c.id, c.nome, c.confirmado)}
-                                  className="inline-flex items-center gap-1 text-[10px] text-amber-700 font-bold uppercase cursor-pointer"
-                                  title="Clique para confirmar presença"
-                                >
-                                  <Clock3 className="w-3 h-3 text-amber-600" />
-                                  <span>Pendente (Clique p/ confirmar)</span>
-                                </button>
-                              )}
-                            </div>
+                            <span className="sm:hidden text-[10px] text-green-700 font-bold uppercase flex items-center gap-1 mt-0.5">
+                              <CheckCircle2 className="w-3 h-3 text-green-600" />
+                              <span>Confirmado pelo convidado</span>
+                            </span>
                           </div>
                         </div>
 
-                        {/* Lado Direito: Badge Desktop Interativo + Botão de Exclusão */}
+                        {/* Lado Direito: Badge Desktop + Botão de Exclusão */}
                         <div className="flex items-center gap-3 shrink-0">
-                          <button
-                            onClick={() => handleToggleStatus(c.id, c.nome, c.confirmado)}
-                            className="hidden sm:inline-flex items-center cursor-pointer transition-transform hover:scale-105"
-                            title={c.confirmado ? "Clique para marcar como Pendente" : "Clique para marcar como Confirmado"}
-                          >
-                            {c.confirmado ? (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 hover:bg-green-100 border border-green-300 text-green-800 text-xs font-bold shadow-xs">
-                                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                                <span>Confirmado</span>
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold shadow-xs">
-                                <Clock3 className="w-3.5 h-3.5 text-amber-600" />
-                                <span>Pendente</span>
-                              </span>
-                            )}
-                          </button>
+                          <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 border border-green-300 text-green-800 text-xs font-bold shadow-xs">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                            <span>Confirmado via Site</span>
+                          </span>
 
                           <button
                             onClick={() => handleDeleteConvidado(c.id, c.nome)}
