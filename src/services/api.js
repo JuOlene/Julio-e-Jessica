@@ -1,6 +1,5 @@
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
-
 export const api = {
   // Convidados
   async getConvidados() {
@@ -9,14 +8,23 @@ export const api = {
     return res.json();
   },
 
-  async addConvidado(nome) {
+  async addConvidado(nome, confirmado = true) {
     const res = await fetch(`${API_URL}/convidados`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ nome })
+      body: JSON.stringify({ nome, confirmado })
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Erro ao confirmar presença');
+    if (!res.ok) throw new Error(data.error || 'Erro ao registrar convidado');
+    return data;
+  },
+
+  async toggleConvidadoStatus(id) {
+    const res = await fetch(`${API_URL}/convidados/${id}/toggle`, {
+      method: 'PATCH'
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erro ao alternar status do convidado');
     return data;
   },
 

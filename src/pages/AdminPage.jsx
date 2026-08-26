@@ -6,7 +6,7 @@ import {
   Home, Sparkles, Image as ImageIcon, Calendar, Eye, EyeOff,
   Maximize2, X, Clock, PartyPopper, UserCheck, ShieldCheck,
   ChevronRight, FileSpreadsheet, Layers, Menu, ArrowLeft,
-  LayoutDashboard, ExternalLink
+  LayoutDashboard, ExternalLink, Clock3, AlertCircle, Check
 } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner, CrossHeartIcon } from '../components/FloralDecorations';
 
@@ -20,7 +20,12 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('resumo');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const [stats, setStats] = useState({ totalConvidados: 0, totalMensagens: 0 });
+  const [stats, setStats] = useState({ 
+    totalConvidados: 0, 
+    totalConfirmados: 0, 
+    totalPendentes: 0, 
+    totalMensagens: 0 
+  });
   const [convidados, setConvidados] = useState([]);
   const [mensagens, setMensagens] = useState([]);
   const [loadingData, setLoadingData] = useState(false);
@@ -83,9 +88,21 @@ export default function AdminPage() {
     e.preventDefault();
     if (!novoConvidado.trim()) return;
     try {
-      await api.addConvidado(novoConvidado.trim());
+      // Por padrão, convidado cadastrado manualmente pelos noivos inicia como Pendente (aguardando confirmação)
+      await api.addConvidado(novoConvidado.trim(), false);
       setNovoConvidado('');
-      setActionMessage(`"${novoConvidado.trim()}" adicionado à lista de presença!`);
+      setActionMessage(`"${novoConvidado.trim()}" cadastrado na lista (Aguardando confirmação).`);
+      setTimeout(() => setActionMessage(''), 4000);
+      await loadAllData();
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
+  const handleToggleStatus = async (id, nome, currentStatus) => {
+    try {
+      await api.toggleConvidadoStatus(id);
+      setActionMessage(`Status de "${nome}" alterado para ${!currentStatus ? 'CONFIRMADO' : 'PENDENTE'}.`);
       setTimeout(() => setActionMessage(''), 4000);
       await loadAllData();
     } catch (err) {
@@ -121,11 +138,13 @@ export default function AdminPage() {
 
   const handleExportCSV = () => {
     if (convidados.length === 0) {
-      alert('Nenhum convidado confirmado para exportar.');
+      alert('Nenhum convidado cadastrado para exportar.');
       return;
     }
-    const headers = 'ID,Nome do Convidado\n';
-    const rows = convidados.map(c => `"${c.id}","${c.nome.replace(/"/g, '""')}"`).join('\n');
+    const headers = 'ID,Nome do Convidado,Status de Presença\n';
+    const rows = convidados.map(c => 
+      `"${c.id}","${c.nome.replace(/"/g, '""')}","${c.confirmado ? 'Confirmado' : 'Pendente'}"`
+    ).join('\n');
     const blob = new Blob(["\ufeff" + headers + rows], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -140,6 +159,8 @@ export default function AdminPage() {
     c.nome.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const confirmadosCount = convidados.filter(c => c.confirmado).length;
+  const pendentesCount = convidados.filter(c => !c.confirmado).length;
   const fotosCount = mensagens.filter(m => m.foto).length;
 
   /* ─────────────────────────────────────────────────────────────
@@ -239,7 +260,7 @@ export default function AdminPage() {
       {/* Camada Floral de Fundo */}
       <FloralBackgroundLayer className="opacity-40" />
 
-      {/* Topbar Nobre e Limpa (Sem botões desnecessários no topo) */}
+      {/* Topbar Nobre e Limpa */}
       <header className="bg-[#2D312E] text-white px-4 sm:px-8 py-3.5 sticky top-0 z-40 shadow-xl border-b border-[#C5A880]/30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
@@ -272,7 +293,7 @@ export default function AdminPage() {
             </button>
           </div>
 
-          {/* Lado Direito: Apenas Links Essenciais (Ver Site & Sair) */}
+          {/* Lado Direito: Links Essenciais (Ver Site & Sair) */}
           <div className="flex items-center gap-2 sm:gap-3">
             <a
               href="#inicio"
@@ -286,7 +307,7 @@ export default function AdminPage() {
 
             <button
               onClick={() => setIsAuthenticated(false)}
-              className="flex items-center gap-1.5 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3.5 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
+              className="flex items-center gap-1 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3.5 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
               title="Encerrar sessão"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -397,7 +418,7 @@ export default function AdminPage() {
                       <div>
                         <h4 className="font-bold text-sm leading-tight">Lista de Convidados</h4>
                         <p className={`text-xs mt-0.5 ${activeTab === 'convidados' ? 'text-white/80' : 'text-[#5A605B]'}`}>
-                          Presenças confirmadas
+                          {confirmadosCount} confirmados • {pendentesCount} pendentes
                         </p>
                       </div>
                     </div>
@@ -561,7 +582,7 @@ export default function AdminPage() {
 
             {/* 4 Cards de Métricas Principais */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-              {/* Card 1: Convidados */}
+              {/* Card 1: Presenças Confirmadas */}
               <div 
                 onClick={() => setActiveTab('convidados')}
                 className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-md hover:shadow-xl transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38] group"
@@ -573,11 +594,11 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
-                  {stats.totalConvidados}
+                  {confirmadosCount}
                 </div>
                 <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                  <span>Confirmados na lista</span>
+                  <span>Confirmados ({pendentesCount} pendentes)</span>
                 </p>
               </div>
 
@@ -659,14 +680,21 @@ export default function AdminPage() {
                     Lista de Convidados
                   </h3>
                   <p className="text-xs sm:text-sm text-[#5A605B] font-medium leading-relaxed mb-6">
-                    Acesse a lista completa de confirmados, busque por nome, adicione pessoas manualmente ou baixe a planilha para o buffet.
+                    Acompanhe quem confirmou presença, quem está pendente, adicione nomes manualmente ou baixe a planilha para o buffet.
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-[#C5A880]/20 flex items-center justify-between">
-                  <span className="text-xs font-bold text-[#8C6B38] bg-[#F7F3EC] px-3.5 py-1.5 rounded-full border border-[#C5A880]/30">
-                    {convidados.length} Confirmados
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-bold text-green-800 bg-green-50 px-3 py-1 rounded-full border border-green-200">
+                      {confirmadosCount} Confirmados
+                    </span>
+                    {pendentesCount > 0 && (
+                      <span className="text-xs font-bold text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+                        {pendentesCount} Pendentes
+                      </span>
+                    )}
+                  </div>
                   <div className="flex items-center gap-1 text-sm font-bold text-[#8C6B38] group-hover:translate-x-1 transition-transform">
                     <span>Acessar Lista</span>
                     <ChevronRight className="w-4 h-4" />
@@ -715,7 +743,7 @@ export default function AdminPage() {
                 <FileSpreadsheet className="w-6 h-6 text-green-700 shrink-0" />
                 <div>
                   <h4 className="font-bold text-sm text-[#2D312E]">Exportação dos Dados</h4>
-                  <p className="text-xs text-[#5A605B] font-medium">Baixe a relação atualizada de todos os convidados confirmados.</p>
+                  <p className="text-xs text-[#5A605B] font-medium">Baixe a relação completa com status de presença de cada convidado.</p>
                 </div>
               </div>
 
@@ -741,7 +769,7 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            TELA 2: LISTA DE CONVIDADOS (CENTRALIZADA & OTIMIZADA PARA CELULAR)
+            TELA 2: LISTA DE CONVIDADOS (COM STATUS CONFIRMADO / PENDENTE)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === 'convidados' && (
           <div className="space-y-6 animate-fadeIn max-w-4xl mx-auto">
@@ -768,7 +796,7 @@ export default function AdminPage() {
                       Lista de Convidados
                     </h3>
                     <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
-                      Total de <strong className="text-[#8C6B38] font-bold">{convidados.length}</strong> pessoas confirmadas.
+                      <strong className="text-green-700 font-bold">{confirmadosCount} confirmados</strong> e <strong className="text-amber-700 font-bold">{pendentesCount} pendentes</strong> (Total: {convidados.length}).
                     </p>
                   </div>
                 </div>
@@ -837,7 +865,7 @@ export default function AdminPage() {
                 </form>
               </div>
 
-              {/* Lista Centralizada de Convidados (Otimizada tanto para celular quanto para desktop) */}
+              {/* Lista Centralizada de Convidados com Status Dinâmico */}
               <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
                 <div className="px-5 py-3.5 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex flex-col sm:flex-row items-center justify-between gap-1 text-xs font-bold text-[#8C6B38] text-center sm:text-left">
                   <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
@@ -846,7 +874,7 @@ export default function AdminPage() {
                   )}
                 </div>
 
-                {/* Visualização em Lista Centralizada */}
+                {/* Linhas de Convidados */}
                 <div className="divide-y divide-[#E8DCCF]/50 bg-white">
                   {filteredConvidados.length === 0 ? (
                     <div className="text-center py-16 px-4 text-[#5A605B]">
@@ -864,26 +892,61 @@ export default function AdminPage() {
                           <span className="text-xs font-mono font-bold text-[#8C6B38] w-6 text-center shrink-0">
                             {index + 1}
                           </span>
-                          <div className="w-10 h-10 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-sm flex items-center justify-center shrink-0 shadow-xs">
+                          <div className={`w-10 h-10 rounded-full border font-serif font-bold text-sm flex items-center justify-center shrink-0 shadow-xs ${
+                            c.confirmado 
+                              ? 'bg-green-50 border-green-300 text-green-800' 
+                              : 'bg-[#F7F3EC] border-[#C5A880]/40 text-[#8C6B38]'
+                          }`}>
                             {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
                           </div>
                           <div className="min-w-0">
                             <span className="font-bold text-sm sm:text-base text-[#2D312E] block truncate">
                               {c.nome}
                             </span>
-                            <span className="text-[10px] text-green-700 font-bold uppercase sm:hidden flex items-center gap-1 mt-0.5">
-                              <CheckCircle2 className="w-3 h-3 text-green-600" />
-                              <span>Presença confirmada</span>
-                            </span>
+                            {/* Badge Mobile */}
+                            <div className="sm:hidden mt-0.5">
+                              {c.confirmado ? (
+                                <button
+                                  onClick={() => handleToggleStatus(c.id, c.nome, c.confirmado)}
+                                  className="inline-flex items-center gap-1 text-[10px] text-green-700 font-bold uppercase cursor-pointer"
+                                  title="Clique para alternar para pendente"
+                                >
+                                  <CheckCircle2 className="w-3 h-3 text-green-600" />
+                                  <span>Presença confirmada</span>
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => handleToggleStatus(c.id, c.nome, c.confirmado)}
+                                  className="inline-flex items-center gap-1 text-[10px] text-amber-700 font-bold uppercase cursor-pointer"
+                                  title="Clique para confirmar presença"
+                                >
+                                  <Clock3 className="w-3 h-3 text-amber-600" />
+                                  <span>Pendente (Clique p/ confirmar)</span>
+                                </button>
+                              )}
+                            </div>
                           </div>
                         </div>
 
-                        {/* Lado Direito: Badge Confirmado (Desktop) + Botão de Exclusão */}
+                        {/* Lado Direito: Badge Desktop Interativo + Botão de Exclusão */}
                         <div className="flex items-center gap-3 shrink-0">
-                          <span className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 border border-green-200 text-green-700 text-xs font-bold">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                            <span>Confirmado</span>
-                          </span>
+                          <button
+                            onClick={() => handleToggleStatus(c.id, c.nome, c.confirmado)}
+                            className="hidden sm:inline-flex items-center cursor-pointer transition-transform hover:scale-105"
+                            title={c.confirmado ? "Clique para marcar como Pendente" : "Clique para marcar como Confirmado"}
+                          >
+                            {c.confirmado ? (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 hover:bg-green-100 border border-green-300 text-green-800 text-xs font-bold shadow-xs">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                                <span>Confirmado</span>
+                              </span>
+                            ) : (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-bold shadow-xs">
+                                <Clock3 className="w-3.5 h-3.5 text-amber-600" />
+                                <span>Pendente</span>
+                              </span>
+                            )}
+                          </button>
 
                           <button
                             onClick={() => handleDeleteConvidado(c.id, c.nome)}

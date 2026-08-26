@@ -22,12 +22,20 @@ router.post('/login', (req, res) => {
 // Estatísticas para o painel dos noivos
 router.get('/stats', async (req, res) => {
   try {
-    const convidadosRes = await db.query('SELECT COUNT(*) FROM Convidados');
+    const convidadosRes = await db.query(`
+      SELECT 
+        COUNT(*) as total,
+        COUNT(*) FILTER (WHERE COALESCE(confirmado, false) = true) as confirmados,
+        COUNT(*) FILTER (WHERE COALESCE(confirmado, false) = false) as pendentes
+      FROM Convidados
+    `);
     const mensagensRes = await db.query('SELECT COUNT(*) FROM mensagens');
 
     res.json({
-      totalConvidados: parseInt(convidadosRes.rows[0].count, 10),
-      totalMensagens: parseInt(mensagensRes.rows[0].count, 10)
+      totalConvidados: parseInt(convidadosRes.rows[0].total, 10) || 0,
+      totalConfirmados: parseInt(convidadosRes.rows[0].confirmados, 10) || 0,
+      totalPendentes: parseInt(convidadosRes.rows[0].pendentes, 10) || 0,
+      totalMensagens: parseInt(mensagensRes.rows[0].count, 10) || 0
     });
   } catch (error) {
     console.error('Erro ao buscar estatísticas:', error);
