@@ -4,18 +4,20 @@ import Hero from './components/Hero';
 import Location from './components/Location';
 import RSVP from './components/RSVP';
 import Mural from './components/Mural';
+import DressCode from './components/DressCode';
 import Footer from './components/Footer';
 import AdminPage from './pages/AdminPage';
 
 // Página pública do site
 function PublicSite() {
   return (
-    <div className="min-h-screen flex flex-col font-sans bg-wedding-cream text-wedding-charcoal">
+    <div className="min-h-screen flex flex-col font-sans text-wedding-charcoal relative">
       <Navbar />
       <Hero weddingDate="2026-11-14T16:00:00" />
       <Location />
       <RSVP />
       <Mural />
+      <DressCode />
       <Footer />
     </div>
   );

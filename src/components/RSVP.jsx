@@ -52,7 +52,7 @@ export default function RSVP() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <span className="text-wedding-gold-dark text-xs uppercase tracking-widest font-bold">RSVP</span>
+          <span className="text-wedding-gold-dark text-xs uppercase tracking-widest font-bold">Contamos com Você</span>
           <h2 className="font-serif text-4xl sm:text-5xl text-wedding-charcoal mt-2 mb-4 font-bold">
             Confirmação de Presença
           </h2>

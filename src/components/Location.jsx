@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Navigation, Compass, Check, Sparkles, Shirt } from 'lucide-react';
+import { Calendar, Clock, MapPin, Navigation, Compass, Check, Sparkles } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner } from './FloralDecorations';
 
 export default function Location() {
@@ -40,7 +40,7 @@ export default function Location() {
         </div>
 
         {/* Structured Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-0">
           {/* Card 1: Data e Horários */}
           <div className="bg-white/95 backdrop-blur-sm rounded-3xl p-8 border border-wedding-gold/30 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
             {/* Detalhe floral no canto do card */}
@@ -138,22 +138,6 @@ export default function Location() {
                 </a>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Card Adicional: Dicas & Dress Code */}
-        <div className="bg-wedding-gold-light/70 border border-wedding-gold/40 rounded-3xl p-6 sm:p-8 text-center max-w-3xl mx-auto shadow-sm relative overflow-hidden">
-          <div className="flex items-center justify-center gap-2 text-wedding-gold-dark mb-2">
-            <Shirt className="w-5 h-5" />
-            <h4 className="font-serif text-xl font-bold text-wedding-charcoal">Traje Recomendado & Dicas</h4>
-          </div>
-          <p className="text-sm text-wedding-charcoal/90 font-medium max-w-xl mx-auto mb-4 leading-relaxed">
-            <strong className="text-wedding-charcoal font-bold">Traje: Passeio Completo / Esporte Fino.</strong> Recomendamos sapatos confortáveis para aproveitar a pista até o fim!
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-wedding-charcoal/85 uppercase tracking-wider font-bold">
-            <span>✓ Estacionamento no local com Valet</span>
-            <span>✓ Espaço 100% climatizado</span>
-            <span>✓ Pedimos pontualidade na cerimônia</span>
           </div>
         </div>
       </div>

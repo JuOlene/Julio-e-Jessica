@@ -1,33 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { api } from '../services/api';
-import { Image as ImageIcon, MessageSquareHeart, Send, User, X, Loader2, Sparkles } from 'lucide-react';
+import { Image as ImageIcon, MessageSquareHeart, Send, User, X, Loader2, Sparkles, HeartHandshake, ShieldCheck } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner } from './FloralDecorations';
 
 export default function Mural() {
-  const [mensagens, setMensagens] = useState([]);
   const [nome, setNome] = useState('');
   const [mensagem, setMensagem] = useState('');
   const [foto, setFoto] = useState('');
   const [imagePreview, setImagePreview] = useState('');
   const [loading, setLoading] = useState(false);
-  const [fetching, setFetching] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-
-  const loadMensagens = async () => {
-    try {
-      const data = await api.getMensagens();
-      setMensagens(data);
-    } catch (err) {
-      console.error('Erro ao carregar mural:', err);
-    } finally {
-      setFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    loadMensagens();
-  }, []);
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
@@ -72,8 +55,7 @@ export default function Mural() {
       setFoto('');
       setImagePreview('');
       setSuccess(true);
-      setTimeout(() => setSuccess(false), 5000);
-      await loadMensagens();
+      setTimeout(() => setSuccess(false), 7000);
     } catch (err) {
       setError(err.message || 'Erro ao enviar recado.');
     } finally {
@@ -87,36 +69,45 @@ export default function Mural() {
       {/* Camada de Relevo Seco & Flores / Terço de Fundo */}
       <FloralBackgroundLayer className="opacity-75" />
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <div className="text-center max-w-2xl mx-auto mb-14">
           <span className="text-wedding-gold-dark text-xs uppercase tracking-widest font-bold">Carinho & Felicitações</span>
           <h2 className="font-serif text-4xl sm:text-5xl text-wedding-charcoal mt-2 mb-4 font-bold">
-            Mural de Mensagens
+            Recado para os Noivos
           </h2>
           <div className="w-16 h-0.5 bg-wedding-gold mx-auto mb-4"></div>
           <p className="text-wedding-charcoal/85 font-medium text-base">
-            Deixe uma mensagem especial ou uma foto com os noivos para guardarmos no nosso livro de memórias!
+            Deixe uma mensagem especial ou uma foto com os noivos. Suas palavras serão guardadas com muito carinho em nosso livro de memórias!
           </p>
         </div>
 
         {/* Form para Deixar Mensagem */}
-        <div className="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-3xl p-8 border border-wedding-gold/30 shadow-xl mb-16 relative overflow-hidden">
+        <div className="max-w-2xl mx-auto bg-white/95 backdrop-blur-sm rounded-3xl p-8 sm:p-10 border border-wedding-gold/30 shadow-xl relative overflow-hidden">
           <FloralCorner className="-top-8 -right-8 w-36 h-36 opacity-30" position="top-right" />
 
-          <h3 className="font-serif text-2xl text-wedding-charcoal mb-4 flex items-center gap-2 font-bold relative z-10">
-            <MessageSquareHeart className="w-6 h-6 text-wedding-rose-dark" />
-            <span>Escrever um Recado</span>
-          </h3>
+          <div className="flex items-center justify-between mb-6 relative z-10 border-b border-wedding-gold/20 pb-4">
+            <h3 className="font-serif text-2xl text-wedding-charcoal flex items-center gap-2.5 font-bold">
+              <MessageSquareHeart className="w-6 h-6 text-wedding-rose-dark" />
+              <span>Escrever Mensagem</span>
+            </h3>
+            <div className="flex items-center gap-1.5 text-xs text-wedding-gold-dark font-semibold bg-wedding-gold-light/60 px-3 py-1 rounded-full border border-wedding-gold/30">
+              <ShieldCheck className="w-3.5 h-3.5 text-wedding-gold-dark" />
+              <span>Entrega direta aos noivos</span>
+            </div>
+          </div>
 
           {success && (
-            <div className="p-4 mb-4 rounded-xl bg-green-50 text-green-700 border border-green-200 text-sm flex items-center gap-2 font-medium">
-              <Sparkles className="w-5 h-5 text-green-600 shrink-0" />
-              <span>Sua mensagem foi enviada com sucesso para o casal!</span>
+            <div className="p-5 mb-6 rounded-2xl bg-green-50/95 text-green-800 border border-green-200 text-sm flex items-start gap-3 shadow-xs font-medium animate-fadeIn">
+              <Sparkles className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+              <div>
+                <strong className="block font-bold text-green-900">Mensagem enviada com sucesso!</strong>
+                <span>Jéssica e Júlio receberam seu recado e vão amar ler suas palavras de carinho. Muito obrigado!</span>
+              </div>
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
+          <form onSubmit={handleSubmit} className="space-y-5 relative z-10">
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-wedding-charcoal mb-1.5">
                 Seu Nome <span className="text-red-500">*</span>
@@ -126,8 +117,8 @@ export default function Mural() {
                   type="text"
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
-                  placeholder="Seu nome ou casal/família"
-                  className="w-full px-4 py-3 rounded-xl bg-wedding-cream/80 border border-wedding-gold/30 focus:border-wedding-gold focus:ring-2 focus:ring-wedding-gold/20 outline-none text-sm font-medium text-wedding-charcoal shadow-sm"
+                  placeholder="Ex: Maria Silva / Família Santos"
+                  className="w-full px-4 py-3.5 rounded-xl bg-wedding-cream/80 border border-wedding-gold/30 focus:border-wedding-gold focus:ring-2 focus:ring-wedding-gold/20 outline-none text-sm font-medium text-wedding-charcoal shadow-sm"
                   disabled={loading}
                 />
                 <User className="w-4 h-4 text-wedding-gold-dark absolute right-4 top-1/2 -translate-y-1/2" />
@@ -142,8 +133,8 @@ export default function Mural() {
                 value={mensagem}
                 onChange={(e) => setMensagem(e.target.value)}
                 rows="4"
-                placeholder="Escreva seus votos de felicidade, memórias ou palavras carinhosas..."
-                className="w-full px-4 py-3 rounded-xl bg-wedding-cream/80 border border-wedding-gold/30 focus:border-wedding-gold focus:ring-2 focus:ring-wedding-gold/20 outline-none text-sm font-medium text-wedding-charcoal resize-none shadow-sm"
+                placeholder="Escreva seus votos de felicidade, memórias ou palavras de bênção..."
+                className="w-full px-4 py-3.5 rounded-xl bg-wedding-cream/80 border border-wedding-gold/30 focus:border-wedding-gold focus:ring-2 focus:ring-wedding-gold/20 outline-none text-sm font-medium text-wedding-charcoal resize-none shadow-sm"
                 disabled={loading}
               ></textarea>
             </div>
@@ -151,7 +142,7 @@ export default function Mural() {
             {/* Foto Upload */}
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-wedding-charcoal mb-1.5">
-                Anexar uma Foto (Opcional)
+                Anexar uma Foto com os Noivos (Opcional)
               </label>
               
               {imagePreview ? (
@@ -170,9 +161,9 @@ export default function Mural() {
                   </button>
                 </div>
               ) : (
-                <label className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-dashed border-wedding-gold/60 bg-wedding-gold-light/40 hover:bg-wedding-gold-light/70 cursor-pointer transition-colors text-sm text-wedding-gold-dark font-bold">
+                <label className="flex items-center justify-center gap-2 px-4 py-3.5 rounded-xl border border-dashed border-wedding-gold/60 bg-wedding-gold-light/40 hover:bg-wedding-gold-light/70 cursor-pointer transition-colors text-sm text-wedding-gold-dark font-bold">
                   <ImageIcon className="w-4 h-4" />
-                  <span>Escolher foto com os noivos</span>
+                  <span>Escolher foto da galeria</span>
                   <input
                     type="file"
                     accept="image/*"
@@ -189,75 +180,21 @@ export default function Mural() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 rounded-xl bg-wedding-charcoal hover:bg-wedding-charcoal/90 text-white font-bold text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+              className="w-full py-4 rounded-xl bg-wedding-charcoal hover:bg-wedding-charcoal/90 text-white font-bold text-sm tracking-wider uppercase shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 disabled:opacity-70 cursor-pointer"
             >
               {loading ? (
                 <>
                   <Loader2 className="w-4 h-4 animate-spin" />
-                  <span>Publicando...</span>
+                  <span>Enviando Recado...</span>
                 </>
               ) : (
                 <>
                   <Send className="w-4 h-4 text-wedding-gold" />
-                  <span>Publicar no Mural</span>
+                  <span>Enviar Recado aos Noivos</span>
                 </>
               )}
             </button>
           </form>
-        </div>
-
-        {/* Lista de Mensagens Recebidas */}
-        <div>
-          <h3 className="font-serif text-2xl text-center text-wedding-charcoal mb-8 font-bold">
-            Recados dos Convidados ({mensagens.length})
-          </h3>
-
-          {fetching ? (
-            <div className="flex justify-center py-12">
-              <Loader2 className="w-8 h-8 animate-spin text-wedding-gold" />
-            </div>
-          ) : mensagens.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-3xl border border-wedding-gold/30 p-8 max-w-md mx-auto shadow-sm">
-              <MessageSquareHeart className="w-12 h-12 text-wedding-gold/40 mx-auto mb-3" />
-              <p className="text-wedding-charcoal/80 font-medium">
-                Ainda não há recados. Seja o primeiro a deixar uma mensagem para Jéssica e Júlio!
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {mensagens.map((msg) => (
-                <div
-                  key={msg.id}
-                  className="bg-white/95 rounded-3xl p-6 border border-wedding-gold/25 shadow-md hover:shadow-lg transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    {msg.foto && (
-                      <div className="mb-4 overflow-hidden rounded-2xl max-h-56 bg-wedding-cream">
-                        <img
-                          src={msg.foto}
-                          alt={`Foto de ${msg.nome}`}
-                          className="w-full h-48 object-cover hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-                    )}
-                    <p className="text-wedding-charcoal text-sm italic font-serif leading-relaxed mb-4 whitespace-pre-wrap font-medium">
-                      "{msg.mensagens}"
-                    </p>
-                  </div>
-
-                  <div className="pt-4 border-t border-wedding-gold/20 flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-wedding-gold-light text-wedding-gold-dark font-serif font-bold text-xs flex items-center justify-center">
-                        {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
-                      </div>
-                      <span className="font-bold text-xs text-wedding-charcoal">{msg.nome}</span>
-                    </div>
-                    <Sparkles className="w-3.5 h-3.5 text-wedding-rose-dark" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
       </div>
     </section>

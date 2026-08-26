@@ -17,6 +17,7 @@ export default function Navbar() {
     { name: 'Data & Local', href: '#localizacao' },
     { name: 'Convidados', href: '#convidados' },
     { name: 'Mensagens', href: '#mensagens' },
+    { name: 'Traje & Dicas', href: '#traje' },
   ];
 
   return (

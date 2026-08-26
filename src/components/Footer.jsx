@@ -17,6 +17,7 @@ export default function Footer() {
           <a href="#localizacao" className="hover:text-wedding-gold transition-colors">Data & Local</a>
           <a href="#convidados" className="hover:text-wedding-gold transition-colors">Convidados</a>
           <a href="#mensagens" className="hover:text-wedding-gold transition-colors">Mensagens</a>
+          <a href="#traje" className="hover:text-wedding-gold transition-colors">Traje & Dicas</a>
         </div>
 
         <div className="flex items-center justify-center gap-1 text-xs text-white/40 border-t border-white/10 pt-6">
