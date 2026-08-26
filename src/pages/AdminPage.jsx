@@ -792,42 +792,46 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Barra de Ações Rápidas (Busca & Adição) */}
+              {/* Barra de Ações Rápidas (Busca & Adição Encaixadas) */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-6">
-                {/* Campo de Busca */}
-                <div className="relative">
+                {/* Campo de Busca Encaixado */}
+                <div className="relative flex items-center bg-[#FDFBF7] border border-[#C5A880]/35 rounded-2xl p-1.5 focus-within:border-[#8C6B38] focus-within:ring-2 focus-within:ring-[#8C6B38]/20 transition-all shadow-xs">
+                  <Search className="w-4 h-4 text-[#8C6B38] ml-2.5 shrink-0" />
                   <input
                     type="text"
                     placeholder="Buscar convidado por nome..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-9 py-3.5 text-sm rounded-2xl bg-[#FDFBF7] border border-[#C5A880]/35 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                    className="flex-1 min-w-0 bg-transparent pl-2.5 pr-2 py-2 text-sm outline-none font-medium text-[#2D312E]"
                   />
-                  <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
                   {searchTerm && (
                     <button
                       onClick={() => setSearchTerm('')}
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1"
+                      className="p-1.5 mr-1 text-gray-400 hover:text-gray-600 rounded-lg transition-colors cursor-pointer"
+                      title="Limpar busca"
                     >
                       <X className="w-4 h-4" />
                     </button>
                   )}
                 </div>
 
-                {/* Formulário Rápido de Adição */}
-                <form onSubmit={handleAddConvidado} className="flex gap-2">
+                {/* Formulário Rápido de Adição Perfeitamente Encaixado */}
+                <form 
+                  onSubmit={handleAddConvidado} 
+                  className="relative flex items-center bg-[#FDFBF7] border border-[#C5A880]/35 rounded-2xl p-1.5 focus-within:border-[#8C6B38] focus-within:ring-2 focus-within:ring-[#8C6B38]/20 transition-all shadow-xs"
+                >
                   <input
                     type="text"
-                    placeholder="Adicionar nome..."
+                    placeholder="Adicionar novo convidado..."
                     value={novoConvidado}
                     onChange={(e) => setNovoConvidado(e.target.value)}
-                    className="flex-1 px-4 py-3.5 text-sm rounded-2xl border border-[#C5A880]/35 bg-[#FDFBF7] focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                    className="flex-1 min-w-0 bg-transparent pl-3.5 pr-2 py-2 text-sm outline-none font-medium text-[#2D312E]"
                   />
                   <button
                     type="submit"
-                    className="px-5 py-3.5 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm transition-all"
+                    className="px-4 py-2 rounded-xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-xs transition-all"
                   >
-                    <Plus className="w-4 h-4 text-[#C5A880]" />
+                    <Plus className="w-3.5 h-3.5 text-[#C5A880]" />
                     <span>Adicionar</span>
                   </button>
                 </form>
