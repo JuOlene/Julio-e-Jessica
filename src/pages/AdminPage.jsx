@@ -5,7 +5,7 @@ import {
   Plus, Search, CheckCircle2, RefreshCw, LogOut, Heart,
   Home, Sparkles, Image as ImageIcon, Calendar, Eye, EyeOff,
   Maximize2, X, Clock, PartyPopper, UserCheck, ShieldCheck,
-  ChevronRight, FileSpreadsheet, Layers
+  ChevronRight, FileSpreadsheet, Layers, Menu
 } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner, CrossHeartIcon } from '../components/FloralDecorations';
 
@@ -15,6 +15,7 @@ export default function AdminPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   const [activeTab, setActiveTab] = useState('convidados');
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [stats, setStats] = useState({ totalConvidados: 0, totalMensagens: 0 });
   const [convidados, setConvidados] = useState([]);
@@ -227,49 +228,82 @@ export default function AdminPage() {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     PAINEL AUTENTICADO PREMIUM COM MENU SEPARADO
+     PAINEL COM MENU HAMBÚRGUER RETRÁTIL & LAYOUT AMPLO
   ───────────────────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-[#F7F3EC] font-sans relative overflow-x-hidden">
       {/* Camada Floral de Fundo */}
       <FloralBackgroundLayer className="opacity-40" />
 
-      {/* Topbar Nobre */}
-      <header className="bg-[#2D312E] text-white px-4 sm:px-8 py-4 sticky top-0 z-40 shadow-xl border-b border-[#C5A880]/30 backdrop-blur-md">
+      {/* Topbar Nobre com Botão Hamburguer */}
+      <header className="bg-[#2D312E] text-white px-4 sm:px-8 py-3.5 sticky top-0 z-40 shadow-xl border-b border-[#C5A880]/30 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-[#C5A880]/20 border border-[#C5A880]/40 flex items-center justify-center text-[#C5A880]">
-              <CrossHeartIcon className="w-5 h-6 text-[#C5A880]" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
+          
+          {/* Lado Esquerdo: Botão Hambúrguer + Título */}
+          <div className="flex items-center gap-3 sm:gap-4">
+            <button
+              onClick={() => setIsDrawerOpen(true)}
+              className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer group"
+              title="Abrir Menu de Navegação"
+            >
+              <Menu className="w-5 h-5 transition-transform group-hover:scale-110" />
+              <span className="hidden sm:inline font-bold">Menu</span>
+            </button>
+
+            <div className="flex items-center gap-2.5">
+              <div className="w-9 h-9 rounded-xl bg-[#C5A880]/20 border border-[#C5A880]/40 flex items-center justify-center text-[#C5A880] hidden sm:flex">
+                <CrossHeartIcon className="w-4 h-5 text-[#C5A880]" />
+              </div>
+              <div>
                 <span className="font-cursive text-2xl sm:text-3xl text-[#E8DCCF] font-normal leading-none">
                   Jéssica & Júlio
                 </span>
-                <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-full bg-[#8C6B38]/30 border border-[#C5A880]/30 text-[10px] uppercase font-bold tracking-widest text-[#E8DCCF]">
-                  Portal dos Noivos
+                <span className="hidden md:inline-block ml-2 px-2 py-0.5 rounded-full bg-[#8C6B38]/30 border border-[#C5A880]/30 text-[9px] uppercase font-bold tracking-widest text-[#E8DCCF]">
+                  Painel dos Noivos
                 </span>
               </div>
-              <p className="text-[11px] text-white/60 font-medium">
-                14 de Novembro de 2026 • Espaço Villa Jardins
-              </p>
             </div>
           </div>
 
+          {/* Lado Direito: Ações Rápidas */}
           <div className="flex items-center gap-2 sm:gap-3">
+            <button
+              onClick={() => { setActiveTab('convidados'); }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all hidden md:flex items-center gap-1.5 ${
+                activeTab === 'convidados'
+                  ? 'bg-[#8C6B38] text-white shadow-xs'
+                  : 'bg-white/10 text-white/80 hover:bg-white/20'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Convidados ({convidados.length})</span>
+            </button>
+
+            <button
+              onClick={() => { setActiveTab('mensagens'); }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all hidden md:flex items-center gap-1.5 ${
+                activeTab === 'mensagens'
+                  ? 'bg-[#8C6B38] text-white shadow-xs'
+                  : 'bg-white/10 text-white/80 hover:bg-white/20'
+              }`}
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Recados ({mensagens.length})</span>
+            </button>
+
             <a
               href="#inicio"
               onClick={() => { window.location.hash = '#inicio'; }}
-              className="flex items-center gap-1.5 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-xl font-semibold transition-all border border-white/10"
+              className="flex items-center gap-1 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-2 rounded-xl font-semibold transition-all border border-white/10"
               title="Abrir o site público dos convidados"
             >
               <Home className="w-3.5 h-3.5 text-[#C5A880]" />
-              <span className="hidden md:inline">Ver Site Público</span>
+              <span className="hidden sm:inline">Ver Site</span>
             </a>
 
             <button
               onClick={() => setIsAuthenticated(false)}
-              className="flex items-center gap-1.5 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3.5 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
+              className="flex items-center gap-1 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
               title="Encerrar sessão"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -278,6 +312,190 @@ export default function AdminPage() {
           </div>
         </div>
       </header>
+
+      {/* ─────────────────────────────────────────────────────────────
+          DRAWER LATERAL (MENU HAMBÚRGUER RETRÁTIL)
+      ───────────────────────────────────────────────────────────── */}
+      {isDrawerOpen && (
+        <div className="fixed inset-0 z-50 overflow-hidden animate-fadeIn">
+          {/* Backdrop Escurecido com Blur */}
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity"
+            onClick={() => setIsDrawerOpen(false)}
+          />
+
+          <div className="fixed inset-y-0 left-0 max-w-full flex">
+            <div className="w-screen max-w-sm bg-white/98 backdrop-blur-md shadow-2xl border-r border-[#C5A880]/40 flex flex-col justify-between relative z-10 overflow-hidden">
+              <FloralCorner className="-top-8 -right-8 w-40 h-40 opacity-20" position="top-right" />
+              <FloralCorner className="-bottom-8 -left-8 w-40 h-40 opacity-20" position="bottom-left" />
+
+              {/* Topo do Menu Drawer */}
+              <div>
+                <div className="p-6 bg-[#2D312E] text-white flex items-center justify-between border-b border-[#C5A880]/30 relative z-10">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-[#8C6B38]/30 border border-[#C5A880]/40 flex items-center justify-center text-[#C5A880]">
+                      <CrossHeartIcon className="w-5 h-6 text-[#C5A880]" />
+                    </div>
+                    <div>
+                      <h3 className="font-cursive text-2xl text-[#E8DCCF] font-normal leading-tight">
+                        Jéssica & Júlio
+                      </h3>
+                      <p className="text-[10px] text-white/70 uppercase tracking-widest font-bold">
+                        Menu dos Noivos
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setIsDrawerOpen(false)}
+                    className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
+                    title="Fechar menu"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Lista de Opções do Menu */}
+                <div className="p-5 space-y-3 relative z-10">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-[#8C6B38] block mb-2 px-1">
+                    Navegação Principal
+                  </span>
+
+                  {/* Opção 1: Lista de Convidados */}
+                  <button
+                    onClick={() => {
+                      setActiveTab('convidados');
+                      setIsDrawerOpen(false);
+                    }}
+                    className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
+                      activeTab === 'convidados'
+                        ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md'
+                        : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                        activeTab === 'convidados'
+                          ? 'bg-white/20 text-white'
+                          : 'bg-white text-[#8C6B38] border border-[#C5A880]/30 shadow-xs'
+                      }`}>
+                        <Users className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm leading-tight">Lista de Convidados</h4>
+                        <p className={`text-xs mt-0.5 ${activeTab === 'convidados' ? 'text-white/80' : 'text-[#5A605B]'}`}>
+                          Presenças confirmadas
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                      activeTab === 'convidados'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-[#F7F3EC] text-[#8C6B38] border border-[#C5A880]/30'
+                    }`}>
+                      {convidados.length}
+                    </span>
+                  </button>
+
+                  {/* Opção 2: Mural de Mensagens */}
+                  <button
+                    onClick={() => {
+                      setActiveTab('mensagens');
+                      setIsDrawerOpen(false);
+                    }}
+                    className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
+                      activeTab === 'mensagens'
+                        ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md'
+                        : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                        activeTab === 'mensagens'
+                          ? 'bg-white/20 text-white'
+                          : 'bg-white text-[#B87D7A] border border-[#B87D7A]/30 shadow-xs'
+                      }`}>
+                        <MessageSquare className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm leading-tight">Recados & Fotos</h4>
+                        <p className={`text-xs mt-0.5 ${activeTab === 'mensagens' ? 'text-white/80' : 'text-[#5A605B]'}`}>
+                          Votos privados e memórias
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
+                      activeTab === 'mensagens'
+                        ? 'bg-white/20 text-white'
+                        : 'bg-[#FDF5F5] text-[#B87D7A] border border-[#B87D7A]/30'
+                    }`}>
+                      {mensagens.length}
+                    </span>
+                  </button>
+
+                  <div className="pt-3 border-t border-[#C5A880]/20 space-y-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-[#8C6B38] block px-1">
+                      Ações Rápidas
+                    </span>
+
+                    {/* Exportar CSV */}
+                    <button
+                      onClick={() => {
+                        handleExportCSV();
+                        setIsDrawerOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-[#FDFBF7] text-[#2D312E] text-xs font-bold transition-all border border-[#C5A880]/30 shadow-xs cursor-pointer"
+                    >
+                      <FileSpreadsheet className="w-4 h-4 text-green-700 shrink-0" />
+                      <span>Exportar Planilha Excel (CSV)</span>
+                    </button>
+
+                    {/* Atualizar Dados */}
+                    <button
+                      onClick={() => {
+                        loadAllData();
+                        setIsDrawerOpen(false);
+                      }}
+                      className="w-full flex items-center gap-3 p-3.5 rounded-xl bg-white hover:bg-[#FDFBF7] text-[#8C6B38] text-xs font-bold transition-all border border-[#C5A880]/30 shadow-xs cursor-pointer"
+                    >
+                      <RefreshCw className={`w-4 h-4 text-[#8C6B38] shrink-0 ${loadingData ? 'animate-spin' : ''}`} />
+                      <span>Sincronizar Dados em Tempo Real</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rodapé do Menu Drawer */}
+              <div className="p-5 bg-[#FDFBF7] border-t border-[#C5A880]/20 space-y-2.5 relative z-10">
+                <a
+                  href="#inicio"
+                  onClick={() => {
+                    window.location.hash = '#inicio';
+                    setIsDrawerOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-white hover:bg-gray-50 text-[#2D312E] text-xs font-bold uppercase tracking-wider transition-colors border border-[#C5A880]/30 shadow-xs"
+                >
+                  <Home className="w-4 h-4 text-[#8C6B38]" />
+                  <span>Ir para o Site dos Convidados</span>
+                </a>
+
+                <button
+                  onClick={() => {
+                    setIsAuthenticated(false);
+                    setIsDrawerOpen(false);
+                  }}
+                  className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold uppercase tracking-wider transition-colors border border-red-200 cursor-pointer"
+                >
+                  <LogOut className="w-4 h-4 text-red-600" />
+                  <span>Sair do Painel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Conteúdo Principal */}
       <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8 relative z-10">
@@ -317,7 +535,10 @@ export default function AdminPage() {
         {/* 4 Cards de Métricas Principais (Mantidos no topo) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1: Convidados */}
-          <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
+          <div 
+            onClick={() => setActiveTab('convidados')}
+            className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38]"
+          >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Presenças</span>
               <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#8C6B38] flex items-center justify-center shadow-xs">
@@ -334,7 +555,10 @@ export default function AdminPage() {
           </div>
 
           {/* Card 2: Recados */}
-          <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#B87D7A]/40 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
+          <div 
+            onClick={() => setActiveTab('mensagens')}
+            className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#B87D7A]/40 shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer hover:border-[#B87D7A]"
+          >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#B87D7A]">Mensagens</span>
               <div className="w-12 h-12 rounded-2xl bg-[#FDF5F5] border border-[#B87D7A]/30 text-[#B87D7A] flex items-center justify-center shadow-xs">
@@ -351,7 +575,10 @@ export default function AdminPage() {
           </div>
 
           {/* Card 3: Fotos */}
-          <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#8C6B38]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
+          <div 
+            onClick={() => setActiveTab('mensagens')}
+            className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#8C6B38]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38]"
+          >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Fotos Anexadas</span>
               <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#8C6B38] flex items-center justify-center shadow-xs">
@@ -393,355 +620,276 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ESTRUTURA EM MENU SEPARADO (Sidebar Menu + Área de Conteúdo)
+            ÁREA PRINCIPAL DE CONTEÚDO (MÓDULO ATIVO)
         ═══════════════════════════════════════════════════════════ */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* MENU LATERAL DEDICADO (4 Colunas no Desktop) */}
-          <aside className="lg:col-span-4 space-y-4">
-            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-lg relative overflow-hidden">
-              <FloralCorner className="-bottom-8 -right-8 w-32 h-32 opacity-20" position="bottom-right" />
+        <div className="space-y-6">
 
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#8C6B38] mb-4 pb-3 border-b border-[#C5A880]/20">
-                <Layers className="w-4 h-4 text-[#8C6B38]" />
-                <span>Navegação dos Noivos</span>
-              </div>
-
-              {/* Botões do Menu em formato de Cartões Ricos */}
-              <div className="space-y-3">
-                {/* Opção 1: Lista de Convidados */}
-                <button
-                  onClick={() => setActiveTab('convidados')}
-                  className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
-                    activeTab === 'convidados'
-                      ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md transform scale-[1.02]'
-                      : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
-                  }`}
-                >
+          {/* ── MODULO 1: LISTA DE CONVIDADOS ── */}
+          {activeTab === 'convidados' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+                
+                {/* Header do Módulo com Botão de Abrir Menu */}
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#C5A880]/20">
                   <div className="flex items-center gap-3.5">
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
-                      activeTab === 'convidados'
-                        ? 'bg-white/20 text-white'
-                        : 'bg-white text-[#8C6B38] border border-[#C5A880]/30 shadow-xs'
-                    }`}>
-                      <Users className="w-5 h-5" />
-                    </div>
+                    <button
+                      onClick={() => setIsDrawerOpen(true)}
+                      className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all shadow-xs cursor-pointer"
+                      title="Abrir Menu Hamburguer"
+                    >
+                      <Menu className="w-5 h-5" />
+                    </button>
                     <div>
-                      <h4 className="font-bold text-sm leading-tight">Lista de Convidados</h4>
-                      <p className={`text-xs mt-0.5 ${activeTab === 'convidados' ? 'text-white/80' : 'text-[#5A605B]'}`}>
-                        Presenças e confirmações
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                      activeTab === 'convidados'
-                        ? 'bg-white/20 text-white'
-                        : 'bg-[#F7F3EC] text-[#8C6B38] border border-[#C5A880]/30'
-                    }`}>
-                      {convidados.length}
-                    </span>
-                    <ChevronRight className={`w-4 h-4 ${activeTab === 'convidados' ? 'text-white' : 'text-gray-400'}`} />
-                  </div>
-                </button>
-
-                {/* Opção 2: Mural de Mensagens */}
-                <button
-                  onClick={() => setActiveTab('mensagens')}
-                  className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
-                    activeTab === 'mensagens'
-                      ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md transform scale-[1.02]'
-                      : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
-                  }`}
-                >
-                  <div className="flex items-center gap-3.5">
-                    <div className={`w-11 h-11 rounded-xl flex items-center justify-center shrink-0 ${
-                      activeTab === 'mensagens'
-                        ? 'bg-white/20 text-white'
-                        : 'bg-white text-[#B87D7A] border border-[#B87D7A]/30 shadow-xs'
-                    }`}>
-                      <MessageSquare className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm leading-tight">Recados & Memórias</h4>
-                      <p className={`text-xs mt-0.5 ${activeTab === 'mensagens' ? 'text-white/80' : 'text-[#5A605B]'}`}>
-                        Mensagens privadas e fotos
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2">
-                    <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                      activeTab === 'mensagens'
-                        ? 'bg-white/20 text-white'
-                        : 'bg-[#FDF5F5] text-[#B87D7A] border border-[#B87D7A]/30'
-                    }`}>
-                      {mensagens.length}
-                    </span>
-                    <ChevronRight className={`w-4 h-4 ${activeTab === 'mensagens' ? 'text-white' : 'text-gray-400'}`} />
-                  </div>
-                </button>
-              </div>
-
-              {/* Ações Rápidas no Rodapé do Menu */}
-              <div className="mt-6 pt-5 border-t border-[#C5A880]/20 space-y-2.5">
-                <button
-                  onClick={loadAllData}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] text-xs font-bold uppercase tracking-wider transition-colors border border-[#C5A880]/30 cursor-pointer"
-                >
-                  <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
-                  <span>{loadingData ? 'Atualizando...' : 'Atualizar Dados'}</span>
-                </button>
-
-                <button
-                  onClick={handleExportCSV}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white hover:bg-[#FDFBF7] text-[#2D312E] text-xs font-bold uppercase tracking-wider transition-colors border border-[#C5A880]/30 shadow-xs cursor-pointer"
-                >
-                  <FileSpreadsheet className="w-4 h-4 text-green-700" />
-                  <span>Exportar Excel (CSV)</span>
-                </button>
-              </div>
-            </div>
-          </aside>
-
-          {/* ÁREA DE CONTEÚDO PRINCIPAL (8 Colunas no Desktop) */}
-          <div className="lg:col-span-8">
-            
-            {/* ── MODULO 1: LISTA DE CONVIDADOS ── */}
-            {activeTab === 'convidados' && (
-              <div className="space-y-6 animate-fadeIn">
-                {/* Header do Módulo */}
-                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-                    <div>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8C6B38] mb-1">
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8C6B38] mb-0.5">
                         <Users className="w-4 h-4" />
                         <span>Módulo de Presenças</span>
                       </div>
                       <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
                         Lista de Convidados Confirmados
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#5A605B] mt-1 font-medium">
-                        Total de {convidados.length} pessoas confirmadas no evento.
+                      <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
+                        Total de {convidados.length} pessoas confirmadas.
                       </p>
                     </div>
+                  </div>
+
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                    <button
+                      onClick={loadAllData}
+                      className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all cursor-pointer shadow-xs"
+                      title="Atualizar lista"
+                    >
+                      <RefreshCw className={`w-4 h-4 ${loadingData ? 'animate-spin' : ''}`} />
+                    </button>
 
                     <button
                       onClick={handleExportCSV}
-                      className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer shrink-0"
+                      className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
                     >
                       <Download className="w-4 h-4" />
-                      <span>Baixar CSV</span>
+                      <span>Exportar CSV</span>
                     </button>
                   </div>
+                </div>
 
-                  {/* Barra de Ações Rápidas (Busca & Adição) */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-6">
-                    {/* Campo de Busca */}
-                    <div className="relative">
-                      <input
-                        type="text"
-                        placeholder="Buscar convidado por nome..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-9 py-3 text-sm rounded-2xl bg-[#FDFBF7] border border-[#C5A880]/35 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
-                      />
-                      <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                      {searchTerm && (
-                        <button
-                          onClick={() => setSearchTerm('')}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      )}
-                    </div>
-
-                    {/* Formulário Rápido de Adição */}
-                    <form onSubmit={handleAddConvidado} className="flex gap-2">
-                      <input
-                        type="text"
-                        placeholder="Adicionar nome manualmente..."
-                        value={novoConvidado}
-                        onChange={(e) => setNovoConvidado(e.target.value)}
-                        className="flex-1 px-4 py-3 text-sm rounded-2xl border border-[#C5A880]/35 bg-[#FDFBF7] focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
-                      />
+                {/* Barra de Ações Rápidas (Busca & Adição) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  {/* Campo de Busca */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Buscar convidado por nome..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="w-full pl-10 pr-9 py-3.5 text-sm rounded-2xl bg-[#FDFBF7] border border-[#C5A880]/35 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                    />
+                    <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                    {searchTerm && (
                       <button
-                        type="submit"
-                        className="px-4 py-3 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm transition-all"
+                        onClick={() => setSearchTerm('')}
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                       >
-                        <Plus className="w-4 h-4 text-[#C5A880]" />
-                        <span>Adicionar</span>
+                        <X className="w-4 h-4" />
                       </button>
-                    </form>
+                    )}
                   </div>
 
-                  {/* Tabela de Convidados */}
-                  <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
-                    <div className="px-5 py-3 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex items-center justify-between text-xs font-bold text-[#8C6B38]">
-                      <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
-                      {searchTerm && (
-                        <span className="text-[#5A605B]">Filtrado por: "{searchTerm}"</span>
-                      )}
-                    </div>
+                  {/* Formulário Rápido de Adição */}
+                  <form onSubmit={handleAddConvidado} className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Adicionar nome manualmente..."
+                      value={novoConvidado}
+                      onChange={(e) => setNovoConvidado(e.target.value)}
+                      className="flex-1 px-4 py-3.5 text-sm rounded-2xl border border-[#C5A880]/35 bg-[#FDFBF7] focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                    />
+                    <button
+                      type="submit"
+                      className="px-5 py-3.5 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm transition-all"
+                    >
+                      <Plus className="w-4 h-4 text-[#C5A880]" />
+                      <span>Adicionar</span>
+                    </button>
+                  </form>
+                </div>
 
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-sm">
-                        <thead className="bg-[#F7F3EC] border-b border-[#C5A880]/20 text-[#2D312E]">
+                {/* Tabela de Convidados */}
+                <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
+                  <div className="px-5 py-3.5 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex items-center justify-between text-xs font-bold text-[#8C6B38]">
+                    <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
+                    {searchTerm && (
+                      <span className="text-[#5A605B]">Filtrado por: "{searchTerm}"</span>
+                    )}
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left text-sm">
+                      <thead className="bg-[#F7F3EC] border-b border-[#C5A880]/20 text-[#2D312E]">
+                        <tr>
+                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold w-16 text-center">#</th>
+                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold">Nome do Convidado</th>
+                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-center">Status</th>
+                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-right w-28">Remover</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-[#E8DCCF]/50 bg-white">
+                        {filteredConvidados.length === 0 ? (
                           <tr>
-                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold w-14 text-center">#</th>
-                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold">Nome do Convidado</th>
-                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold text-center">Status</th>
-                            <th className="py-3.5 px-5 text-xs uppercase tracking-wider font-bold text-right w-24">Remover</th>
+                            <td colSpan="4" className="text-center py-16 text-[#5A605B] text-sm font-medium">
+                              <Users className="w-12 h-12 text-[#C5A880]/50 mx-auto mb-2" />
+                              <p>Nenhum convidado encontrado.</p>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody className="divide-y divide-[#E8DCCF]/50 bg-white">
-                          {filteredConvidados.length === 0 ? (
-                            <tr>
-                              <td colSpan="4" className="text-center py-12 text-[#5A605B] text-sm font-medium">
-                                <Users className="w-10 h-10 text-[#C5A880]/50 mx-auto mb-2" />
-                                <p>Nenhum convidado encontrado.</p>
+                        ) : (
+                          filteredConvidados.map((c, index) => (
+                            <tr key={c.id} className="hover:bg-[#FDFBF7] transition-colors">
+                              <td className="py-4 px-6 text-center text-[#8C6B38] font-mono text-xs font-bold">
+                                {index + 1}
+                              </td>
+                              <td className="py-4 px-6">
+                                <div className="flex items-center gap-3">
+                                  <div className="w-9 h-9 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
+                                    {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
+                                  </div>
+                                  <span className="font-bold text-base text-[#2D312E]">{c.nome}</span>
+                                </div>
+                              </td>
+                              <td className="py-4 px-6 text-center">
+                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 border border-green-200 text-green-700 text-xs font-bold">
+                                  <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                                  <span>Confirmado</span>
+                                </span>
+                              </td>
+                              <td className="py-4 px-6 text-right">
+                                <button
+                                  onClick={() => handleDeleteConvidado(c.id, c.nome)}
+                                  className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                                  title={`Remover ${c.nome}`}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
                               </td>
                             </tr>
-                          ) : (
-                            filteredConvidados.map((c, index) => (
-                              <tr key={c.id} className="hover:bg-[#FDFBF7] transition-colors">
-                                <td className="py-3.5 px-5 text-center text-[#8C6B38] font-mono text-xs font-bold">
-                                  {index + 1}
-                                </td>
-                                <td className="py-3.5 px-5">
-                                  <div className="flex items-center gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
-                                      {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
-                                    </div>
-                                    <span className="font-bold text-sm text-[#2D312E]">{c.nome}</span>
-                                  </div>
-                                </td>
-                                <td className="py-3.5 px-5 text-center">
-                                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-green-50 border border-green-200 text-green-700 text-[11px] font-bold">
-                                    <CheckCircle2 className="w-3 h-3 text-green-600" />
-                                    <span>Confirmado</span>
-                                  </span>
-                                </td>
-                                <td className="py-3.5 px-5 text-right">
-                                  <button
-                                    onClick={() => handleDeleteConvidado(c.id, c.nome)}
-                                    className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                                    title={`Remover ${c.nome}`}
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </button>
-                                </td>
-                              </tr>
-                            ))
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
+                          ))
+                        )}
+                      </tbody>
+                    </table>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
+          )}
 
-            {/* ── MODULO 2: MURAL DE RECADOS & FOTOS ── */}
-            {activeTab === 'mensagens' && (
-              <div className="space-y-6 animate-fadeIn">
+          {/* ── MODULO 2: MURAL DE RECADOS & FOTOS ── */}
+          {activeTab === 'mensagens' && (
+            <div className="space-y-6 animate-fadeIn">
+              <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+                
                 {/* Header do Módulo */}
-                <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
-                  <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#C5A880]/20">
+                  <div className="flex items-center gap-3.5">
+                    <button
+                      onClick={() => setIsDrawerOpen(true)}
+                      className="p-3 rounded-2xl bg-[#FDF5F5] hover:bg-[#FDF0F0] text-[#B87D7A] border border-[#B87D7A]/30 transition-all shadow-xs cursor-pointer"
+                      title="Abrir Menu Hamburguer"
+                    >
+                      <Menu className="w-5 h-5" />
+                    </button>
                     <div>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#B87D7A] mb-1">
+                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#B87D7A] mb-0.5">
                         <MessageSquare className="w-4 h-4" />
                         <span>Livro de Memórias & Votos</span>
                       </div>
                       <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
                         Recados e Fotos dos Convidados
                       </h3>
-                      <p className="text-xs sm:text-sm text-[#5A605B] mt-1 font-medium">
-                        Total de {mensagens.length} mensagens privadas recebidas com carinho.
+                      <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
+                        Total de {mensagens.length} mensagens privadas e {fotosCount} fotos recebidas.
                       </p>
-                    </div>
-
-                    <div className="hidden sm:flex items-center gap-2 bg-[#FDF5F5] border border-[#B87D7A]/30 px-4 py-2 rounded-2xl text-xs font-bold text-[#B87D7A]">
-                      <Sparkles className="w-3.5 h-3.5" />
-                      <span>{fotosCount} fotos anexadas</span>
                     </div>
                   </div>
 
-                  {mensagens.length === 0 ? (
-                    <div className="text-center py-16 bg-[#FDFBF7] rounded-2xl border border-[#C5A880]/30 p-8">
-                      <Sparkles className="w-10 h-10 text-[#C5A880]/60 mx-auto mb-3" />
-                      <h4 className="font-serif text-xl font-bold text-[#2D312E] mb-1">
-                        Nenhum recado recebido até o momento
-                      </h4>
-                      <p className="text-[#5A605B] text-xs font-medium max-w-sm mx-auto">
-                        Assim que os convidados deixarem mensagens ou fotos pelo site, elas aparecerão aqui exclusivamente para vocês!
-                      </p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                      {mensagens.map((msg) => (
-                        <div
-                          key={msg.id}
-                          className="bg-white rounded-3xl border border-[#C5A880]/30 shadow-md hover:shadow-lg transition-all overflow-hidden flex flex-col justify-between group"
-                        >
-                          <div>
-                            {/* Foto anexada */}
-                            {msg.foto ? (
-                              <div className="relative group/img overflow-hidden bg-[#1C201D]">
-                                <img
-                                  src={msg.foto}
-                                  alt={`Foto de ${msg.nome}`}
-                                  className="w-full h-48 object-cover group-hover/img:scale-105 transition-transform duration-500 cursor-pointer"
-                                  onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
-                                />
-                                <button
-                                  onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
-                                  className="absolute bottom-2.5 right-2.5 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl text-xs flex items-center gap-1 backdrop-blur-sm transition-all"
-                                  title="Ampliar Foto"
-                                >
-                                  <Maximize2 className="w-3.5 h-3.5" />
-                                  <span>Ampliar</span>
-                                </button>
-                              </div>
-                            ) : (
-                              <div className="h-2.5 bg-gradient-to-r from-[#8C6B38] via-[#C5A880] to-[#B87D7A]" />
-                            )}
+                  <button
+                    onClick={loadAllData}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all cursor-pointer text-xs font-bold uppercase tracking-wider shadow-xs"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
+                    <span>Atualizar</span>
+                  </button>
+                </div>
 
-                            {/* Conteúdo da Mensagem */}
-                            <div className="p-5">
-                              <p className="text-sm text-[#2D312E] font-serif italic leading-relaxed whitespace-pre-wrap font-medium">
-                                "{msg.mensagens}"
-                              </p>
+                {mensagens.length === 0 ? (
+                  <div className="text-center py-20 bg-[#FDFBF7] rounded-3xl border border-[#C5A880]/30 p-8">
+                    <Sparkles className="w-12 h-12 text-[#C5A880]/60 mx-auto mb-3" />
+                    <h4 className="font-serif text-2xl font-bold text-[#2D312E] mb-2">
+                      Nenhum recado recebido até o momento
+                    </h4>
+                    <p className="text-[#5A605B] text-sm font-medium max-w-md mx-auto">
+                      Assim que os convidados deixarem mensagens ou fotos pelo site, elas aparecerão aqui exclusivamente para vocês!
+                    </p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {mensagens.map((msg) => (
+                      <div
+                        key={msg.id}
+                        className="bg-white rounded-3xl border border-[#C5A880]/30 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
+                      >
+                        <div>
+                          {/* Foto anexada */}
+                          {msg.foto ? (
+                            <div className="relative group/img overflow-hidden bg-[#1C201D]">
+                              <img
+                                src={msg.foto}
+                                alt={`Foto de ${msg.nome}`}
+                                className="w-full h-56 object-cover group-hover/img:scale-105 transition-transform duration-500 cursor-pointer"
+                                onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
+                              />
+                              <button
+                                onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
+                                className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl text-xs flex items-center gap-1 backdrop-blur-sm transition-all"
+                                title="Ampliar Foto"
+                              >
+                                <Maximize2 className="w-3.5 h-3.5" />
+                                <span>Ampliar</span>
+                              </button>
                             </div>
-                          </div>
+                          ) : (
+                            <div className="h-3 bg-gradient-to-r from-[#8C6B38] via-[#C5A880] to-[#B87D7A]" />
+                          )}
 
-                          {/* Rodapé do Card */}
-                          <div className="px-5 py-3.5 bg-[#FDFBF7] border-t border-[#C5A880]/20 flex items-center justify-between">
-                            <div className="flex items-center gap-2.5">
-                              <div className="w-7 h-7 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
-                                {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
-                              </div>
-                              <span className="font-bold text-xs text-[#2D312E]">{msg.nome}</span>
-                            </div>
-
-                            <button
-                              onClick={() => handleDeleteMensagem(msg.id, msg.nome)}
-                              className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
-                              title="Excluir mensagem"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
+                          {/* Conteúdo da Mensagem */}
+                          <div className="p-6">
+                            <p className="text-base text-[#2D312E] font-serif italic leading-relaxed whitespace-pre-wrap font-medium">
+                              "{msg.mensagens}"
+                            </p>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
+
+                        {/* Rodapé do Card */}
+                        <div className="px-6 py-4 bg-[#FDFBF7] border-t border-[#C5A880]/20 flex items-center justify-between">
+                          <div className="flex items-center gap-2.5">
+                            <div className="w-8 h-8 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
+                              {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
+                            </div>
+                            <span className="font-bold text-sm text-[#2D312E]">{msg.nome}</span>
+                          </div>
+
+                          <button
+                            onClick={() => handleDeleteMensagem(msg.id, msg.nome)}
+                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                            title="Excluir mensagem"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       </main>
 
