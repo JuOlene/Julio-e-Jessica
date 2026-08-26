@@ -5,7 +5,8 @@ import {
   Plus, Search, CheckCircle2, RefreshCw, LogOut, Heart,
   Home, Sparkles, Image as ImageIcon, Calendar, Eye, EyeOff,
   Maximize2, X, Clock, PartyPopper, UserCheck, ShieldCheck,
-  ChevronRight, FileSpreadsheet, Layers, Menu
+  ChevronRight, FileSpreadsheet, Layers, Menu, ArrowLeft,
+  LayoutDashboard, ExternalLink
 } from 'lucide-react';
 import { FloralBackgroundLayer, FloralCorner, CrossHeartIcon } from '../components/FloralDecorations';
 
@@ -14,7 +15,9 @@ export default function AdminPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
-  const [activeTab, setActiveTab] = useState('convidados');
+  
+  // activeTab pode ser: 'resumo', 'convidados', 'mensagens'
+  const [activeTab, setActiveTab] = useState('resumo');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const [stats, setStats] = useState({ totalConvidados: 0, totalMensagens: 0 });
@@ -51,6 +54,7 @@ export default function AdminPage() {
       if (res.success) {
         setIsAuthenticated(true);
         setPassword('');
+        setActiveTab('resumo');
       }
     } catch (err) {
       setLoginError(err.message || 'Senha incorreta. Tente novamente.');
@@ -228,7 +232,7 @@ export default function AdminPage() {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     PAINEL COM MENU HAMBÚRGUER RETRÁTIL & LAYOUT AMPLO
+     PAINEL AUTENTICADO: INÍCIO COM RESUMOS E MENUS SEPARADOS
   ───────────────────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-[#F7F3EC] font-sans relative overflow-x-hidden">
@@ -244,57 +248,48 @@ export default function AdminPage() {
             <button
               onClick={() => setIsDrawerOpen(true)}
               className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer group"
-              title="Abrir Menu de Navegação"
+              title="Abrir Menu Hamburguer"
             >
               <Menu className="w-5 h-5 transition-transform group-hover:scale-110" />
-              <span className="hidden sm:inline font-bold">Menu</span>
+              <span className="font-bold">Menu</span>
             </button>
 
-            <div className="flex items-center gap-2.5">
+            <button
+              onClick={() => setActiveTab('resumo')}
+              className="flex items-center gap-2.5 text-left cursor-pointer group"
+            >
               <div className="w-9 h-9 rounded-xl bg-[#C5A880]/20 border border-[#C5A880]/40 flex items-center justify-center text-[#C5A880] hidden sm:flex">
                 <CrossHeartIcon className="w-4 h-5 text-[#C5A880]" />
               </div>
               <div>
-                <span className="font-cursive text-2xl sm:text-3xl text-[#E8DCCF] font-normal leading-none">
+                <span className="font-cursive text-2xl sm:text-3xl text-[#E8DCCF] group-hover:text-white transition-colors font-normal leading-none">
                   Jéssica & Júlio
                 </span>
                 <span className="hidden md:inline-block ml-2 px-2 py-0.5 rounded-full bg-[#8C6B38]/30 border border-[#C5A880]/30 text-[9px] uppercase font-bold tracking-widest text-[#E8DCCF]">
                   Painel dos Noivos
                 </span>
               </div>
-            </div>
+            </button>
           </div>
 
-          {/* Lado Direito: Ações Rápidas */}
+          {/* Lado Direito: Atalhos Rápidos */}
           <div className="flex items-center gap-2 sm:gap-3">
             <button
-              onClick={() => { setActiveTab('convidados'); }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all hidden md:flex items-center gap-1.5 ${
-                activeTab === 'convidados'
+              onClick={() => setActiveTab('resumo')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'resumo'
                   ? 'bg-[#8C6B38] text-white shadow-xs'
                   : 'bg-white/10 text-white/80 hover:bg-white/20'
               }`}
             >
-              <Users className="w-3.5 h-3.5" />
-              <span>Convidados ({convidados.length})</span>
-            </button>
-
-            <button
-              onClick={() => { setActiveTab('mensagens'); }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all hidden md:flex items-center gap-1.5 ${
-                activeTab === 'mensagens'
-                  ? 'bg-[#8C6B38] text-white shadow-xs'
-                  : 'bg-white/10 text-white/80 hover:bg-white/20'
-              }`}
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Recados ({mensagens.length})</span>
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Resumo</span>
             </button>
 
             <a
               href="#inicio"
               onClick={() => { window.location.hash = '#inicio'; }}
-              className="flex items-center gap-1 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-2 rounded-xl font-semibold transition-all border border-white/10"
+              className="flex items-center gap-1.5 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-xl font-semibold transition-all border border-white/10"
               title="Abrir o site público dos convidados"
             >
               <Home className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -303,7 +298,7 @@ export default function AdminPage() {
 
             <button
               onClick={() => setIsAuthenticated(false)}
-              className="flex items-center gap-1 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
+              className="flex items-center gap-1.5 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3.5 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
               title="Encerrar sessão"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -358,10 +353,40 @@ export default function AdminPage() {
                 {/* Lista de Opções do Menu */}
                 <div className="p-5 space-y-3 relative z-10">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-[#8C6B38] block mb-2 px-1">
-                    Navegação Principal
+                    Navegação do Painel
                   </span>
 
-                  {/* Opção 1: Lista de Convidados */}
+                  {/* Opção 1: Resumo Geral */}
+                  <button
+                    onClick={() => {
+                      setActiveTab('resumo');
+                      setIsDrawerOpen(false);
+                    }}
+                    className={`w-full text-left p-4 rounded-2xl transition-all flex items-center justify-between cursor-pointer border ${
+                      activeTab === 'resumo'
+                        ? 'bg-[#8C6B38] text-white border-[#8C6B38] shadow-md'
+                        : 'bg-[#FDFBF7] hover:bg-[#F7F3EC] text-[#2D312E] border-[#C5A880]/30 hover:border-[#8C6B38]/50'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3.5">
+                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
+                        activeTab === 'resumo'
+                          ? 'bg-white/20 text-white'
+                          : 'bg-white text-[#8C6B38] border border-[#C5A880]/30 shadow-xs'
+                      }`}>
+                        <LayoutDashboard className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-sm leading-tight">Resumo Geral</h4>
+                        <p className={`text-xs mt-0.5 ${activeTab === 'resumo' ? 'text-white/80' : 'text-[#5A605B]'}`}>
+                          Visão inicial & métricas
+                        </p>
+                      </div>
+                    </div>
+                    <ChevronRight className={`w-4 h-4 ${activeTab === 'resumo' ? 'text-white' : 'text-gray-400'}`} />
+                  </button>
+
+                  {/* Opção 2: Lista de Convidados */}
                   <button
                     onClick={() => {
                       setActiveTab('convidados');
@@ -398,7 +423,7 @@ export default function AdminPage() {
                     </span>
                   </button>
 
-                  {/* Opção 2: Mural de Mensagens */}
+                  {/* Opção 3: Mural de Mensagens */}
                   <button
                     onClick={() => {
                       setActiveTab('mensagens');
@@ -532,12 +557,14 @@ export default function AdminPage() {
           </div>
         </div>
 
-        {/* 4 Cards de Métricas Principais (Mantidos no topo) */}
+        {/* 4 Cards de Métricas Principais (Os Resumos) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {/* Card 1: Convidados */}
           <div 
             onClick={() => setActiveTab('convidados')}
-            className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38]"
+            className={`bg-white/95 backdrop-blur-md rounded-3xl p-6 border shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer ${
+              activeTab === 'convidados' ? 'border-[#8C6B38] ring-2 ring-[#8C6B38]/30' : 'border-[#C5A880]/35 hover:border-[#8C6B38]'
+            }`}
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Presenças</span>
@@ -557,7 +584,9 @@ export default function AdminPage() {
           {/* Card 2: Recados */}
           <div 
             onClick={() => setActiveTab('mensagens')}
-            className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#B87D7A]/40 shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer hover:border-[#B87D7A]"
+            className={`bg-white/95 backdrop-blur-md rounded-3xl p-6 border shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer ${
+              activeTab === 'mensagens' ? 'border-[#B87D7A] ring-2 ring-[#B87D7A]/30' : 'border-[#B87D7A]/40 hover:border-[#B87D7A]'
+            }`}
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#B87D7A]">Mensagens</span>
@@ -577,7 +606,9 @@ export default function AdminPage() {
           {/* Card 3: Fotos */}
           <div 
             onClick={() => setActiveTab('mensagens')}
-            className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#8C6B38]/35 shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38]"
+            className={`bg-white/95 backdrop-blur-md rounded-3xl p-6 border shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer ${
+              activeTab === 'mensagens' ? 'border-[#8C6B38] ring-2 ring-[#8C6B38]/30' : 'border-[#8C6B38]/35 hover:border-[#8C6B38]'
+            }`}
           >
             <div className="flex items-center justify-between mb-4">
               <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Fotos Anexadas</span>
@@ -620,277 +651,386 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            ÁREA PRINCIPAL DE CONTEÚDO (MÓDULO ATIVO)
+            TELA 1: RESUMO INICIAL (QUADROS SEPARADOS DE ACESSO RÁPIDO)
         ═══════════════════════════════════════════════════════════ */}
-        <div className="space-y-6">
-
-          {/* ── MODULO 1: LISTA DE CONVIDADOS ── */}
-          {activeTab === 'convidados' && (
-            <div className="space-y-6 animate-fadeIn">
-              <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+        {activeTab === 'resumo' && (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              
+              {/* Card de Entrada para Lista de Convidados */}
+              <div 
+                onClick={() => setActiveTab('convidados')}
+                className="bg-white/95 backdrop-blur-md rounded-3xl p-8 border border-[#C5A880]/35 shadow-lg hover:shadow-2xl transition-all cursor-pointer group relative overflow-hidden flex flex-col justify-between"
+              >
+                <FloralCorner className="-top-8 -right-8 w-36 h-36 opacity-25" position="top-right" />
                 
-                {/* Header do Módulo com Botão de Abrir Menu */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#C5A880]/20">
-                  <div className="flex items-center gap-3.5">
-                    <button
-                      onClick={() => setIsDrawerOpen(true)}
-                      className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all shadow-xs cursor-pointer"
-                      title="Abrir Menu Hamburguer"
-                    >
-                      <Menu className="w-5 h-5" />
-                    </button>
-                    <div>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8C6B38] mb-0.5">
-                        <Users className="w-4 h-4" />
-                        <span>Módulo de Presenças</span>
-                      </div>
-                      <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
-                        Lista de Convidados Confirmados
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
-                        Total de {convidados.length} pessoas confirmadas.
-                      </p>
-                    </div>
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] flex items-center justify-center mb-6 shadow-xs group-hover:scale-110 transition-transform">
+                    <Users className="w-7 h-7" />
                   </div>
 
-                  <div className="flex items-center gap-2.5 w-full sm:w-auto">
-                    <button
-                      onClick={loadAllData}
-                      className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all cursor-pointer shadow-xs"
-                      title="Atualizar lista"
-                    >
-                      <RefreshCw className={`w-4 h-4 ${loadingData ? 'animate-spin' : ''}`} />
-                    </button>
-
-                    <button
-                      onClick={handleExportCSV}
-                      className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>Exportar CSV</span>
-                    </button>
-                  </div>
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#8C6B38] block mb-1">
+                    Módulo de Presenças
+                  </span>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E] mb-2 group-hover:text-[#8C6B38] transition-colors">
+                    Lista de Convidados
+                  </h3>
+                  <p className="text-sm text-[#5A605B] font-medium leading-relaxed mb-6">
+                    Acesse a lista completa de confirmados, busque por nome, adicione pessoas manualmente ou baixe a planilha para o buffet.
+                  </p>
                 </div>
 
-                {/* Barra de Ações Rápidas (Busca & Adição) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                  {/* Campo de Busca */}
-                  <div className="relative">
-                    <input
-                      type="text"
-                      placeholder="Buscar convidado por nome..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      className="w-full pl-10 pr-9 py-3.5 text-sm rounded-2xl bg-[#FDFBF7] border border-[#C5A880]/35 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
-                    />
-                    <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
-                    {searchTerm && (
-                      <button
-                        onClick={() => setSearchTerm('')}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    )}
+                <div className="pt-4 border-t border-[#C5A880]/20 flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#8C6B38] bg-[#F7F3EC] px-3.5 py-1.5 rounded-full border border-[#C5A880]/30">
+                    {convidados.length} Confirmados
+                  </span>
+                  <div className="flex items-center gap-1 text-sm font-bold text-[#8C6B38] group-hover:translate-x-1 transition-transform">
+                    <span>Acessar Lista</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Card de Entrada para Recados & Fotos */}
+              <div 
+                onClick={() => setActiveTab('mensagens')}
+                className="bg-white/95 backdrop-blur-md rounded-3xl p-8 border border-[#B87D7A]/40 shadow-lg hover:shadow-2xl transition-all cursor-pointer group relative overflow-hidden flex flex-col justify-between"
+              >
+                <FloralCorner className="-top-8 -right-8 w-36 h-36 opacity-25" position="top-right" />
+                
+                <div>
+                  <div className="w-14 h-14 rounded-2xl bg-[#FDF5F5] border border-[#B87D7A]/40 text-[#B87D7A] flex items-center justify-center mb-6 shadow-xs group-hover:scale-110 transition-transform">
+                    <MessageSquare className="w-7 h-7" />
                   </div>
 
-                  {/* Formulário Rápido de Adição */}
-                  <form onSubmit={handleAddConvidado} className="flex gap-2">
-                    <input
-                      type="text"
-                      placeholder="Adicionar nome manualmente..."
-                      value={novoConvidado}
-                      onChange={(e) => setNovoConvidado(e.target.value)}
-                      className="flex-1 px-4 py-3.5 text-sm rounded-2xl border border-[#C5A880]/35 bg-[#FDFBF7] focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
-                    />
-                    <button
-                      type="submit"
-                      className="px-5 py-3.5 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm transition-all"
-                    >
-                      <Plus className="w-4 h-4 text-[#C5A880]" />
-                      <span>Adicionar</span>
-                    </button>
-                  </form>
+                  <span className="text-xs font-bold uppercase tracking-widest text-[#B87D7A] block mb-1">
+                    Livro de Memórias
+                  </span>
+                  <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E] mb-2 group-hover:text-[#B87D7A] transition-colors">
+                    Recados & Fotos
+                  </h3>
+                  <p className="text-sm text-[#5A605B] font-medium leading-relaxed mb-6">
+                    Veja todas as mensagens carinhosas e fotos que os convidados enviaram exclusivamente para vocês guardarem de recordação.
+                  </p>
                 </div>
 
-                {/* Tabela de Convidados */}
-                <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
-                  <div className="px-5 py-3.5 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex items-center justify-between text-xs font-bold text-[#8C6B38]">
-                    <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
-                    {searchTerm && (
-                      <span className="text-[#5A605B]">Filtrado por: "{searchTerm}"</span>
-                    )}
-                  </div>
-
-                  <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm">
-                      <thead className="bg-[#F7F3EC] border-b border-[#C5A880]/20 text-[#2D312E]">
-                        <tr>
-                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold w-16 text-center">#</th>
-                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold">Nome do Convidado</th>
-                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-center">Status</th>
-                          <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-right w-28">Remover</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-[#E8DCCF]/50 bg-white">
-                        {filteredConvidados.length === 0 ? (
-                          <tr>
-                            <td colSpan="4" className="text-center py-16 text-[#5A605B] text-sm font-medium">
-                              <Users className="w-12 h-12 text-[#C5A880]/50 mx-auto mb-2" />
-                              <p>Nenhum convidado encontrado.</p>
-                            </td>
-                          </tr>
-                        ) : (
-                          filteredConvidados.map((c, index) => (
-                            <tr key={c.id} className="hover:bg-[#FDFBF7] transition-colors">
-                              <td className="py-4 px-6 text-center text-[#8C6B38] font-mono text-xs font-bold">
-                                {index + 1}
-                              </td>
-                              <td className="py-4 px-6">
-                                <div className="flex items-center gap-3">
-                                  <div className="w-9 h-9 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
-                                    {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
-                                  </div>
-                                  <span className="font-bold text-base text-[#2D312E]">{c.nome}</span>
-                                </div>
-                              </td>
-                              <td className="py-4 px-6 text-center">
-                                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 border border-green-200 text-green-700 text-xs font-bold">
-                                  <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                                  <span>Confirmado</span>
-                                </span>
-                              </td>
-                              <td className="py-4 px-6 text-right">
-                                <button
-                                  onClick={() => handleDeleteConvidado(c.id, c.nome)}
-                                  className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
-                                  title={`Remover ${c.nome}`}
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
-                              </td>
-                            </tr>
-                          ))
-                        )}
-                      </tbody>
-                    </table>
+                <div className="pt-4 border-t border-[#B87D7A]/20 flex items-center justify-between">
+                  <span className="text-xs font-bold text-[#B87D7A] bg-[#FDF5F5] px-3.5 py-1.5 rounded-full border border-[#B87D7A]/30">
+                    {mensagens.length} Recados • {fotosCount} Fotos
+                  </span>
+                  <div className="flex items-center gap-1 text-sm font-bold text-[#B87D7A] group-hover:translate-x-1 transition-transform">
+                    <span>Acessar Recados</span>
+                    <ChevronRight className="w-4 h-4" />
                   </div>
                 </div>
               </div>
             </div>
-          )}
 
-          {/* ── MODULO 2: MURAL DE RECADOS & FOTOS ── */}
-          {activeTab === 'mensagens' && (
-            <div className="space-y-6 animate-fadeIn">
-              <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
-                
-                {/* Header do Módulo */}
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#C5A880]/20">
-                  <div className="flex items-center gap-3.5">
-                    <button
-                      onClick={() => setIsDrawerOpen(true)}
-                      className="p-3 rounded-2xl bg-[#FDF5F5] hover:bg-[#FDF0F0] text-[#B87D7A] border border-[#B87D7A]/30 transition-all shadow-xs cursor-pointer"
-                      title="Abrir Menu Hamburguer"
-                    >
-                      <Menu className="w-5 h-5" />
-                    </button>
-                    <div>
-                      <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#B87D7A] mb-0.5">
-                        <MessageSquare className="w-4 h-4" />
-                        <span>Livro de Memórias & Votos</span>
-                      </div>
-                      <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
-                        Recados e Fotos dos Convidados
-                      </h3>
-                      <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
-                        Total de {mensagens.length} mensagens privadas e {fotosCount} fotos recebidas.
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={loadAllData}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all cursor-pointer text-xs font-bold uppercase tracking-wider shadow-xs"
-                  >
-                    <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
-                    <span>Atualizar</span>
-                  </button>
+            {/* Banner de Ações Rápidas no Resumo */}
+            <div className="bg-white/90 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/30 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <FileSpreadsheet className="w-6 h-6 text-green-700 shrink-0" />
+                <div>
+                  <h4 className="font-bold text-sm text-[#2D312E]">Exportação dos Dados</h4>
+                  <p className="text-xs text-[#5A605B] font-medium">Baixe a relação atualizada de todos os convidados confirmados.</p>
                 </div>
+              </div>
 
-                {mensagens.length === 0 ? (
-                  <div className="text-center py-20 bg-[#FDFBF7] rounded-3xl border border-[#C5A880]/30 p-8">
-                    <Sparkles className="w-12 h-12 text-[#C5A880]/60 mx-auto mb-3" />
-                    <h4 className="font-serif text-2xl font-bold text-[#2D312E] mb-2">
-                      Nenhum recado recebido até o momento
-                    </h4>
-                    <p className="text-[#5A605B] text-sm font-medium max-w-md mx-auto">
-                      Assim que os convidados deixarem mensagens ou fotos pelo site, elas aparecerão aqui exclusivamente para vocês!
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                <button
+                  onClick={loadAllData}
+                  className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] text-xs font-bold uppercase tracking-wider transition-colors border border-[#C5A880]/30 cursor-pointer"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
+                  <span>Sincronizar</span>
+                </button>
+
+                <button
+                  onClick={handleExportCSV}
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Baixar Planilha Excel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════
+            TELA 2: LISTA DE CONVIDADOS EXCLUSIVA
+        ═══════════════════════════════════════════════════════════ */}
+        {activeTab === 'convidados' && (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+              
+              {/* Header do Módulo com Botão de Voltar ao Resumo */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#C5A880]/20">
+                <div className="flex items-center gap-3.5">
+                  <button
+                    onClick={() => setActiveTab('resumo')}
+                    className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/60 text-[#8C6B38] border border-[#C5A880]/30 transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+                    title="Voltar ao Resumo"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                    <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Resumo</span>
+                  </button>
+
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#8C6B38] mb-0.5">
+                      <Users className="w-4 h-4" />
+                      <span>Módulo de Presenças</span>
+                    </div>
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
+                      Lista de Convidados Confirmados
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
+                      Total de {convidados.length} pessoas confirmadas.
                     </p>
                   </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {mensagens.map((msg) => (
-                      <div
-                        key={msg.id}
-                        className="bg-white rounded-3xl border border-[#C5A880]/30 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
-                      >
-                        <div>
-                          {/* Foto anexada */}
-                          {msg.foto ? (
-                            <div className="relative group/img overflow-hidden bg-[#1C201D]">
-                              <img
-                                src={msg.foto}
-                                alt={`Foto de ${msg.nome}`}
-                                className="w-full h-56 object-cover group-hover/img:scale-105 transition-transform duration-500 cursor-pointer"
-                                onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
-                              />
+                </div>
+
+                <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                  <button
+                    onClick={loadAllData}
+                    className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all cursor-pointer shadow-xs"
+                    title="Atualizar lista"
+                  >
+                    <RefreshCw className={`w-4 h-4 ${loadingData ? 'animate-spin' : ''}`} />
+                  </button>
+
+                  <button
+                    onClick={handleExportCSV}
+                    className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-[#8C6B38] hover:bg-[#6D5228] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md cursor-pointer"
+                  >
+                    <Download className="w-4 h-4" />
+                    <span>Exportar CSV</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Barra de Ações Rápidas (Busca & Adição) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                {/* Campo de Busca */}
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Buscar convidado por nome..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-9 py-3.5 text-sm rounded-2xl bg-[#FDFBF7] border border-[#C5A880]/35 focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                  />
+                  <Search className="w-4 h-4 text-[#8C6B38] absolute left-3.5 top-1/2 -translate-y-1/2" />
+                  {searchTerm && (
+                    <button
+                      onClick={() => setSearchTerm('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                {/* Formulário Rápido de Adição */}
+                <form onSubmit={handleAddConvidado} className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Adicionar nome manualmente..."
+                    value={novoConvidado}
+                    onChange={(e) => setNovoConvidado(e.target.value)}
+                    className="flex-1 px-4 py-3.5 text-sm rounded-2xl border border-[#C5A880]/35 bg-[#FDFBF7] focus:border-[#8C6B38] focus:ring-2 focus:ring-[#8C6B38]/20 outline-none font-medium text-[#2D312E]"
+                  />
+                  <button
+                    type="submit"
+                    className="px-5 py-3.5 rounded-2xl bg-[#2D312E] hover:bg-[#1A1C1A] text-white text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 cursor-pointer shadow-sm transition-all"
+                  >
+                    <Plus className="w-4 h-4 text-[#C5A880]" />
+                    <span>Adicionar</span>
+                  </button>
+                </form>
+              </div>
+
+              {/* Tabela de Convidados */}
+              <div className="rounded-2xl border border-[#C5A880]/30 overflow-hidden shadow-xs">
+                <div className="px-5 py-3.5 bg-[#FDFBF7] border-b border-[#C5A880]/20 flex items-center justify-between text-xs font-bold text-[#8C6B38]">
+                  <span>Exibindo {filteredConvidados.length} de {convidados.length} convidados</span>
+                  {searchTerm && (
+                    <span className="text-[#5A605B]">Filtrado por: "{searchTerm}"</span>
+                  )}
+                </div>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead className="bg-[#F7F3EC] border-b border-[#C5A880]/20 text-[#2D312E]">
+                      <tr>
+                        <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold w-16 text-center">#</th>
+                        <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold">Nome do Convidado</th>
+                        <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-center">Status</th>
+                        <th className="py-4 px-6 text-xs uppercase tracking-wider font-bold text-right w-28">Remover</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#E8DCCF]/50 bg-white">
+                      {filteredConvidados.length === 0 ? (
+                        <tr>
+                          <td colSpan="4" className="text-center py-16 text-[#5A605B] text-sm font-medium">
+                            <Users className="w-12 h-12 text-[#C5A880]/50 mx-auto mb-2" />
+                            <p>Nenhum convidado encontrado.</p>
+                          </td>
+                        </tr>
+                      ) : (
+                        filteredConvidados.map((c, index) => (
+                          <tr key={c.id} className="hover:bg-[#FDFBF7] transition-colors">
+                            <td className="py-4 px-6 text-center text-[#8C6B38] font-mono text-xs font-bold">
+                              {index + 1}
+                            </td>
+                            <td className="py-4 px-6">
+                              <div className="flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
+                                  {c.nome ? c.nome.charAt(0).toUpperCase() : 'C'}
+                                </div>
+                                <span className="font-bold text-base text-[#2D312E]">{c.nome}</span>
+                              </div>
+                            </td>
+                            <td className="py-4 px-6 text-center">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-50 border border-green-200 text-green-700 text-xs font-bold">
+                                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                                <span>Confirmado</span>
+                              </span>
+                            </td>
+                            <td className="py-4 px-6 text-right">
                               <button
-                                onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
-                                className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl text-xs flex items-center gap-1 backdrop-blur-sm transition-all"
-                                title="Ampliar Foto"
+                                onClick={() => handleDeleteConvidado(c.id, c.nome)}
+                                className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                                title={`Remover ${c.nome}`}
                               >
-                                <Maximize2 className="w-3.5 h-3.5" />
-                                <span>Ampliar</span>
+                                <Trash2 className="w-4 h-4" />
                               </button>
-                            </div>
-                          ) : (
-                            <div className="h-3 bg-gradient-to-r from-[#8C6B38] via-[#C5A880] to-[#B87D7A]" />
-                          )}
-
-                          {/* Conteúdo da Mensagem */}
-                          <div className="p-6">
-                            <p className="text-base text-[#2D312E] font-serif italic leading-relaxed whitespace-pre-wrap font-medium">
-                              "{msg.mensagens}"
-                            </p>
-                          </div>
-                        </div>
-
-                        {/* Rodapé do Card */}
-                        <div className="px-6 py-4 bg-[#FDFBF7] border-t border-[#C5A880]/20 flex items-center justify-between">
-                          <div className="flex items-center gap-2.5">
-                            <div className="w-8 h-8 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
-                              {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
-                            </div>
-                            <span className="font-bold text-sm text-[#2D312E]">{msg.nome}</span>
-                          </div>
-
-                          <button
-                            onClick={() => handleDeleteMensagem(msg.id, msg.nome)}
-                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
-                            title="Excluir mensagem"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
+
+        {/* ═══════════════════════════════════════════════════════════
+            TELA 3: MURAL DE RECADOS & FOTOS EXCLUSIVO
+        ═══════════════════════════════════════════════════════════ */}
+        {activeTab === 'mensagens' && (
+          <div className="space-y-6 animate-fadeIn">
+            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 sm:p-8 border border-[#C5A880]/35 shadow-lg">
+              
+              {/* Header do Módulo com Botão de Voltar ao Resumo */}
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#C5A880]/20">
+                <div className="flex items-center gap-3.5">
+                  <button
+                    onClick={() => setActiveTab('resumo')}
+                    className="p-3 rounded-2xl bg-[#FDF5F5] hover:bg-[#FDF0F0] text-[#B87D7A] border border-[#B87D7A]/30 transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+                    title="Voltar ao Resumo"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                    <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Resumo</span>
+                  </button>
+
+                  <div>
+                    <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#B87D7A] mb-0.5">
+                      <MessageSquare className="w-4 h-4" />
+                      <span>Livro de Memórias & Votos</span>
+                    </div>
+                    <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#2D312E]">
+                      Recados e Fotos dos Convidados
+                    </h3>
+                    <p className="text-xs sm:text-sm text-[#5A605B] font-medium">
+                      Total de {mensagens.length} mensagens privadas e {fotosCount} fotos recebidas.
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={loadAllData}
+                  className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/50 text-[#8C6B38] border border-[#C5A880]/30 transition-all cursor-pointer text-xs font-bold uppercase tracking-wider shadow-xs"
+                >
+                  <RefreshCw className={`w-3.5 h-3.5 ${loadingData ? 'animate-spin' : ''}`} />
+                  <span>Atualizar</span>
+                </button>
+              </div>
+
+              {mensagens.length === 0 ? (
+                <div className="text-center py-20 bg-[#FDFBF7] rounded-3xl border border-[#C5A880]/30 p-8">
+                  <Sparkles className="w-12 h-12 text-[#C5A880]/60 mx-auto mb-3" />
+                  <h4 className="font-serif text-2xl font-bold text-[#2D312E] mb-2">
+                    Nenhum recado recebido até o momento
+                  </h4>
+                  <p className="text-[#5A605B] text-sm font-medium max-w-md mx-auto">
+                    Assim que os convidados deixarem mensagens ou fotos pelo site, elas aparecerão aqui exclusivamente para vocês!
+                  </p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {mensagens.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className="bg-white rounded-3xl border border-[#C5A880]/30 shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col justify-between group"
+                    >
+                      <div>
+                        {/* Foto anexada */}
+                        {msg.foto ? (
+                          <div className="relative group/img overflow-hidden bg-[#1C201D]">
+                            <img
+                              src={msg.foto}
+                              alt={`Foto de ${msg.nome}`}
+                              className="w-full h-56 object-cover group-hover/img:scale-105 transition-transform duration-500 cursor-pointer"
+                              onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
+                            />
+                            <button
+                              onClick={() => setSelectedPhoto({ src: msg.foto, autor: msg.nome })}
+                              className="absolute bottom-3 right-3 bg-black/60 hover:bg-black/80 text-white p-2 rounded-xl text-xs flex items-center gap-1 backdrop-blur-sm transition-all"
+                              title="Ampliar Foto"
+                            >
+                              <Maximize2 className="w-3.5 h-3.5" />
+                              <span>Ampliar</span>
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="h-3 bg-gradient-to-r from-[#8C6B38] via-[#C5A880] to-[#B87D7A]" />
+                        )}
+
+                        {/* Conteúdo da Mensagem */}
+                        <div className="p-6">
+                          <p className="text-base text-[#2D312E] font-serif italic leading-relaxed whitespace-pre-wrap font-medium">
+                            "{msg.mensagens}"
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Rodapé do Card */}
+                      <div className="px-6 py-4 bg-[#FDFBF7] border-t border-[#C5A880]/20 flex items-center justify-between">
+                        <div className="flex items-center gap-2.5">
+                          <div className="w-8 h-8 rounded-full bg-[#F7F3EC] border border-[#C5A880]/40 text-[#8C6B38] font-serif font-bold text-xs flex items-center justify-center">
+                            {msg.nome ? msg.nome.charAt(0).toUpperCase() : 'C'}
+                          </div>
+                          <span className="font-bold text-sm text-[#2D312E]">{msg.nome}</span>
+                        </div>
+
+                        <button
+                          onClick={() => handleDeleteMensagem(msg.id, msg.nome)}
+                          className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                          title="Excluir mensagem"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* Modal de Foto em Alta Resolução */}
