@@ -16,7 +16,7 @@ export default function AdminPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loginError, setLoginError] = useState('');
   
-  // activeTab pode ser: 'resumo', 'convidados', 'mensagens'
+  // activeTab: 'resumo', 'convidados', 'mensagens'
   const [activeTab, setActiveTab] = useState('resumo');
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
@@ -232,7 +232,7 @@ export default function AdminPage() {
   }
 
   /* ─────────────────────────────────────────────────────────────
-     PAINEL AUTENTICADO: INÍCIO COM RESUMOS E MENUS SEPARADOS
+     PAINEL AUTENTICADO: SEPARAÇÃO TOTAL ENTRE RESUMO, CONVIDADOS E RECADOS
   ───────────────────────────────────────────────────────────── */
   return (
     <div className="min-h-screen bg-[#F7F3EC] font-sans relative overflow-x-hidden">
@@ -272,7 +272,7 @@ export default function AdminPage() {
             </button>
           </div>
 
-          {/* Lado Direito: Atalhos Rápidos */}
+          {/* Lado Direito: Atalhos Rápidos de Navegação */}
           <div className="flex items-center gap-2 sm:gap-3">
             <button
               onClick={() => setActiveTab('resumo')}
@@ -286,10 +286,34 @@ export default function AdminPage() {
               <span className="hidden sm:inline">Resumo</span>
             </button>
 
+            <button
+              onClick={() => setActiveTab('convidados')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all hidden md:flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'convidados'
+                  ? 'bg-[#8C6B38] text-white shadow-xs'
+                  : 'bg-white/10 text-white/80 hover:bg-white/20'
+              }`}
+            >
+              <Users className="w-3.5 h-3.5" />
+              <span>Convidados ({convidados.length})</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab('mensagens')}
+              className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all hidden md:flex items-center gap-1.5 cursor-pointer ${
+                activeTab === 'mensagens'
+                  ? 'bg-[#8C6B38] text-white shadow-xs'
+                  : 'bg-white/10 text-white/80 hover:bg-white/20'
+              }`}
+            >
+              <MessageSquare className="w-3.5 h-3.5" />
+              <span>Recados ({mensagens.length})</span>
+            </button>
+
             <a
               href="#inicio"
               onClick={() => { window.location.hash = '#inicio'; }}
-              className="flex items-center gap-1.5 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3.5 py-2 rounded-xl font-semibold transition-all border border-white/10"
+              className="flex items-center gap-1 text-xs text-white/80 hover:text-white bg-white/10 hover:bg-white/20 px-3 py-2 rounded-xl font-semibold transition-all border border-white/10"
               title="Abrir o site público dos convidados"
             >
               <Home className="w-3.5 h-3.5 text-[#C5A880]" />
@@ -298,7 +322,7 @@ export default function AdminPage() {
 
             <button
               onClick={() => setIsAuthenticated(false)}
-              className="flex items-center gap-1.5 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3.5 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
+              className="flex items-center gap-1 text-xs text-red-200 hover:text-white bg-red-900/30 hover:bg-red-800/50 px-3 py-2 rounded-xl font-semibold transition-all border border-red-500/20 cursor-pointer"
               title="Encerrar sessão"
             >
               <LogOut className="w-3.5 h-3.5" />
@@ -525,123 +549,6 @@ export default function AdminPage() {
       {/* Conteúdo Principal */}
       <main className="max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8 relative z-10">
         
-        {/* Banner de Boas-Vindas dos Noivos (Mantido no topo) */}
-        <div className="bg-gradient-to-r from-[#2D312E] via-[#3B413D] to-[#2D312E] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#C5A880]/30">
-          <FloralCorner className="-top-10 -right-10 w-48 h-48 opacity-20" position="top-right" />
-          
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8C6B38]/30 border border-[#C5A880]/40 text-xs font-bold tracking-wider uppercase text-[#E8DCCF] mb-3">
-                <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
-                <span>Contagem Regressiva</span>
-              </div>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold leading-snug">
-                Olá, Jéssica & Júlio! ❤️
-              </h2>
-              <p className="text-sm text-white/80 mt-1 max-w-xl font-medium">
-                Aqui vocês acompanham em tempo real todas as presenças confirmadas e as mensagens carinhosas que os convidados estão enviando para vocês.
-              </p>
-            </div>
-
-            <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/15 shrink-0 shadow-inner">
-              <Calendar className="w-8 h-8 text-[#C5A880]" />
-              <div>
-                <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#E8DCCF]">
-                  {daysLeft} Dias
-                </span>
-                <span className="text-xs uppercase tracking-wider text-white/70 font-semibold">
-                  para o grande dia
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* 4 Cards de Métricas Principais (Os Resumos) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          {/* Card 1: Convidados */}
-          <div 
-            onClick={() => setActiveTab('convidados')}
-            className={`bg-white/95 backdrop-blur-md rounded-3xl p-6 border shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer ${
-              activeTab === 'convidados' ? 'border-[#8C6B38] ring-2 ring-[#8C6B38]/30' : 'border-[#C5A880]/35 hover:border-[#8C6B38]'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Presenças</span>
-              <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#8C6B38] flex items-center justify-center shadow-xs">
-                <UserCheck className="w-6 h-6" />
-              </div>
-            </div>
-            <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
-              {stats.totalConvidados}
-            </div>
-            <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
-              <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-              <span>Confirmados na lista</span>
-            </p>
-          </div>
-
-          {/* Card 2: Recados */}
-          <div 
-            onClick={() => setActiveTab('mensagens')}
-            className={`bg-white/95 backdrop-blur-md rounded-3xl p-6 border shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer ${
-              activeTab === 'mensagens' ? 'border-[#B87D7A] ring-2 ring-[#B87D7A]/30' : 'border-[#B87D7A]/40 hover:border-[#B87D7A]'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#B87D7A]">Mensagens</span>
-              <div className="w-12 h-12 rounded-2xl bg-[#FDF5F5] border border-[#B87D7A]/30 text-[#B87D7A] flex items-center justify-center shadow-xs">
-                <MessageSquare className="w-6 h-6" />
-              </div>
-            </div>
-            <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
-              {stats.totalMensagens}
-            </div>
-            <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
-              <Heart className="w-3.5 h-3.5 text-[#B87D7A] fill-[#B87D7A]" />
-              <span>Recados enviados</span>
-            </p>
-          </div>
-
-          {/* Card 3: Fotos */}
-          <div 
-            onClick={() => setActiveTab('mensagens')}
-            className={`bg-white/95 backdrop-blur-md rounded-3xl p-6 border shadow-md hover:shadow-lg transition-all relative overflow-hidden cursor-pointer ${
-              activeTab === 'mensagens' ? 'border-[#8C6B38] ring-2 ring-[#8C6B38]/30' : 'border-[#8C6B38]/35 hover:border-[#8C6B38]'
-            }`}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Fotos Anexadas</span>
-              <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#8C6B38] flex items-center justify-center shadow-xs">
-                <ImageIcon className="w-6 h-6" />
-              </div>
-            </div>
-            <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
-              {fotosCount}
-            </div>
-            <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5 text-[#8C6B38]" />
-              <span>Memórias registradas</span>
-            </p>
-          </div>
-
-          {/* Card 4: Data & Horário */}
-          <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#5A605B]/30 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
-            <div className="flex items-center justify-between mb-4">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#5A605B]">Data & Horário</span>
-              <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#5A605B] flex items-center justify-center shadow-xs">
-                <Clock className="w-6 h-6" />
-              </div>
-            </div>
-            <div className="font-serif text-2xl font-bold text-[#1C201D] mb-1">
-              16:00h
-            </div>
-            <p className="text-xs text-[#5A605B] font-semibold">
-              14/11/2026 • Sábado
-            </p>
-          </div>
-        </div>
-
         {/* Notificação Temporária de Ação */}
         {actionMessage && (
           <div className="p-4 bg-green-50 text-green-800 rounded-2xl border border-green-200 text-sm flex items-center gap-2.5 shadow-sm font-semibold animate-fadeIn">
@@ -651,12 +558,124 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            TELA 1: RESUMO INICIAL (QUADROS SEPARADOS DE ACESSO RÁPIDO)
+            TELA 1: RESUMO INICIAL (Banner + 4 Métricas + Cards de Acesso)
+            APARECE SOMENTE QUANDO activeTab === 'resumo'
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === 'resumo' && (
-          <div className="space-y-6 animate-fadeIn">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-8 animate-fadeIn">
+            {/* Banner de Boas-Vindas dos Noivos */}
+            <div className="bg-gradient-to-r from-[#2D312E] via-[#3B413D] to-[#2D312E] rounded-3xl p-6 sm:p-8 text-white shadow-xl relative overflow-hidden border border-[#C5A880]/30">
+              <FloralCorner className="-top-10 -right-10 w-48 h-48 opacity-20" position="top-right" />
               
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 relative z-10">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#8C6B38]/30 border border-[#C5A880]/40 text-xs font-bold tracking-wider uppercase text-[#E8DCCF] mb-3">
+                    <Sparkles className="w-3.5 h-3.5 text-[#C5A880]" />
+                    <span>Contagem Regressiva</span>
+                  </div>
+                  <h2 className="font-serif text-2xl sm:text-3xl font-bold leading-snug">
+                    Olá, Jéssica & Júlio! ❤️
+                  </h2>
+                  <p className="text-sm text-white/80 mt-1 max-w-xl font-medium">
+                    Aqui vocês acompanham em tempo real todas as presenças confirmadas e as mensagens carinhosas que os convidados estão enviando para vocês.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-4 bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/15 shrink-0 shadow-inner">
+                  <Calendar className="w-8 h-8 text-[#C5A880]" />
+                  <div>
+                    <span className="block text-2xl sm:text-3xl font-serif font-bold text-[#E8DCCF]">
+                      {daysLeft} Dias
+                    </span>
+                    <span className="text-xs uppercase tracking-wider text-white/70 font-semibold">
+                      para o grande dia
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 4 Cards de Métricas Principais */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {/* Card 1: Convidados */}
+              <div 
+                onClick={() => setActiveTab('convidados')}
+                className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#C5A880]/35 shadow-md hover:shadow-xl transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38] group"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Presenças</span>
+                  <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#8C6B38] flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                    <UserCheck className="w-6 h-6" />
+                  </div>
+                </div>
+                <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
+                  {stats.totalConvidados}
+                </div>
+                <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                  <span>Confirmados na lista</span>
+                </p>
+              </div>
+
+              {/* Card 2: Recados */}
+              <div 
+                onClick={() => setActiveTab('mensagens')}
+                className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#B87D7A]/40 shadow-md hover:shadow-xl transition-all relative overflow-hidden cursor-pointer hover:border-[#B87D7A] group"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#B87D7A]">Mensagens</span>
+                  <div className="w-12 h-12 rounded-2xl bg-[#FDF5F5] border border-[#B87D7A]/30 text-[#B87D7A] flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                    <MessageSquare className="w-6 h-6" />
+                  </div>
+                </div>
+                <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
+                  {stats.totalMensagens}
+                </div>
+                <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
+                  <Heart className="w-3.5 h-3.5 text-[#B87D7A] fill-[#B87D7A]" />
+                  <span>Recados enviados</span>
+                </p>
+              </div>
+
+              {/* Card 3: Fotos */}
+              <div 
+                onClick={() => setActiveTab('mensagens')}
+                className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#8C6B38]/35 shadow-md hover:shadow-xl transition-all relative overflow-hidden cursor-pointer hover:border-[#8C6B38] group"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#8C6B38]">Fotos Anexadas</span>
+                  <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#8C6B38] flex items-center justify-center shadow-xs group-hover:scale-110 transition-transform">
+                    <ImageIcon className="w-6 h-6" />
+                  </div>
+                </div>
+                <div className="font-serif text-4xl font-bold text-[#1C201D] mb-1">
+                  {fotosCount}
+                </div>
+                <p className="text-xs text-[#5A605B] font-semibold flex items-center gap-1">
+                  <Sparkles className="w-3.5 h-3.5 text-[#8C6B38]" />
+                  <span>Memórias registradas</span>
+                </p>
+              </div>
+
+              {/* Card 4: Data & Horário */}
+              <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 border border-[#5A605B]/30 shadow-md hover:shadow-lg transition-all relative overflow-hidden">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#5A605B]">Data & Horário</span>
+                  <div className="w-12 h-12 rounded-2xl bg-[#F7F3EC] border border-[#C5A880]/30 text-[#5A605B] flex items-center justify-center shadow-xs">
+                    <Clock className="w-6 h-6" />
+                  </div>
+                </div>
+                <div className="font-serif text-2xl font-bold text-[#1C201D] mb-1">
+                  16:00h
+                </div>
+                <p className="text-xs text-[#5A605B] font-semibold">
+                  14/11/2026 • Sábado
+                </p>
+              </div>
+            </div>
+
+            {/* 2 Cartões Grandes de Acesso Separado */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Card de Entrada para Lista de Convidados */}
               <div 
                 onClick={() => setActiveTab('convidados')}
@@ -758,7 +777,7 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            TELA 2: LISTA DE CONVIDADOS EXCLUSIVA
+            TELA 2: LISTA DE CONVIDADOS (TOTALMENTE ISOLADA / SEM RESUMO)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === 'convidados' && (
           <div className="space-y-6 animate-fadeIn">
@@ -769,11 +788,11 @@ export default function AdminPage() {
                 <div className="flex items-center gap-3.5">
                   <button
                     onClick={() => setActiveTab('resumo')}
-                    className="p-3 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/60 text-[#8C6B38] border border-[#C5A880]/30 transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+                    className="px-4 py-2.5 rounded-2xl bg-[#F7F3EC] hover:bg-[#E8DCCF]/60 text-[#8C6B38] border border-[#C5A880]/30 transition-all shadow-xs cursor-pointer flex items-center gap-2 font-bold text-xs uppercase tracking-wider"
                     title="Voltar ao Resumo"
                   >
-                    <ArrowLeft className="w-5 h-5" />
-                    <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Resumo</span>
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Voltar ao Resumo</span>
                   </button>
 
                   <div>
@@ -918,7 +937,7 @@ export default function AdminPage() {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            TELA 3: MURAL DE RECADOS & FOTOS EXCLUSIVO
+            TELA 3: MURAL DE RECADOS & FOTOS (TOTALMENTE ISOLADA / SEM RESUMO)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === 'mensagens' && (
           <div className="space-y-6 animate-fadeIn">
@@ -929,11 +948,11 @@ export default function AdminPage() {
                 <div className="flex items-center gap-3.5">
                   <button
                     onClick={() => setActiveTab('resumo')}
-                    className="p-3 rounded-2xl bg-[#FDF5F5] hover:bg-[#FDF0F0] text-[#B87D7A] border border-[#B87D7A]/30 transition-all shadow-xs cursor-pointer flex items-center gap-1.5"
+                    className="px-4 py-2.5 rounded-2xl bg-[#FDF5F5] hover:bg-[#FDF0F0] text-[#B87D7A] border border-[#B87D7A]/30 transition-all shadow-xs cursor-pointer flex items-center gap-2 font-bold text-xs uppercase tracking-wider"
                     title="Voltar ao Resumo"
                   >
-                    <ArrowLeft className="w-5 h-5" />
-                    <span className="text-xs font-bold uppercase tracking-wider hidden sm:inline">Resumo</span>
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Voltar ao Resumo</span>
                   </button>
 
                   <div>
