@@ -367,7 +367,13 @@ export default function App() {
             {circleButtons.map((btn) => (
               <button
                 key={btn.id}
-                onClick={() => setActiveModal(btn.id)}
+                onClick={async () => {
+                  setActiveModal(btn.id);
+                  if (btn.id === 'rsvp') {
+                    const latest = await api.getConvidados();
+                    setGuestList(latest);
+                  }
+                }}
                 className="flex flex-col items-center group cursor-pointer outline-none transition-all duration-300 active:scale-95"
               >
                 {/* Botão com Aro em Tom Verde Oliva Mais Escuro e Fundo Suave */}

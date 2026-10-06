@@ -45,143 +45,166 @@ export const api = {
     }
   },
 
-  // Convidados
+  // Convidados (Sincronização Neon PostgreSQL + LocalStorage)
   async getConvidados() {
-    // 1. Lê imediatamente do localStorage (fonte primária e instantânea)
-    let localGuests = [];
-    try {
-      const local = localStorage.getItem('wedding_convidados_local');
-      if (local) {
-        localGuests = JSON.parse(local);
-      }
-    } catch (e) {
-      console.error('Erro ao ler convidados locais:', e);
-    }
-
-    // Se já existem convidados locais, retorna-os imediatamente
-    if (Array.isArray(localGuests) && localGuests.length > 0) {
-      return localGuests;
-    }
-
-    // 2. Tenta carregar do backend se o localStorage estiver vazio
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1200);
-      const res = await fetch(`${API_URL}/convidados`, { signal: controller.signal });
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const res = await fetch(`${API_URL}/convidados`, { 
+        signal: controller.signal,
+        headers: { 'Cache-Control': 'no-cache' }
+      });
       clearTimeout(timeoutId);
       if (res.ok) {
         const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          localStorage.setItem('wedding_convidados_local', JSON.stringify(data));
-          return data;
+        if (Array.isArray(data)) {
+          // Normaliza formato retornado do banco
+          const normalized = data.map(item => ({
+            id: String(item.id),
+            nome: item.nome,
+            confirmado: Boolean(item.confirmado),
+            data_confirmacao: item.confirmado ? (item.data_confirmacao || 'Confirmado') : null
+          }));
+          localStorage.setItem('wedding_convidados_local', JSON.stringify(normalized));
+          return normalized;
         }
       }
     } catch (e) {
-      // Ignora erro de rede
+      console.warn('API remota não respondeu a tempo, usando cache local:', e);
     }
 
-    return localGuests;
+    const local = localStorage.getItem('wedding_convidados_local');
+    return local ? JSON.parse(local) : [];
   },
 
   async addConvidado(nome, confirmado = false) {
-    const novoConvidado = {
-      id: `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-      nome: nome.trim(),
+    const trimmed = nome.trim();
+    let guestObj = {
+      id: `${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      nome: trimmed,
       confirmado: Boolean(confirmado),
       data_confirmacao: confirmado ? new Date().toLocaleDateString('pt-BR') : null
     };
 
-    // Salva imediatamente no localStorage para resposta instantânea
-    try {
-      const local = localStorage.getItem('wedding_convidados_local');
-      const list = local ? JSON.parse(local) : [];
-      list.unshift(novoConvidado);
-      localStorage.setItem('wedding_convidados_local', JSON.stringify(list));
-      window.dispatchEvent(new Event('wedding_guests_updated'));
-    } catch (e) {
-      console.error('Erro ao gravar no localStorage:', e);
-    }
-
-    // Tenta sincronizar com API em background com timeout curto
+    // 1. Tenta salvar diretamente no Postgres da Vercel
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1500);
-      fetch(`${API_URL}/convidados`, {
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const res = await fetch(`${API_URL}/convidados`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(novoConvidado),
+        body: JSON.stringify({ nome: trimmed, confirmado: Boolean(confirmado) }),
         signal: controller.signal
-      }).then(() => clearTimeout(timeoutId)).catch(() => {});
+      });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        const json = await res.json();
+        const serverGuest = json.convidado || json;
+        if (serverGuest && serverGuest.id) {
+          guestObj = {
+            id: String(serverGuest.id),
+            nome: serverGuest.nome,
+            confirmado: Boolean(serverGuest.confirmado),
+            data_confirmacao: serverGuest.confirmado ? new Date().toLocaleDateString('pt-BR') : null
+          };
+        }
+      }
     } catch (e) {
-      // Background sync falhou silenciosamente
+      console.warn('Salvando em fallback local:', e);
     }
 
-    return novoConvidado;
+    // 2. Atualiza cache local e notifica a interface
+    try {
+      const local = localStorage.getItem('wedding_convidados_local');
+      let list = local ? JSON.parse(local) : [];
+      list = list.filter(c => c.id !== guestObj.id && c.nome.toLowerCase() !== guestObj.nome.toLowerCase());
+      list.unshift(guestObj);
+      localStorage.setItem('wedding_convidados_local', JSON.stringify(list));
+      window.dispatchEvent(new Event('wedding_guests_updated'));
+    } catch (e) {}
+
+    return guestObj;
   },
 
   async confirmConvidado(idOrName) {
-    const local = localStorage.getItem('wedding_convidados_local');
-    let list = local ? JSON.parse(local) : [];
-    let confirmedGuest = null;
+    const trimmed = String(idOrName).trim();
+    let confirmedGuest = {
+      id: `${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
+      nome: trimmed,
+      confirmado: true,
+      data_confirmacao: new Date().toLocaleDateString('pt-BR')
+    };
 
-    list = list.map(c => {
-      if (String(c.id) === String(idOrName) || c.nome.toLowerCase().trim() === String(idOrName).toLowerCase().trim()) {
-        confirmedGuest = {
-          ...c,
-          confirmado: true,
-          data_confirmacao: new Date().toLocaleDateString('pt-BR')
-        };
-        return confirmedGuest;
-      }
-      return c;
-    });
-
-    // Se o nome digitado não estava pré-cadastrado, cadastra direto como confirmado
-    if (!confirmedGuest) {
-      confirmedGuest = {
-        id: `${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
-        nome: String(idOrName).trim(),
-        confirmado: true,
-        data_confirmacao: new Date().toLocaleDateString('pt-BR')
-      };
-      list.unshift(confirmedGuest);
-    }
-
-    localStorage.setItem('wedding_convidados_local', JSON.stringify(list));
-    window.dispatchEvent(new Event('wedding_guests_updated'));
-
+    // 1. Tenta confirmar no Postgres da Vercel
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1500);
-      fetch(`${API_URL}/convidados`, {
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      const res = await fetch(`${API_URL}/convidados`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(confirmedGuest),
+        body: JSON.stringify({ nome: trimmed, confirmado: true }),
         signal: controller.signal
-      }).then(() => clearTimeout(timeoutId)).catch(() => {});
+      });
+      clearTimeout(timeoutId);
+      if (res.ok) {
+        const json = await res.json();
+        const serverGuest = json.convidado || json;
+        if (serverGuest && serverGuest.id) {
+          confirmedGuest = {
+            id: String(serverGuest.id),
+            nome: serverGuest.nome,
+            confirmado: true,
+            data_confirmacao: new Date().toLocaleDateString('pt-BR')
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('Confirmando em cache local:', e);
+    }
+
+    // 2. Atualiza cache local
+    try {
+      const local = localStorage.getItem('wedding_convidados_local');
+      let list = local ? JSON.parse(local) : [];
+      let found = false;
+      list = list.map(c => {
+        if (String(c.id) === String(idOrName) || c.nome.toLowerCase().trim() === trimmed.toLowerCase()) {
+          found = true;
+          return { ...c, confirmado: true, data_confirmacao: new Date().toLocaleDateString('pt-BR') };
+        }
+        return c;
+      });
+      if (!found) {
+        list.unshift(confirmedGuest);
+      }
+      localStorage.setItem('wedding_convidados_local', JSON.stringify(list));
+      window.dispatchEvent(new Event('wedding_guests_updated'));
     } catch (e) {}
 
     return confirmedGuest;
   },
 
   async deleteConvidado(id) {
-    const local = localStorage.getItem('wedding_convidados_local');
-    if (local) {
-      const list = JSON.parse(local).filter(c => String(c.id) !== String(id));
-      localStorage.setItem('wedding_convidados_local', JSON.stringify(list));
-      window.dispatchEvent(new Event('wedding_guests_updated'));
-    }
+    // 1. Atualiza cache local imediatamente
+    try {
+      const local = localStorage.getItem('wedding_convidados_local');
+      if (local) {
+        const list = JSON.parse(local).filter(c => String(c.id) !== String(id));
+        localStorage.setItem('wedding_convidados_local', JSON.stringify(list));
+        window.dispatchEvent(new Event('wedding_guests_updated'));
+      }
+    } catch (e) {}
 
+    // 2. Tenta deletar no Postgres
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 1500);
-      fetch(`${API_URL}/convidados/${id}`, { 
+      const timeoutId = setTimeout(() => controller.abort(), 3500);
+      await fetch(`${API_URL}/convidados/${id}`, { 
         method: 'DELETE',
         signal: controller.signal 
-      }).then(() => clearTimeout(timeoutId)).catch(() => {});
-    } catch (e) {
-      // Background sync falhou silenciosamente
-    }
+      });
+      clearTimeout(timeoutId);
+    } catch (e) {}
 
     return { success: true };
   },
