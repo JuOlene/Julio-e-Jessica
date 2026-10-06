@@ -228,12 +228,12 @@ export default function App() {
       {/* Cartão Central com Textura Floral em Relevo e Tons Verde Oliva da Cartela */}
       <div className="h-full w-full max-w-md max-h-[100dvh] relative flex flex-col justify-between px-6 py-4 overflow-hidden shadow-2xl bg-[#FCFDF9] sm:border sm:border-[#7A8C4B]/35 sm:rounded-3xl sm:h-[96vh]">
         
-        {/* Fundo de Relevo Floral Esculpido */}
+        {/* Fundo de Relevo Floral Esculpido com Folhagens Verde Oliva */}
         <div 
-          className="absolute inset-0 bg-cover bg-center pointer-events-none -z-10 opacity-90"
-          style={{ backgroundImage: `url('/wedding_embossed_luxury_bg.jpg')` }}
+          className="absolute inset-0 bg-cover bg-center pointer-events-none -z-10 opacity-95"
+          style={{ backgroundImage: `url('/wedding_olive_texture_bg.jpg')` }}
         />
-        <div className="absolute inset-0 bg-radial from-[#FCFDF9]/45 via-[#FCFDF9]/75 to-[#FCFDF9]/90 pointer-events-none -z-10" />
+        <div className="absolute inset-0 bg-radial from-[#FCFDF9]/30 via-[#FCFDF9]/60 to-[#FCFDF9]/85 pointer-events-none -z-10" />
 
         {/* 1. Nomes dos Noivos */}
         <div className="pt-1 text-center relative z-10">
