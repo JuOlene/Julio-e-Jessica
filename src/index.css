@@ -9,11 +9,28 @@
 }
 
 .font-cursive {
+  font-family: 'Great Vibes', 'Alex Brush', cursive;
+  letter-spacing: 0.02em;
+}
+
+.font-script-modern {
   font-family: 'Great Vibes', cursive;
 }
 
+.font-allura {
+  font-family: 'Allura', cursive;
+}
+
+.font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
 .font-serif {
-  font-family: 'Playfair Display', Georgia, serif;
+  font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+}
+
+.font-sans-clean {
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Custom scrollbar */
