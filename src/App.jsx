@@ -144,9 +144,10 @@ export default function App() {
       label: 'Presença',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
-          {/* Selo Clássico com Check de Confirmação */}
-          <path d="M12 2l2.4 2.8 3.7-.3 1.3 3.4 3.4 1.4-.4 3.7L24 15.4l-2.4 2.8.3 3.7-3.4 1.3-1.4 3.4-3.7-.4L12 24l-2.4-2.8-3.7.3-1.3-3.4-3.4-1.4.4-3.7L0 12.6l2.4-2.8-.3-3.7 3.4-1.3 1.4-3.4 3.7.4L12 2z" className="opacity-20 fill-[#7A8C4B]/20" />
-          <path d="M9 12l2.2 2.5L16 9" strokeWidth="2.2" />
+          {/* Envelope Delicado com Check de Confirmação */}
+          <rect x="2.5" y="5.5" width="19" height="13.5" rx="2" />
+          <path d="m3 7 9 6 9-6" />
+          <path d="m8.5 13 2.5 2.5 5-5" strokeWidth="2.2" className="text-[#3F4D27]" />
         </svg>
       )
     },
