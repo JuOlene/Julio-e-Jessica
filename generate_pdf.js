@@ -28,8 +28,8 @@ async function generateWeddingPDF() {
     height: height,
   });
 
-  // URL do Convite na Vercel (Repositório Oficial: https://julio-e-jessica.vercel.app)
-  const weddingUrl = 'https://julio-e-jessica.vercel.app';
+  // URL Oficial do Convite na Vercel
+  const weddingUrl = 'https://jessicaejulio.vercel.app/';
 
   // Botão Elegante "CLIQUE AQUI PARA ABRIR O CONVITE"
   const btnWidth = 320;
