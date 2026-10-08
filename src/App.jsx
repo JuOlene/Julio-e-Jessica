@@ -14,6 +14,7 @@ import confetti from 'canvas-confetti';
 import { api, DEFAULT_CONFIG } from './services/api';
 import AdminPage from './pages/AdminPage';
 import EnvelopeIntro from './components/EnvelopeIntro';
+import { audioManager } from './services/audioManager';
 
 export default function App() {
   const [activeModal, setActiveModal] = useState(null); // 'cerimonia' | 'buffet' | 'rsvp' | 'presentes' | null
@@ -23,40 +24,10 @@ export default function App() {
   // Configurações Dinâmicas dos Locais e Pix
   const [eventConfig, setEventConfig] = useState(DEFAULT_CONFIG);
 
-  // Áudio de Fundo Automático sem Botão
-  const [musicStarted, setMusicStarted] = useState(false);
-
   useEffect(() => {
-    const audio = new Audio(eventConfig.musicUrl || DEFAULT_CONFIG.musicUrl);
-    audio.loop = true;
-    audio.volume = 0.45;
-
-    const playAudio = () => {
-      audio.play().then(() => {
-        setMusicStarted(true);
-        window.removeEventListener('click', playAudio);
-        window.removeEventListener('touchstart', playAudio);
-        window.removeEventListener('scroll', playAudio);
-      }).catch(() => {
-        // Bloqueado pelo navegador até primeira interação
-      });
-    };
-
-    // Tenta tocar automaticamente ao carregar
-    playAudio();
-
-    // Toca imediatamente no primeiro toque/clique/scroll do usuário caso autoplay seja bloqueado
-    window.addEventListener('click', playAudio);
-    window.addEventListener('touchstart', playAudio);
-    window.addEventListener('scroll', playAudio);
-
-    return () => {
-      audio.pause();
-      window.removeEventListener('click', playAudio);
-      window.removeEventListener('touchstart', playAudio);
-      window.removeEventListener('scroll', playAudio);
-    };
-  }, [eventConfig.musicUrl]);
+    // Tenta iniciar áudio e escuta interações no mobile
+    audioManager.play();
+  }, []);
 
   // Pix State
   const [copiedPix, setCopiedPix] = useState(false);

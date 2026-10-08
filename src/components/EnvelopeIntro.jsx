@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
+import { audioManager } from '../services/audioManager';
 
 export default function EnvelopeIntro({ onOpen }) {
   const [isOpening, setIsOpening] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
   const handleOpen = () => {
+    // Tocar a música no momento exato do toque no envelope
+    audioManager.play();
+
     if (isOpening || isCompleted) return;
     setIsOpening(true);
 
