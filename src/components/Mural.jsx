@@ -102,7 +102,7 @@ export default function Mural() {
               <Sparkles className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
               <div>
                 <strong className="block font-bold text-green-900">Mensagem enviada com sucesso!</strong>
-                <span>Jéssica e Júlio receberam seu recado e vão amar ler suas palavras de carinho. Muito obrigado!</span>
+                <span>Jessica e Julio receberam seu recado e vão amar ler suas palavras de carinho. Muito obrigado!</span>
               </div>
             </div>
           )}
@@ -127,7 +127,7 @@ export default function Mural() {
 
             <div>
               <label className="block text-xs font-bold uppercase tracking-wider text-wedding-charcoal mb-1.5">
-                Mensagem para Jéssica & Júlio <span className="text-red-500">*</span>
+                Mensagem para Jessica & Julio <span className="text-red-500">*</span>
               </label>
               <textarea
                 value={mensagem}

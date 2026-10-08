@@ -5,7 +5,7 @@ export const DEFAULT_CONFIG = {
   // Cerimônia
   ceremonyVenue: "Paróquia Nossa Senhora Rainha dos Apóstolos",
   ceremonyAddress: "Rua Alice dos Santos Peixe, 61 - Jardim Selma, São Paulo - SP",
-  ceremonyTime: "15:30H",
+  ceremonyTime: "17:30H",
   ceremonyMapsUrl: "https://www.google.com/maps/search/?api=1&query=Rua+Alice+dos+Santos+Peixe,+61+-+Jardim+Selma,+São+Paulo+-+SP",
   ceremonyWazeUrl: "https://waze.com/ul?q=Rua+Alice+dos+Santos+Peixe,+61+-+Jardim+Selma,+São+Paulo+-+SP",
 
@@ -17,8 +17,16 @@ export const DEFAULT_CONFIG = {
 
   // Pix
   pixKey: "casamentojulioejessica@email.com",
-  pixTitular: "Jéssica e Júlio",
-  pixBanco: "Nubank"
+  pixTitular: "Jessica e Julio",
+  pixBanco: "Nubank",
+
+  // WhatsApp e RSVP (Número Oficial dos noivos: 11954886391 / Teste: 11953582337)
+  whatsappNumber: "5511954886391",
+  whatsappTestNumber: "5511953582337",
+  whatsappMessage: "Olá Jéssica e Julio! Confirmo com muita alegria a minha presença no casamento de vocês dia 14/11/2026 às 17:30h! 🥂✨",
+
+  // Música de Fundo: Aliança - Tribalistas (instrumental) | Banda PH
+  musicUrl: "/alianca_tribalistas_instrumental_banda_ph.mp3"
 };
 
 export const api = {

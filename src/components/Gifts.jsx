@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Gift, Copy, Check, Heart, Sparkles, QrCode } from 'lucide-react';
+import { api, DEFAULT_CONFIG } from '../services/api';
 
 export default function Gifts() {
   const [copiedKey, setCopiedKey] = useState(null);
+  const [config, setConfig] = useState(() => api.getConfig());
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setConfig(api.getConfig());
+    };
+    window.addEventListener('wedding_config_updated', handleUpdate);
+    return () => window.removeEventListener('wedding_config_updated', handleUpdate);
+  }, []);
 
   const pixData = {
-    chave: "casamentojulioejessica@email.com",
-    titular: "Jéssica e Júlio",
-    banco: "Nubank / Chave Aleatória ou E-mail",
+    chave: config.pixKey || DEFAULT_CONFIG.pixKey,
+    titular: config.pixTitular || DEFAULT_CONFIG.pixTitular,
+    banco: config.pixBanco || DEFAULT_CONFIG.pixBanco,
     mensagem: "O maior presente é a sua presença em nosso casamento! Mas se desejar nos presentear de forma prática para o início da nossa vida a dois ou lua de mel, criamos esta opção via Pix com muito carinho."
   };
 

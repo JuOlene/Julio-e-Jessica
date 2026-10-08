@@ -26,14 +26,14 @@ export default function AdminPage({ onBack }) {
   const [actionMessage, setActionMessage] = useState('');
 
   // Configurações Editáveis (Localização & Pix)
-  const [config, setConfig] = useState(DEFAULT_CONFIG);
+  const [config, setConfig] = useState(() => api.getConfig());
   const [savingConfig, setSavingConfig] = useState(false);
 
-  // Contador de dias restantes para o casamento: 14/11/2026 às 15:30
+  // Contador de dias restantes para o casamento: 14/11/2026 às 17:30
   const [daysLeft, setDaysLeft] = useState(0);
 
   useEffect(() => {
-    const target = new Date('2026-11-14T15:30:00').getTime();
+    const target = new Date('2026-11-14T17:30:00').getTime();
     const now = new Date().getTime();
     const diff = target - now;
     if (diff > 0) {
@@ -53,7 +53,11 @@ export default function AdminPage({ onBack }) {
       }
     };
     window.addEventListener('wedding_guests_updated', handleSync);
-    return () => window.removeEventListener('wedding_guests_updated', handleSync);
+    window.addEventListener('wedding_config_updated', () => setConfig(api.getConfig()));
+    return () => {
+      window.removeEventListener('wedding_guests_updated', handleSync);
+      window.removeEventListener('wedding_config_updated', () => setConfig(api.getConfig()));
+    };
   }, [isAuthenticated]);
 
   const handleGoHome = () => {
@@ -207,7 +211,7 @@ export default function AdminPage({ onBack }) {
 
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#6B7A42] font-bold block mb-1">Acesso Privado</span>
             <h1 className="font-cursive text-5xl text-[#3F4D27] my-0 font-normal">
-              Jéssica & Júlio
+              Jessica & Julio
             </h1>
             <p className="text-xs text-[#5B6C38] font-medium tracking-wide mt-1">
               Painel de Administração Oficial
@@ -295,7 +299,7 @@ export default function AdminPage({ onBack }) {
               className="flex items-center gap-2 text-left cursor-pointer"
             >
               <span className="font-cursive text-2xl sm:text-3xl text-[#EEF2E3] font-normal leading-none">
-                Jéssica & Júlio
+                Jessica & Julio
               </span>
               <span className="hidden md:inline-block ml-2 px-2 py-0.5 rounded-full bg-[#6B7A42]/40 border border-[#7A8C4B]/35 text-[9px] uppercase font-bold tracking-widest text-[#EEF2E3]">
                 Painel Geral
@@ -341,7 +345,7 @@ export default function AdminPage({ onBack }) {
                 <div className="p-5 bg-[#3F4D27] text-white flex items-center justify-between border-b border-[#7A8C4B]/35">
                   <div>
                     <h3 className="font-cursive text-2xl text-[#EEF2E3] leading-tight">
-                      Jéssica & Júlio
+                      Jessica & Julio
                     </h3>
                     <p className="text-[9px] text-[#D8E2CE] uppercase tracking-widest font-bold">
                       Gerenciamento Completo
@@ -393,7 +397,7 @@ export default function AdminPage({ onBack }) {
                   </button>
 
                   <button
-                    onClick={() => { setActiveTab('locais'); setIsDrawerOpen(false); }}
+                    onClick={() => { setActiveTab('locais'); setConfig(api.getConfig()); setIsDrawerOpen(false); }}
                     className={`w-full text-left p-3 rounded-xl transition-all flex items-center justify-between cursor-pointer border ${
                       activeTab === 'locais'
                         ? 'bg-[#6B7A42] text-white border-[#6B7A42] shadow-xs'
@@ -408,7 +412,7 @@ export default function AdminPage({ onBack }) {
                   </button>
 
                   <button
-                    onClick={() => { setActiveTab('pix'); setIsDrawerOpen(false); }}
+                    onClick={() => { setActiveTab('pix'); setConfig(api.getConfig()); setIsDrawerOpen(false); }}
                     className={`w-full text-left p-3 rounded-xl transition-all flex items-center justify-between cursor-pointer border ${
                       activeTab === 'pix'
                         ? 'bg-[#6B7A42] text-white border-[#6B7A42] shadow-xs'
@@ -467,7 +471,7 @@ export default function AdminPage({ onBack }) {
             Convidados ({totalConfirmados})
           </button>
           <button
-            onClick={() => setActiveTab('locais')}
+            onClick={() => { setActiveTab('locais'); setConfig(api.getConfig()); }}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
               activeTab === 'locais' ? 'bg-[#6B7A42] text-white shadow-xs' : 'bg-white text-[#2F3A1D] border border-[#7A8C4B]/30'
             }`}
@@ -475,7 +479,7 @@ export default function AdminPage({ onBack }) {
             Editar Locais
           </button>
           <button
-            onClick={() => setActiveTab('pix')}
+            onClick={() => { setActiveTab('pix'); setConfig(api.getConfig()); }}
             className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer shrink-0 ${
               activeTab === 'pix' ? 'bg-[#6B7A42] text-white shadow-xs' : 'bg-white text-[#2F3A1D] border border-[#7A8C4B]/30'
             }`}
@@ -496,7 +500,7 @@ export default function AdminPage({ onBack }) {
                   Casamento Oficial
                 </span>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold">
-                  Olá, Jéssica & Júlio! ❤️
+                  Olá, Jessica & Julio! ❤️
                 </h2>
                 <p className="text-xs text-white/80 mt-1 max-w-lg">
                   Controle os convidados, edite os locais da cerimônia e buffet e gerencie a chave Pix em tempo real.
@@ -507,7 +511,7 @@ export default function AdminPage({ onBack }) {
                 <Calendar className="w-7 h-7 text-[#D8E2CE]" />
                 <div className="text-left">
                   <span className="block text-2xl font-serif font-bold text-[#EEF2E3]">{daysLeft} Dias</span>
-                  <span className="text-[10px] uppercase tracking-wider text-white/70 font-semibold">14/11/2026 às 15:30h</span>
+                  <span className="text-[10px] uppercase tracking-wider text-white/70 font-semibold">14/11/2026 às 17:30h</span>
                 </div>
               </div>
             </div>
@@ -530,7 +534,7 @@ export default function AdminPage({ onBack }) {
               </div>
 
               <div 
-                onClick={() => setActiveTab('locais')}
+                onClick={() => { setActiveTab('locais'); setConfig(api.getConfig()); }}
                 className="bg-[#FCFDF9] rounded-3xl p-5 border border-[#7A8C4B]/35 shadow-xs hover:shadow-md transition-all cursor-pointer hover:border-[#6B7A42]"
               >
                 <div className="flex items-center justify-between mb-2">
@@ -542,7 +546,7 @@ export default function AdminPage({ onBack }) {
               </div>
 
               <div 
-                onClick={() => setActiveTab('pix')}
+                onClick={() => { setActiveTab('pix'); setConfig(api.getConfig()); }}
                 className="bg-[#FCFDF9] rounded-3xl p-5 border border-[#7A8C4B]/35 shadow-xs hover:shadow-md transition-all cursor-pointer hover:border-[#6B7A42]"
               >
                 <div className="flex items-center justify-between mb-2">
@@ -557,55 +561,37 @@ export default function AdminPage({ onBack }) {
         )}
 
         {/* ═══════════════════════════════════════════════════════════
-            TELA 2: LISTA DE CONVIDADOS
+            TELA 2: LISTA DE CONVIDADOS (ORGANIZAR LISTA)
         ═══════════════════════════════════════════════════════════ */}
         {activeTab === 'convidados' && (
           <div className="space-y-4 animate-fadeIn">
             <div className="bg-[#FCFDF9] rounded-3xl p-5 border border-[#7A8C4B]/35 shadow-sm space-y-4">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
                 <div>
-                  <h2 className="font-serif text-xl font-bold text-[#3F4D27]">Lista de Convidados ({totalConfirmados})</h2>
-                  <p className="text-xs text-[#5B6C38]">Adicione manualmente ou remova convidados da lista</p>
+                  <h2 className="font-serif text-xl font-bold text-[#3F4D27]">Organizar Lista de Convidados ({totalCadastrados})</h2>
+                  <p className="text-xs text-[#5B6C38]">Visualize, busque por nome, organize e exporte a lista oficial</p>
                 </div>
 
                 <button
                   onClick={handleExportCSV}
-                  className="px-4 py-2 rounded-xl bg-[#6B7A42] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs hover:bg-[#5B6C38] transition-colors cursor-pointer"
+                  className="px-4 py-2.5 rounded-xl bg-[#6B7A42] text-white text-xs font-bold flex items-center gap-1.5 shadow-xs hover:bg-[#5B6C38] transition-colors cursor-pointer"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>Exportar Planilha Excel</span>
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="relative">
+              <div className="pt-2">
+                <div className="relative w-full">
                   <input
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Buscar por nome..."
-                    className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-white border border-[#7A8C4B]/35 outline-none text-xs text-[#2F3A1D] font-medium focus:border-[#6B7A42]"
+                    placeholder="Buscar convidado por nome..."
+                    className="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-[#7A8C4B]/35 outline-none text-xs text-[#2F3A1D] font-medium focus:border-[#6B7A42] shadow-2xs"
                   />
-                  <Search className="w-4 h-4 text-[#5B6C38] absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-4 h-4 text-[#5B6C38] absolute left-3.5 top-1/2 -translate-y-1/2" />
                 </div>
-
-                <form onSubmit={handleAddConvidado} className="flex gap-2">
-                  <input
-                    type="text"
-                    value={newConvidadoNome}
-                    onChange={(e) => setNewConvidadoNome(e.target.value)}
-                    placeholder="Nome do novo convidado..."
-                    className="flex-1 px-3.5 py-2.5 rounded-xl bg-white border border-[#7A8C4B]/35 outline-none text-xs text-[#2F3A1D] font-medium focus:border-[#6B7A42]"
-                  />
-                  <button
-                    type="submit"
-                    disabled={addingConvidado || !newConvidadoNome.trim()}
-                    className="px-4 py-2.5 rounded-xl bg-[#3F4D27] hover:bg-black text-white text-xs font-bold flex items-center gap-1 disabled:opacity-50 cursor-pointer"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Adicionar</span>
-                  </button>
-                </form>
               </div>
             </div>
 
@@ -771,7 +757,7 @@ export default function AdminPage({ onBack }) {
                   type="text"
                   value={config.pixTitular}
                   onChange={(e) => setConfig({ ...config, pixTitular: e.target.value })}
-                  placeholder="Ex: Jéssica e Júlio"
+                  placeholder="Ex: Jessica e Julio"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#FCFDF9] border border-[#7A8C4B]/35 text-xs font-medium text-[#2F3A1D] outline-none focus:border-[#6B7A42]"
                 />
               </div>

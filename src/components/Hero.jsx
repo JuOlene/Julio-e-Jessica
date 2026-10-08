@@ -66,7 +66,7 @@ export default function Hero({ weddingDate = '2026-11-14T16:00:00' }) {
         <h1
           className="font-cursive text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-3 text-[#2D312E] drop-shadow-sm font-normal tracking-wide"
         >
-          Jéssica & Júlio
+          Jessica & Julio
         </h1>
 
         <p
