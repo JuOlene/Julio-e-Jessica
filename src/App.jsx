@@ -82,7 +82,7 @@ export default function App() {
 
     // Pais da Noiva
     paisNoiva: {
-      mae: "SEVERINA OLEGÁRIO DA SILVA",
+      mae: "SEVERINA OLEGARIO DA SILVA",
       pai: "AUSTIN PEREIRA DOS SANTOS",
       inMemoriam: true
     },
@@ -141,18 +141,18 @@ export default function App() {
     return <AdminPage onBack={() => { window.location.hash = ''; setIsAdmin(false); }} />;
   }
 
-  // 4 Botões Circulares com Ícones e Tamanhos Otimizados para Celular
+  // 4 Botões Circulares com Novos Símbolos Elegantes (Igreja/Alianças/Brinde/Presente Clássico)
   const circleButtons = [
     {
       id: 'cerimonia',
       label: 'Cerimônia',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
+          {/* Símbolo Clássico da Igreja com Cruz e Portal */}
           <path d="M12 2v4M10 4h4" />
-          <path d="m4 10 8-5 8 5" />
-          <path d="M6 10v11h12V10" />
-          <path d="M10 21v-5a2 2 0 0 1 4 0v5" />
-          <path d="M9 10h6" />
+          <path d="M4 11 12 5l8 6v10H4z" />
+          <path d="M9 21v-5a3 3 0 0 1 6 0v5" />
+          <circle cx="12" cy="11" r="1.5" />
         </svg>
       )
     },
@@ -160,10 +160,11 @@ export default function App() {
       id: 'buffet',
       label: 'Buffet',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
-          <path d="m3 9 9-6 9 6v12H3z" />
-          <path d="M7 21v-8a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v8" />
-          <path d="M10 9h4" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
+          {/* Taças de Celebração e Brinde */}
+          <path d="M7 3v6a4 4 0 0 0 4 4v7M17 3v6a4 4 0 0 1-4 4v7" />
+          <path d="M5 20h14" />
+          <path d="M5 3h6M13 3h6" />
         </svg>
       )
     },
@@ -171,10 +172,11 @@ export default function App() {
       id: 'rsvp',
       label: 'Presença',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
-          <circle cx="9" cy="12" r="4.5" />
-          <circle cx="15" cy="11" r="4.5" />
-          <path d="M15 7.5 16 6l1.5 1" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
+          {/* Monograma de Alianças Entrelaçadas com Diamante */}
+          <circle cx="8.5" cy="13.5" r="5" />
+          <circle cx="15.5" cy="13.5" r="5" />
+          <path d="m14 5 1.5-2 1.5 2-1.5 2z" fill="#5E7139" stroke="none" />
         </svg>
       )
     },
@@ -182,11 +184,12 @@ export default function App() {
       id: 'presentes',
       label: 'Opção de presente',
       icon: (
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
-          <rect x="3" y="8" width="18" height="4" rx="1" />
-          <path d="M12 8v13" />
-          <path d="M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7" />
-          <path d="M7.5 8a2.5 2.5 0 0 1 0-5A4.8 8 0 0 1 12 8a4.8 8 0 0 1 4.5-5 2.5 2.5 0 0 1 0 5" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
+          {/* Caixa de Presente Delicada com Laço de Fita */}
+          <rect x="3" y="9" width="18" height="12" rx="2" />
+          <path d="M12 9v12" />
+          <path d="M3 14h18" />
+          <path d="M12 9c-2-3-5.5-3-5.5 0s3.5 3 5.5 0c2 3 5.5 3 5.5 0s-3.5-3-5.5 0z" />
         </svg>
       )
     }
@@ -244,8 +247,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* 2. Benção dos Pais - Tamanho de Fonte e Espaçamento Aumentados no Celular */}
-          <div className="text-center my-2 sm:my-auto py-1 relative z-10 px-1 w-full max-w-[380px]">
+          {/* 2. Benção dos Pais - Alinhamento de Altura Perfeito e Simétrico no Celular */}
+          <div className="text-center my-2 sm:my-auto py-1 relative z-10 px-1 w-full max-w-[390px]">
             <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-tight mb-2 tracking-wide font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               com a bênção de seus pais...
             </p>
@@ -253,14 +256,16 @@ export default function App() {
             <div className="grid grid-cols-2 gap-3 sm:gap-4 text-[11.5px] sm:text-[13px] font-cinzel uppercase tracking-[0.03em] sm:tracking-[0.05em] text-[#1A230F]">
               
               {/* Coluna 1: Pais da Noiva */}
-              <div className="text-center flex flex-col justify-between space-y-1.5">
-                <div className="border-b border-[#5E7139]/30 pb-1.5 min-h-[36px] flex items-center justify-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+              <div className="text-center flex flex-col justify-start space-y-2">
+                {/* Linha das Mães com altura fixa exata */}
+                <div className="border-b border-[#5E7139]/30 pb-1.5 h-[46px] sm:h-[48px] flex items-center justify-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoiva.mae}
                   </span>
                 </div>
-                <div className="pt-0.5">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+                {/* Linha dos Pais (Austin e Julio) com altura fixa e alinhamento idêntico */}
+                <div className="pt-0.5 h-[52px] sm:h-[54px] flex flex-col justify-start items-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoiva.pai}
                   </span>
                   <span className="block text-[#4B5A2C] text-[10px] sm:text-[10.5px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
@@ -270,14 +275,16 @@ export default function App() {
               </div>
 
               {/* Coluna 2: Pais do Noivo */}
-              <div className="text-center flex flex-col justify-between space-y-1.5">
-                <div className="border-b border-[#5E7139]/30 pb-1.5 min-h-[36px] flex items-center justify-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+              <div className="text-center flex flex-col justify-start space-y-2">
+                {/* Linha das Mães com altura fixa exata */}
+                <div className="border-b border-[#5E7139]/30 pb-1.5 h-[46px] sm:h-[48px] flex items-center justify-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoivo.mae}
                   </span>
                 </div>
-                <div className="pt-0.5">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+                {/* Linha dos Pais (Austin e Julio) com altura fixa e alinhamento idêntico */}
+                <div className="pt-0.5 h-[52px] sm:h-[54px] flex flex-col justify-start items-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoivo.pai}
                   </span>
                   <span className="block text-[#4B5A2C] text-[10px] sm:text-[10.5px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
