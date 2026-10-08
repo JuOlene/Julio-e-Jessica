@@ -144,10 +144,10 @@ export default function App() {
       label: 'Presença',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
-          {/* Envelope Delicado com Check de Confirmação */}
-          <rect x="2.5" y="5.5" width="19" height="13.5" rx="2" />
-          <path d="m3 7 9 6 9-6" />
-          <path d="m8.5 13 2.5 2.5 5-5" strokeWidth="2.2" className="text-[#3F4D27]" />
+          {/* Envelope Clássico e Limpo de Convite */}
+          <rect x="2.5" y="5" width="19" height="14" rx="2" />
+          <path d="m3 6 9 6.5 9-6.5" />
+          <path d="m3 19 6-5M21 19l-6-5" />
         </svg>
       )
     },
