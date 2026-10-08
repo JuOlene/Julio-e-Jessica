@@ -16,7 +16,7 @@ export const DEFAULT_CONFIG = {
   buffetWazeUrl: "https://waze.com/ul?q=Av.+Prestes+Maia,+1310+-+Centro,+Diadema+-+SP",
 
   // Pix
-  pixKey: "casamentojulioejessica@email.com",
+  pixKey: "11 954886391",
   pixTitular: "Jessica e Julio",
   pixBanco: "Nubank",
 

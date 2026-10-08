@@ -8,41 +8,47 @@ export default function EnvelopeIntro({ onOpen }) {
     if (isOpening || isCompleted) return;
     setIsOpening(true);
 
-    // Animação suave e fluida revelando o convite
+    // Duração da animação do envelope se desdobrando/abrindo para revelar o convite
     setTimeout(() => {
       setIsCompleted(true);
       if (onOpen) onOpen();
-    }, 850);
+    }, 1100);
   };
 
   if (isCompleted) return null;
 
   return (
-    <div className="fixed inset-0 z-50 w-full min-h-[100dvh] bg-[#ECE8E1] flex items-center justify-center p-0 sm:p-4 select-none">
+    <div className="fixed inset-0 z-50 w-full min-h-[100dvh] bg-[#ECE8E1] flex items-center justify-center p-0 sm:p-4 select-none perspective-[1200px]">
       
-      {/* ENVELOPE COM O PAPEL CONTÍNUO ESTENDIDO ATÉ EMBAIXO E SEM CORTES */}
+      {/* ENVELOPE COM O MESMO DESIGN E PROPORÇÃO DO CARTÃO */}
       <div 
         onClick={handleOpen}
-        className={`w-full max-w-lg min-h-[100dvh] sm:min-h-0 sm:h-[96vh] relative flex flex-col justify-center items-center shadow-[0_20px_60px_rgba(47,58,29,0.18)] bg-[#FAF8F5] sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-800 ${
-          isOpening ? 'opacity-0 scale-95 pointer-events-none' : 'opacity-100 scale-100'
+        className={`w-full max-w-lg min-h-[100dvh] sm:min-h-0 sm:h-[96vh] relative flex flex-col justify-center items-center shadow-[0_20px_60px_rgba(47,58,29,0.18)] bg-[#FAF8F5] sm:rounded-3xl overflow-hidden cursor-pointer transition-all duration-1000 ${
+          isOpening ? 'opacity-0 scale-105 pointer-events-none' : 'opacity-100 scale-100'
         }`}
       >
-        {/* Imagem do Envelope em Relevo Seco com papel contínuo estendido até a borda inferior */}
+        {/* Imagem do Envelope em Relevo Seco Original */}
         <img 
           src="/envelope_jj_extended_pure.jpg" 
           alt="Envelope de Casamento Jessica & Julio" 
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none"
+          className={`absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-transform duration-1000 ease-out ${
+            isOpening ? 'scale-110 blur-[1px]' : 'scale-100'
+          }`}
         />
 
-        {/* Indicação "CLIQUE AQUI" posicionada perfeitamente abaixo do lacre de cera */}
-        <div className="absolute top-[55%] sm:top-[54%] inset-x-0 flex flex-col items-center justify-center pointer-events-none z-20">
-          <div className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#FAF8F5]/90 backdrop-blur-[2px] border border-[#7A8C4B]/30 shadow-[0_2px_10px_rgba(0,0,0,0.06)] animate-pulse">
-            <span className="font-cinzel text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-[#3F4D27] font-bold">
-              CLIQUE AQUI
+        {/* Efeito da Aba Superior do Envelope abrindo (Envelope Unfolding Effect) */}
+        {isOpening && (
+          <div className="absolute inset-0 bg-gradient-to-b from-[#EBE6DC] via-[#FAF8F5]/80 to-transparent origin-top animate-flap-open pointer-events-none z-10" />
+        )}
+
+        {/* Indicação "CLIQUE AQUI" Elegante, Minimalista e Luxuosa */}
+        <div className={`absolute top-[54%] sm:top-[53%] inset-x-0 flex flex-col items-center justify-center pointer-events-none z-20 transition-opacity duration-300 ${isOpening ? 'animate-seal-pop opacity-0' : 'opacity-100'}`}>
+          <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#FAF8F5]/92 backdrop-blur-md border border-[#7A8C4B]/35 shadow-[0_4px_20px_rgba(47,58,29,0.12)] transition-transform duration-500 hover:scale-105">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#5E7139] animate-ping" />
+            <span className="font-cinzel text-[10.5px] sm:text-[11.5px] uppercase tracking-[0.26em] text-[#2F3A1D] font-medium">
+              Toque para abrir
             </span>
-            <span className="text-xs text-[#3F4D27]">
-              👆
-            </span>
+            <span className="text-[#5E7139] text-xs font-serif italic">✦</span>
           </div>
         </div>
 
