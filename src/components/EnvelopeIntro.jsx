@@ -41,11 +41,11 @@ export default function EnvelopeIntro({ onOpen }) {
           <div className="absolute inset-0 bg-gradient-to-b from-[#EBE6DC] via-[#FAF8F5]/80 to-transparent origin-top animate-flap-open pointer-events-none z-10" />
         )}
 
-        {/* Indicação "CLIQUE AQUI" Elegante, Minimalista e Luxuosa */}
-        <div className={`absolute top-[54%] sm:top-[53%] inset-x-0 flex flex-col items-center justify-center pointer-events-none z-20 transition-opacity duration-300 ${isOpening ? 'animate-seal-pop opacity-0' : 'opacity-100'}`}>
-          <div className="flex items-center gap-2 px-5 py-2 rounded-full bg-[#FAF8F5]/92 backdrop-blur-md border border-[#7A8C4B]/35 shadow-[0_4px_20px_rgba(47,58,29,0.12)] transition-transform duration-500 hover:scale-105">
+        {/* Indicação "TOQUE PARA ABRIR" Elegante posicionada mais para baixo */}
+        <div className={`absolute top-[68%] sm:top-[67%] inset-x-0 flex flex-col items-center justify-center pointer-events-none z-20 transition-opacity duration-300 ${isOpening ? 'animate-seal-pop opacity-0' : 'opacity-100'}`}>
+          <div className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#FAF8F5]/95 backdrop-blur-md border border-[#7A8C4B]/40 shadow-[0_4px_20px_rgba(47,58,29,0.15)] transition-transform duration-500 hover:scale-105">
             <span className="w-1.5 h-1.5 rounded-full bg-[#5E7139] animate-ping" />
-            <span className="font-cinzel text-[10.5px] sm:text-[11.5px] uppercase tracking-[0.26em] text-[#2F3A1D] font-medium">
+            <span className="font-cinzel text-[11px] sm:text-[12px] uppercase tracking-[0.28em] text-[#2F3A1D] font-medium">
               Toque para abrir
             </span>
             <span className="text-[#5E7139] text-xs font-serif italic">✦</span>
