@@ -323,20 +323,25 @@ export default function App() {
           </div>
 
           {/* Endereço da Cerimônia & Horários na Página Inicial */}
-          <div className="my-1 text-center relative z-10 w-full px-2 max-w-[370px] mx-auto">
-            <div className="bg-[#FAF8F5]/85 backdrop-blur-xs border border-[#7A8C4B]/30 rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(47,58,29,0.06)] flex flex-col items-center justify-center gap-0.5">
+          <div className="my-1 sm:my-1.5 text-center relative z-10 w-full px-2 max-w-[390px] mx-auto">
+            <div className="bg-[#FAF8F5]/90 backdrop-blur-xs border border-[#7A8C4B]/40 rounded-2xl px-3.5 py-2 shadow-[0_3px_12px_rgba(47,58,29,0.08)] flex flex-col items-center justify-center gap-1">
+              {/* Nome da Igreja */}
               <div className="flex items-center justify-center gap-1.5 text-[#3F4D27]">
-                <Church className="w-3.5 h-3.5 text-[#5E7139] shrink-0" />
-                <span className="font-cinzel text-[10px] sm:text-[11px] font-bold text-[#283516] tracking-wide">
+                <Church className="w-4 h-4 text-[#5E7139] shrink-0" />
+                <span className="font-cinzel text-[11px] sm:text-[12.5px] font-bold text-[#283516] tracking-wide leading-tight">
                   {eventConfig.ceremonyVenue || DEFAULT_CONFIG.ceremonyVenue}
                 </span>
               </div>
-              <p className="font-sans-clean text-[9px] sm:text-[10px] text-[#4E5E2A] leading-tight opacity-90">
+
+              {/* Nome da Rua e Endereço em Destaque Mais Legível */}
+              <p className="font-sans-clean text-[10.5px] sm:text-[12px] font-semibold text-[#283516] leading-snug px-1">
                 {eventConfig.ceremonyAddress || DEFAULT_CONFIG.ceremonyAddress}
               </p>
-              <div className="flex items-center justify-center gap-2 mt-0.5 pt-0.5 border-t border-[#7A8C4B]/20 text-[8.5px] sm:text-[9.5px] text-[#5E7139] font-sans-clean font-semibold">
+
+              {/* Horários */}
+              <div className="flex items-center justify-center gap-2 mt-0.5 pt-1 border-t border-[#7A8C4B]/25 text-[9px] sm:text-[10px] text-[#4E5E2A] font-sans-clean font-bold tracking-wide">
                 <span>Cerimônia: 15:30h</span>
-                <span>•</span>
+                <span className="text-[#7A8C4B]">•</span>
                 <span>Recepção no Buffet: 17:30h</span>
               </div>
             </div>
