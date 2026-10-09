@@ -185,11 +185,11 @@ export default function App() {
         isEnvelopeOpened ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'
       }`}>
         
-        {/* Imagem Original Restaurada com a Arte Exata */}
+        {/* Imagem Original Restaurada com a Arte Exata - Estendida para baixo */}
         <img 
           src="/sage_original_nogold.jpg" 
           alt="Modelo Original Jéssica & Julio" 
-          className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none -z-0"
+          className="absolute -top-[1%] -left-[2%] w-[104%] h-[112%] max-w-none object-cover object-top pointer-events-none -z-0 origin-top scale-[1.04]"
         />
 
         {/* Conteúdo Fluido com Escala Aumentada para Visualização no Mobile */}
