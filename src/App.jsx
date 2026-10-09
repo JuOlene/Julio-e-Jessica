@@ -192,21 +192,11 @@ export default function App() {
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none -z-0"
         />
 
-        {/* Toque de cor aquarela sálvia no Canto Superior Direito */}
-        <div className="absolute top-0 right-0 w-64 h-64 sm:w-72 sm:h-72 bg-[radial-gradient(circle_at_top_right,_rgba(110,135,70,0.45)_0%,_rgba(135,155,95,0.30)_35%,_rgba(160,180,120,0.15)_60%,_transparent_80%)] pointer-events-none z-0 mix-blend-multiply" />
-
-        {/* Toque de cor aquarela sálvia no Canto Inferior Esquerdo */}
-        <div className="absolute bottom-0 left-0 w-64 h-64 sm:w-72 sm:h-72 bg-[radial-gradient(circle_at_bottom_left,_rgba(110,135,70,0.45)_0%,_rgba(135,155,95,0.30)_35%,_rgba(160,180,120,0.15)_60%,_transparent_80%)] pointer-events-none z-0 mix-blend-multiply" />
-
-        {/* Suavização das bordas e harmonia de leitura suave */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_transparent_50%,_rgba(250,248,245,0.50)_100%)] pointer-events-none z-0" />
-        <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/40 via-transparent to-[#FAF8F5]/45 pointer-events-none z-0" />
-
         {/* Conteúdo Fluido com Escala Aumentada para Visualização no Mobile */}
-        <div className="w-full h-full relative z-10 flex flex-col justify-between items-center text-center px-4 sm:px-8 py-3.5 sm:py-6 max-w-[440px] mx-auto">
+        <div className="w-full h-full relative z-10 flex flex-col justify-between items-center text-center px-3 sm:px-8 py-3 sm:py-5 pb-5 sm:pb-6 max-w-[440px] mx-auto">
 
           {/* 1. Nomes dos Noivos - Grande e Destacado */}
-          <div className="pt-1.5 sm:pt-1 text-center relative z-10 w-full">
+          <div className="pt-1 text-center relative z-10 w-full">
             <h1 className="font-cursive text-5xl sm:text-7xl text-[#283516] leading-[1.08] drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)] tracking-wide">
               Jéssica <br />
               <span className="text-3xl sm:text-4xl font-serif italic text-[#5E7139]">&</span> Julio
@@ -221,22 +211,22 @@ export default function App() {
           </div>
 
           {/* 2. Benção dos Pais - Cada Nome Reto, Sem Cortar e Sem Colar */}
-          <div className="text-center my-1.5 sm:my-2 relative z-10 px-2 w-full max-w-[420px] mx-auto">
-            <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-tight mb-1.5 tracking-wide font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
+          <div className="text-center my-1 sm:my-1.5 relative z-10 px-2 w-full max-w-[420px] mx-auto">
+            <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-tight mb-1 tracking-wide font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               com a bênção de seus pais...
             </p>
             
-            <div className="space-y-1.5 font-cinzel uppercase text-[#1A230F] w-full">
+            <div className="space-y-1 font-cinzel uppercase text-[#1A230F] w-full">
               {/* Pais da Noiva */}
               <div className="flex flex-col items-center justify-center">
-                <span className="font-bold text-[10.5px] sm:text-[12px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
+                <span className="font-bold text-[10px] sm:text-[11.5px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
                   {eventDetails.paisNoiva.mae}
                 </span>
                 <div className="flex items-center justify-center gap-1.5 mt-0.5">
-                  <span className="font-bold text-[10.5px] sm:text-[12px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+                  <span className="font-bold text-[10px] sm:text-[11.5px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
                     {eventDetails.paisNoiva.pai}
                   </span>
-                  <span className="text-[#4B5A2C] text-[9px] sm:text-[10px] tracking-wider lowercase italic font-serif font-semibold">
+                  <span className="text-[#4B5A2C] text-[8.5px] sm:text-[9.5px] tracking-wider lowercase italic font-serif font-semibold">
                     (em memória)
                   </span>
                 </div>
@@ -251,14 +241,14 @@ export default function App() {
 
               {/* Pais do Noivo */}
               <div className="flex flex-col items-center justify-center">
-                <span className="font-bold text-[10.5px] sm:text-[12px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
+                <span className="font-bold text-[10px] sm:text-[11.5px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
                   {eventDetails.paisNoivo.mae}
                 </span>
                 <div className="flex items-center justify-center gap-1.5 mt-0.5">
-                  <span className="font-bold text-[10.5px] sm:text-[12px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
+                  <span className="font-bold text-[10px] sm:text-[11.5px] tracking-[0.03em] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
                     {eventDetails.paisNoivo.pai}
                   </span>
-                  <span className="text-[#4B5A2C] text-[9px] sm:text-[10px] tracking-wider lowercase italic font-serif font-semibold">
+                  <span className="text-[#4B5A2C] text-[8.5px] sm:text-[9.5px] tracking-wider lowercase italic font-serif font-semibold">
                     (em memória)
                   </span>
                 </div>
@@ -267,14 +257,14 @@ export default function App() {
           </div>
 
           {/* 3. Frase de Convite */}
-          <div className="text-center my-1 sm:my-auto relative z-10 w-full px-2">
-            <p className="font-serif italic text-[13.5px] sm:text-[15.5px] text-[#242F16] font-semibold tracking-wide drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
+          <div className="text-center my-0.5 sm:my-auto relative z-10 w-full px-2">
+            <p className="font-serif italic text-[13px] sm:text-[15px] text-[#242F16] font-semibold tracking-wide drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               Convidam para a celebração do seu casamento
             </p>
           </div>
 
           {/* 4. BLOCO DE DATA: 14 DE NOVEMBRO DE 2026 ÀS 15:30 */}
-          <div className="my-1 sm:my-1.5 py-0.5 text-center relative z-10 w-full">
+          <div className="my-1 py-0.5 text-center relative z-10 w-full">
             <div className="bg-[#FAF8F5]/90 backdrop-blur-xs border border-[#7A8C4B]/40 rounded-2xl py-2 px-4 sm:px-6 shadow-[0_4px_16px_rgba(47,58,29,0.09)] max-w-[340px] sm:max-w-[360px] mx-auto transition-all">
               
               {/* Mês em Destaque */}
@@ -323,7 +313,7 @@ export default function App() {
           </div>
 
           {/* Endereço da Cerimônia & Horários na Página Inicial */}
-          <div className="my-1 sm:my-1.5 text-center relative z-10 w-full px-2 max-w-[390px] mx-auto">
+          <div className="my-1 text-center relative z-10 w-full px-2 max-w-[390px] mx-auto">
             <div className="bg-[#FAF8F5]/90 backdrop-blur-xs border border-[#7A8C4B]/40 rounded-2xl px-3.5 py-2 shadow-[0_3px_12px_rgba(47,58,29,0.08)] flex flex-col items-center justify-center gap-1">
               {/* Nome da Igreja */}
               <div className="flex items-center justify-center gap-1.5 text-[#3F4D27]">
@@ -347,13 +337,13 @@ export default function App() {
             </div>
           </div>
 
-          {/* 5. Frase "Clique para mais detalhes" + 4 BOTÕES */}
-          <div className="pb-1.5 text-center pt-1 relative z-10 w-full">
+          {/* 5. Frase "Clique para mais detalhes" + 4 BOTÕES AUMENTADOS */}
+          <div className="pb-2 text-center pt-1.5 relative z-10 w-full">
             <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-none mb-2.5 font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               Clique para mais detalhes
             </p>
 
-            <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-[380px] mx-auto items-start">
+            <div className="grid grid-cols-4 gap-2.5 sm:gap-4 max-w-[410px] mx-auto items-start">
               {circleButtons.map((btn) => (
                 <button
                   key={btn.id}
@@ -362,15 +352,15 @@ export default function App() {
                   }}
                   className="flex flex-col items-center group cursor-pointer outline-none transition-all duration-300 active:scale-95"
                 >
-                  {/* Botão com Aro e Ícone */}
-                  <div className="relative p-[3px] rounded-full bg-gradient-to-tr from-[#3F4D27] via-[#556734] to-[#3F4D27] shadow-[0_5px_16px_rgba(47,58,29,0.25)] group-hover:shadow-[0_8px_24px_rgba(47,58,29,0.48)] group-hover:scale-105 transition-all duration-300">
-                    <div className="w-13 h-13 sm:w-15 sm:h-15 rounded-full bg-[#FAF8F5] border border-[#3F4D27]/30 flex items-center justify-center group-hover:bg-[#EFF3E4] transition-colors">
+                  {/* Botão com Tamanho Aumentado, Aro e Ícone Nítido */}
+                  <div className="relative p-[3.5px] rounded-full bg-gradient-to-tr from-[#3F4D27] via-[#556734] to-[#3F4D27] shadow-[0_6px_20px_rgba(47,58,29,0.30)] group-hover:shadow-[0_10px_28px_rgba(47,58,29,0.50)] group-hover:scale-105 transition-all duration-300">
+                    <div className="w-[58px] h-[58px] sm:w-[68px] sm:h-[68px] rounded-full bg-[#FAF8F5] border border-[#3F4D27]/35 flex items-center justify-center group-hover:bg-[#EFF3E4] transition-colors">
                       {btn.icon}
                     </div>
                   </div>
 
                   {/* Rótulo Maior e em Alto Contraste */}
-                  <span className="text-[11px] sm:text-[12.5px] font-serif font-bold italic text-[#1A230F] group-hover:text-[#3F4D27] text-center leading-tight mt-1 transition-colors drop-shadow-[0_1px_1px_rgba(255,255,255,0.85)]">
+                  <span className="text-[12px] sm:text-[13.5px] font-serif font-bold italic text-[#1A230F] group-hover:text-[#3F4D27] text-center leading-tight mt-1.5 transition-colors drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)]">
                     {btn.label}
                   </span>
                 </button>
