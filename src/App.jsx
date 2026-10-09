@@ -334,10 +334,10 @@ export default function App() {
               <p className="font-sans-clean text-[9px] sm:text-[10px] text-[#4E5E2A] leading-tight opacity-90">
                 {eventConfig.ceremonyAddress || DEFAULT_CONFIG.ceremonyAddress}
               </p>
-              <div className="flex items-center gap-2 mt-0.5 pt-0.5 border-t border-[#7A8C4B]/20 text-[8.5px] sm:text-[9.5px] text-[#5E7139] font-sans-clean font-semibold">
+              <div className="flex items-center justify-center gap-2 mt-0.5 pt-0.5 border-t border-[#7A8C4B]/20 text-[8.5px] sm:text-[9.5px] text-[#5E7139] font-sans-clean font-semibold">
                 <span>Cerimônia: 15:30h</span>
                 <span>•</span>
-                <span>Buffet: 17:30h</span>
+                <span>Recepção no Buffet: 17:30h</span>
               </div>
             </div>
           </div>
@@ -454,7 +454,7 @@ export default function App() {
                 <Utensils className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="font-cinzel text-base font-bold text-[#3F4D27]">Local do Buffet</h3>
+                <h3 className="font-cinzel text-base font-bold text-[#3F4D27]">Recepção no Buffet</h3>
                 <span className="text-[10.5px] text-[#6B7A42] font-sans-clean font-bold uppercase tracking-wider">Início às 17:30h</span>
               </div>
             </div>
