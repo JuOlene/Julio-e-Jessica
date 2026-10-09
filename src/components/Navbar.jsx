@@ -35,7 +35,7 @@ export default function Navbar() {
           className="flex items-center gap-2 group cursor-pointer"
         >
           <span className="font-cursive text-3xl md:text-4xl text-[#8C6B38] group-hover:text-[#6D5228] transition-colors font-normal">
-            Jessica & Julio
+            Jéssica & Julio
           </span>
           <Heart className="w-4 h-4 text-[#B87D7A] fill-[#E8D3D1] transition-transform group-hover:scale-125" />
         </a>

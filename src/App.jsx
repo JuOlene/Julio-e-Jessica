@@ -49,7 +49,9 @@ export default function App() {
     dayOfWeek: "SÁBADO",
     day: "14",
     year: "2026",
-    time: "17:30H",
+    time: "15:30H",
+    ceremonyTime: "15:30H",
+    buffetTime: "17:30H",
 
     // Pais da Noiva
     paisNoiva: {
@@ -141,7 +143,7 @@ export default function App() {
     },
     {
       id: 'rsvp',
-      label: 'Presença',
+      label: 'Confirmar presença',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
           {/* Envelope Clássico e Limpo de Convite */}
@@ -153,7 +155,7 @@ export default function App() {
     },
     {
       id: 'presentes',
-      label: 'Opção de presente',
+      label: 'Sugestão de presente',
       icon: (
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7 sm:w-8 sm:h-8 text-[#3F4D27] group-hover:scale-110 transition-transform">
           {/* Caixa de Presente Delicada com Laço de Fita */}
@@ -186,7 +188,7 @@ export default function App() {
         {/* Imagem Original Restaurada com a Arte Exata */}
         <img 
           src="/sage_original_nogold.jpg" 
-          alt="Modelo Original Jessica & Julio" 
+          alt="Modelo Original Jéssica & Julio" 
           className="absolute inset-0 w-full h-full object-cover object-center pointer-events-none -z-0"
         />
 
@@ -201,12 +203,12 @@ export default function App() {
         <div className="absolute inset-0 bg-gradient-to-b from-[#FAF8F5]/40 via-transparent to-[#FAF8F5]/45 pointer-events-none z-0" />
 
         {/* Conteúdo Fluido com Escala Aumentada para Visualização no Mobile */}
-        <div className="w-full h-full relative z-10 flex flex-col justify-between items-center text-center px-4 sm:px-8 py-4 sm:py-7 max-w-[440px] mx-auto">
+        <div className="w-full h-full relative z-10 flex flex-col justify-between items-center text-center px-4 sm:px-8 py-3.5 sm:py-6 max-w-[440px] mx-auto">
 
           {/* 1. Nomes dos Noivos - Grande e Destacado */}
-          <div className="pt-2 sm:pt-1 text-center relative z-10 w-full">
+          <div className="pt-1.5 sm:pt-1 text-center relative z-10 w-full">
             <h1 className="font-cursive text-5xl sm:text-7xl text-[#283516] leading-[1.08] drop-shadow-[0_1px_2px_rgba(255,255,255,0.95)] tracking-wide">
-              Jessica <br />
+              Jéssica <br />
               <span className="text-3xl sm:text-4xl font-serif italic text-[#5E7139]">&</span> Julio
             </h1>
 
@@ -218,47 +220,47 @@ export default function App() {
             </div>
           </div>
 
-          {/* 2. Benção dos Pais - Alinhamento de Altura Perfeito e Simétrico no Celular */}
-          <div className="text-center my-2 sm:my-auto py-1 relative z-10 px-1 w-full max-w-[390px]">
-            <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-tight mb-2 tracking-wide font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
+          {/* 2. Benção dos Pais - Alinhamento Perfeito e Reto */}
+          <div className="text-center my-1.5 sm:my-2 relative z-10 px-1 w-full max-w-[390px]">
+            <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-tight mb-1 tracking-wide font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               com a bênção de seus pais...
             </p>
             
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 text-[11.5px] sm:text-[13px] font-cinzel uppercase tracking-[0.03em] sm:tracking-[0.05em] text-[#1A230F]">
+            <div className="grid grid-cols-2 gap-2 sm:gap-4 text-[10.5px] sm:text-[12px] font-cinzel uppercase tracking-[0.02em] sm:tracking-[0.04em] text-[#1A230F]">
               
               {/* Coluna 1: Pais da Noiva */}
-              <div className="text-center flex flex-col justify-start space-y-2">
-                {/* Linha das Mães com altura fixa exata */}
-                <div className="border-b border-[#5E7139]/30 pb-1.5 h-[46px] sm:h-[48px] flex items-center justify-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+              <div className="text-center flex flex-col justify-start">
+                {/* Linha das Mães com altura fixa exata para alinhamento horizontal reto */}
+                <div className="border-b border-[#5E7139]/30 pb-1 h-[40px] sm:h-[42px] flex items-center justify-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoiva.mae}
                   </span>
                 </div>
-                {/* Linha dos Pais (Austin e Julio) com altura fixa e alinhamento idêntico */}
-                <div className="pt-0.5 h-[52px] sm:h-[54px] flex flex-col justify-start items-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+                {/* Linha dos Pais com altura fixa e alinhamento reto */}
+                <div className="pt-1 h-[46px] sm:h-[48px] flex flex-col justify-center items-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoiva.pai}
                   </span>
-                  <span className="block text-[#4B5A2C] text-[10px] sm:text-[10.5px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
+                  <span className="block text-[#4B5A2C] text-[9.5px] sm:text-[10px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
                     (em memória)
                   </span>
                 </div>
               </div>
 
               {/* Coluna 2: Pais do Noivo */}
-              <div className="text-center flex flex-col justify-start space-y-2">
-                {/* Linha das Mães com altura fixa exata */}
-                <div className="border-b border-[#5E7139]/30 pb-1.5 h-[46px] sm:h-[48px] flex items-center justify-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+              <div className="text-center flex flex-col justify-start">
+                {/* Linha das Mães com altura fixa exata para alinhamento horizontal reto */}
+                <div className="border-b border-[#5E7139]/30 pb-1 h-[40px] sm:h-[42px] flex items-center justify-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoivo.mae}
                   </span>
                 </div>
-                {/* Linha dos Pais (Austin e Julio) com altura fixa e alinhamento idêntico */}
-                <div className="pt-0.5 h-[52px] sm:h-[54px] flex flex-col justify-start items-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug break-words drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+                {/* Linha dos Pais com altura fixa e alinhamento reto */}
+                <div className="pt-1 h-[46px] sm:h-[48px] flex flex-col justify-center items-center">
+                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
                     {eventDetails.paisNoivo.pai}
                   </span>
-                  <span className="block text-[#4B5A2C] text-[10px] sm:text-[10.5px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
+                  <span className="block text-[#4B5A2C] text-[9.5px] sm:text-[10px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
                     (em memória)
                   </span>
                 </div>
@@ -267,19 +269,19 @@ export default function App() {
             </div>
           </div>
 
-          {/* 3. Frase de Convite - Maior e Mais Nítida */}
-          <div className="text-center my-1.5 sm:my-auto relative z-10 w-full px-2">
-            <p className="font-serif italic text-[14px] sm:text-[16px] text-[#242F16] font-semibold tracking-wide drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
+          {/* 3. Frase de Convite */}
+          <div className="text-center my-1 sm:my-auto relative z-10 w-full px-2">
+            <p className="font-serif italic text-[13.5px] sm:text-[15.5px] text-[#242F16] font-semibold tracking-wide drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               Convidam para a celebração do seu casamento
             </p>
           </div>
 
-          {/* 4. BLOCO DE DATA: 14 DE NOVEMBRO DE 2026 ÀS 17:30 - Mais Imponente */}
-          <div className="my-2 sm:my-auto py-1 text-center relative z-10 w-full">
-            <div className="bg-[#FAF8F5]/90 backdrop-blur-xs border border-[#7A8C4B]/40 rounded-2xl py-2.5 px-4 sm:px-6 shadow-[0_4px_16px_rgba(47,58,29,0.09)] max-w-[340px] sm:max-w-[360px] mx-auto transition-all">
+          {/* 4. BLOCO DE DATA: 14 DE NOVEMBRO DE 2026 ÀS 15:30 */}
+          <div className="my-1 sm:my-1.5 py-0.5 text-center relative z-10 w-full">
+            <div className="bg-[#FAF8F5]/90 backdrop-blur-xs border border-[#7A8C4B]/40 rounded-2xl py-2 px-4 sm:px-6 shadow-[0_4px_16px_rgba(47,58,29,0.09)] max-w-[340px] sm:max-w-[360px] mx-auto transition-all">
               
               {/* Mês em Destaque */}
-              <div className="flex items-center justify-center gap-2 mb-1">
+              <div className="flex items-center justify-center gap-2 mb-0.5">
                 <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#7A8C4B]/50" />
                 <span className="font-cinzel text-xs sm:text-sm font-bold text-[#283516] tracking-[0.24em] sm:tracking-[0.28em] uppercase">
                   {eventDetails.month}
@@ -287,33 +289,33 @@ export default function App() {
                 <span className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-[#7A8C4B]/50" />
               </div>
 
-              {/* Linha Central: SÁBADO | 14 | 17:30H */}
+              {/* Linha Central: SÁBADO | 14 | 15:30H */}
               <div className="flex items-center justify-center gap-3 my-0.5">
                 <div className="text-right flex-1">
-                  <span className="font-cinzel text-[11px] sm:text-[12.5px] font-bold text-[#47572B] tracking-wider uppercase block">
+                  <span className="font-cinzel text-[11px] sm:text-[12px] font-bold text-[#47572B] tracking-wider uppercase block">
                     {eventDetails.dayOfWeek}
                   </span>
                 </div>
 
-                <div className="h-8 w-[1.5px] bg-[#7A8C4B]/45 shrink-0" />
+                <div className="h-7 sm:h-8 w-[1.5px] bg-[#7A8C4B]/45 shrink-0" />
 
                 <div className="px-1.5">
-                  <span className="font-serif text-4xl sm:text-6xl font-light text-[#1B2410] leading-none tracking-tight block">
+                  <span className="font-serif text-3xl sm:text-5xl font-light text-[#1B2410] leading-none tracking-tight block">
                     {eventDetails.day}
                   </span>
                 </div>
 
-                <div className="h-8 w-[1.5px] bg-[#7A8C4B]/45 shrink-0" />
+                <div className="h-7 sm:h-8 w-[1.5px] bg-[#7A8C4B]/45 shrink-0" />
 
                 <div className="text-left flex-1">
-                  <span className="font-cinzel text-[11px] sm:text-[12.5px] font-bold text-[#47572B] tracking-wider block">
+                  <span className="font-cinzel text-[11px] sm:text-[12px] font-bold text-[#47572B] tracking-wider block">
                     {eventDetails.time}
                   </span>
                 </div>
               </div>
 
               {/* Ano Centralizado */}
-              <div className="flex items-center justify-center gap-2 mt-1">
+              <div className="flex items-center justify-center gap-2 mt-0.5">
                 <span className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-[#7A8C4B]/50" />
                 <span className="font-cinzel text-xs sm:text-sm font-bold text-[#283516] tracking-[0.22em] sm:tracking-[0.26em]">
                   {eventDetails.year}
@@ -323,13 +325,33 @@ export default function App() {
             </div>
           </div>
 
-          {/* 5. Frase "Clique para mais detalhes" + 4 BOTÕES MAIORES NO CELULAR */}
-          <div className="pb-2 text-center pt-2 relative z-10 w-full">
-            <p className="font-allura text-2xl sm:text-4xl text-[#283516] leading-none mb-3 font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
+          {/* Endereço da Cerimônia & Horários na Página Inicial */}
+          <div className="my-1 text-center relative z-10 w-full px-2 max-w-[370px] mx-auto">
+            <div className="bg-[#FAF8F5]/85 backdrop-blur-xs border border-[#7A8C4B]/30 rounded-xl px-3 py-1.5 shadow-[0_2px_8px_rgba(47,58,29,0.06)] flex flex-col items-center justify-center gap-0.5">
+              <div className="flex items-center justify-center gap-1.5 text-[#3F4D27]">
+                <Church className="w-3.5 h-3.5 text-[#5E7139] shrink-0" />
+                <span className="font-cinzel text-[10px] sm:text-[11px] font-bold text-[#283516] tracking-wide">
+                  {eventConfig.ceremonyVenue || DEFAULT_CONFIG.ceremonyVenue}
+                </span>
+              </div>
+              <p className="font-sans-clean text-[9px] sm:text-[10px] text-[#4E5E2A] leading-tight opacity-90">
+                {eventConfig.ceremonyAddress || DEFAULT_CONFIG.ceremonyAddress}
+              </p>
+              <div className="flex items-center gap-2 mt-0.5 pt-0.5 border-t border-[#7A8C4B]/20 text-[8.5px] sm:text-[9.5px] text-[#5E7139] font-sans-clean font-semibold">
+                <span>Cerimônia: 15:30h</span>
+                <span>•</span>
+                <span>Buffet: 17:30h</span>
+              </div>
+            </div>
+          </div>
+
+          {/* 5. Frase "Clique para mais detalhes" + 4 BOTÕES */}
+          <div className="pb-1.5 text-center pt-1 relative z-10 w-full">
+            <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-none mb-2.5 font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               Clique para mais detalhes
             </p>
 
-            <div className="grid grid-cols-4 gap-2.5 sm:gap-4 max-w-[380px] mx-auto items-start">
+            <div className="grid grid-cols-4 gap-2 sm:gap-3 max-w-[380px] mx-auto items-start">
               {circleButtons.map((btn) => (
                 <button
                   key={btn.id}
@@ -338,15 +360,15 @@ export default function App() {
                   }}
                   className="flex flex-col items-center group cursor-pointer outline-none transition-all duration-300 active:scale-95"
                 >
-                  {/* Botão com Aro Aumentado e Ícone Bem Visível */}
+                  {/* Botão com Aro e Ícone */}
                   <div className="relative p-[3px] rounded-full bg-gradient-to-tr from-[#3F4D27] via-[#556734] to-[#3F4D27] shadow-[0_5px_16px_rgba(47,58,29,0.25)] group-hover:shadow-[0_8px_24px_rgba(47,58,29,0.48)] group-hover:scale-105 transition-all duration-300">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#FAF8F5] border border-[#3F4D27]/30 flex items-center justify-center group-hover:bg-[#EFF3E4] transition-colors">
+                    <div className="w-13 h-13 sm:w-15 sm:h-15 rounded-full bg-[#FAF8F5] border border-[#3F4D27]/30 flex items-center justify-center group-hover:bg-[#EFF3E4] transition-colors">
                       {btn.icon}
                     </div>
                   </div>
 
                   {/* Rótulo Maior e em Alto Contraste */}
-                  <span className="text-[12px] sm:text-[13.5px] font-serif font-bold italic text-[#1A230F] group-hover:text-[#3F4D27] text-center leading-tight mt-1.5 transition-colors drop-shadow-[0_1px_1px_rgba(255,255,255,0.85)]">
+                  <span className="text-[11px] sm:text-[12.5px] font-serif font-bold italic text-[#1A230F] group-hover:text-[#3F4D27] text-center leading-tight mt-1 transition-colors drop-shadow-[0_1px_1px_rgba(255,255,255,0.85)]">
                     {btn.label}
                   </span>
                 </button>
@@ -377,7 +399,7 @@ export default function App() {
               </div>
               <div>
                 <h3 className="font-cinzel text-base font-bold text-[#3F4D27]">Local da Cerimônia</h3>
-                <span className="text-[10.5px] text-[#6B7A42] font-sans-clean font-bold uppercase tracking-wider">Início pontual às {eventDetails.time}</span>
+                <span className="text-[10.5px] text-[#6B7A42] font-sans-clean font-bold uppercase tracking-wider">Início pontual às 15:30h</span>
               </div>
             </div>
 
@@ -436,6 +458,7 @@ export default function App() {
               </div>
               <div>
                 <h3 className="font-cinzel text-base font-bold text-[#3F4D27]">Local do Buffet</h3>
+                <span className="text-[10.5px] text-[#6B7A42] font-sans-clean font-bold uppercase tracking-wider">Início às 17:30h</span>
               </div>
             </div>
 
@@ -534,7 +557,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Modal 4: Opção de Presente (Pix Sincronizado: 11 954886391) */}
+      {/* Modal 4: Sugestão de Presente (Pix Sincronizado: 11 954886391) */}
       {activeModal === 'presentes' && (
         <div className="fixed inset-0 z-50 bg-[#1D2513]/70 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
           <div className="bg-[#FCFDF9] rounded-3xl p-6 w-full max-w-sm border border-[#7A8C4B]/40 shadow-2xl relative">
@@ -550,13 +573,13 @@ export default function App() {
                 <Gift className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-cinzel text-base font-bold text-[#3F4D27]">Opção de Presente</h3>
+                <h3 className="font-cinzel text-base font-bold text-[#3F4D27]">Sugestão de Presente</h3>
                 <span className="text-[10px] text-[#6B7A42] font-sans-clean font-bold uppercase tracking-wider">Transferência Pix</span>
               </div>
             </div>
 
             <p className="text-xs text-[#5B6C38] font-sans-clean leading-relaxed mb-4 font-medium">
-              Sua presença é nosso maior presente! Se desejar nos presentear de forma prática para o início da nossa vida a dois:
+              Sua presença é o nosso maior presente, mas caso queira nos presentear em dinheiro , essa é a nossa chave pix:
             </p>
 
             <div className="bg-white p-4 rounded-2xl border border-[#7A8C4B]/25 space-y-3 mb-4 shadow-xs">

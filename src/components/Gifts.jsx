@@ -18,7 +18,7 @@ export default function Gifts() {
     chave: config.pixKey || DEFAULT_CONFIG.pixKey,
     titular: config.pixTitular || DEFAULT_CONFIG.pixTitular,
     banco: config.pixBanco || DEFAULT_CONFIG.pixBanco,
-    mensagem: "O maior presente é a sua presença em nosso casamento! Mas se desejar nos presentear de forma prática para o início da nossa vida a dois ou lua de mel, criamos esta opção via Pix com muito carinho."
+    mensagem: "Sua presença é o nosso maior presente, mas caso queira nos presentear em dinheiro , essa é a nossa chave pix:"
   };
 
   const handleCopy = (text, key) => {

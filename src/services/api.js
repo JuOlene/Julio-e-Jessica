@@ -5,25 +5,26 @@ export const DEFAULT_CONFIG = {
   // Cerimônia
   ceremonyVenue: "Paróquia Nossa Senhora Rainha dos Apóstolos",
   ceremonyAddress: "Rua Alice dos Santos Peixe, 61 - Jardim Selma, São Paulo - SP",
-  ceremonyTime: "17:30H",
+  ceremonyTime: "15:30H",
   ceremonyMapsUrl: "https://www.google.com/maps/search/?api=1&query=Rua+Alice+dos+Santos+Peixe,+61+-+Jardim+Selma,+São+Paulo+-+SP",
   ceremonyWazeUrl: "https://waze.com/ul?q=Rua+Alice+dos+Santos+Peixe,+61+-+Jardim+Selma,+São+Paulo+-+SP",
 
   // Buffet
   buffetVenue: "Buffet Arte Sabor e Amor",
   buffetAddress: "Av. Prestes Maia, 1310 - Centro, Diadema - SP",
+  buffetTime: "17:30H",
   buffetMapsUrl: "https://www.google.com/maps/search/?api=1&query=Av.+Prestes+Maia,+1310+-+Centro,+Diadema+-+SP",
   buffetWazeUrl: "https://waze.com/ul?q=Av.+Prestes+Maia,+1310+-+Centro,+Diadema+-+SP",
 
   // Pix
   pixKey: "11 954886391",
-  pixTitular: "Jessica e Julio",
+  pixTitular: "Jéssica e Julio",
   pixBanco: "Nubank",
 
   // WhatsApp e RSVP (Número Oficial dos noivos: 11954886391 / Teste: 11953582337)
   whatsappNumber: "5511954886391",
   whatsappTestNumber: "5511953582337",
-  whatsappMessage: "Olá Jéssica e Julio! Confirmo com muita alegria a minha presença no casamento de vocês dia 14/11/2026 às 17:30h! 🥂✨",
+  whatsappMessage: "Olá Jéssica e Julio! Confirmo com muita alegria a minha presença no casamento de vocês dia 14/11/2026 às 15:30h! 🥂✨",
 
   // Música de Fundo: Aliança - Tribalistas (instrumental) | Banda PH
   musicUrl: "/alianca_tribalistas_instrumental_banda_ph.mp3"

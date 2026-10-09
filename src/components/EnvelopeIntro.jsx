@@ -34,7 +34,7 @@ export default function EnvelopeIntro({ onOpen }) {
         {/* Imagem do Envelope em Relevo Seco Original */}
         <img 
           src="/envelope_jj_extended_pure.jpg" 
-          alt="Envelope de Casamento Jessica & Julio" 
+          alt="Envelope de Casamento Jéssica & Julio" 
           className={`absolute inset-0 w-full h-full object-cover object-center pointer-events-none transition-transform duration-1000 ease-out ${
             isOpening ? 'scale-110 blur-[1px]' : 'scale-100'
           }`}

@@ -29,11 +29,11 @@ export default function AdminPage({ onBack }) {
   const [config, setConfig] = useState(() => api.getConfig());
   const [savingConfig, setSavingConfig] = useState(false);
 
-  // Contador de dias restantes para o casamento: 14/11/2026 às 17:30
+  // Contador de dias restantes para o casamento: 14/11/2026 às 15:30
   const [daysLeft, setDaysLeft] = useState(0);
 
   useEffect(() => {
-    const target = new Date('2026-11-14T17:30:00').getTime();
+    const target = new Date('2026-11-14T15:30:00').getTime();
     const now = new Date().getTime();
     const diff = target - now;
     if (diff > 0) {
@@ -211,7 +211,7 @@ export default function AdminPage({ onBack }) {
 
             <span className="text-[10px] uppercase tracking-[0.25em] text-[#6B7A42] font-bold block mb-1">Acesso Privado</span>
             <h1 className="font-cursive text-5xl text-[#3F4D27] my-0 font-normal">
-              Jessica & Julio
+              Jéssica & Julio
             </h1>
             <p className="text-xs text-[#5B6C38] font-medium tracking-wide mt-1">
               Painel de Administração Oficial
@@ -299,7 +299,7 @@ export default function AdminPage({ onBack }) {
               className="flex items-center gap-2 text-left cursor-pointer"
             >
               <span className="font-cursive text-2xl sm:text-3xl text-[#EEF2E3] font-normal leading-none">
-                Jessica & Julio
+                Jéssica & Julio
               </span>
               <span className="hidden md:inline-block ml-2 px-2 py-0.5 rounded-full bg-[#6B7A42]/40 border border-[#7A8C4B]/35 text-[9px] uppercase font-bold tracking-widest text-[#EEF2E3]">
                 Painel Geral
@@ -345,7 +345,7 @@ export default function AdminPage({ onBack }) {
                 <div className="p-5 bg-[#3F4D27] text-white flex items-center justify-between border-b border-[#7A8C4B]/35">
                   <div>
                     <h3 className="font-cursive text-2xl text-[#EEF2E3] leading-tight">
-                      Jessica & Julio
+                      Jéssica & Julio
                     </h3>
                     <p className="text-[9px] text-[#D8E2CE] uppercase tracking-widest font-bold">
                       Gerenciamento Completo
@@ -500,7 +500,7 @@ export default function AdminPage({ onBack }) {
                   Casamento Oficial
                 </span>
                 <h2 className="font-serif text-2xl sm:text-3xl font-bold">
-                  Olá, Jessica & Julio! ❤️
+                  Olá, Jéssica & Julio! ❤️
                 </h2>
                 <p className="text-xs text-white/80 mt-1 max-w-lg">
                   Controle os convidados, edite os locais da cerimônia e buffet e gerencie a chave Pix em tempo real.
@@ -511,7 +511,7 @@ export default function AdminPage({ onBack }) {
                 <Calendar className="w-7 h-7 text-[#D8E2CE]" />
                 <div className="text-left">
                   <span className="block text-2xl font-serif font-bold text-[#EEF2E3]">{daysLeft} Dias</span>
-                  <span className="text-[10px] uppercase tracking-wider text-white/70 font-semibold">14/11/2026 às 17:30h</span>
+                  <span className="text-[10px] uppercase tracking-wider text-white/70 font-semibold">14/11/2026 às 15:30h</span>
                 </div>
               </div>
             </div>
@@ -732,10 +732,10 @@ export default function AdminPage({ onBack }) {
             <div>
               <h2 className="font-serif text-xl font-bold text-[#3F4D27] flex items-center gap-2">
                 <Gift className="w-5 h-5 text-[#6B7A42]" />
-                <span>Editar Opção de Presente (Pix)</span>
+                <span>Editar Sugestão de Presente (Pix)</span>
               </h2>
               <p className="text-xs text-[#5B6C38] mt-1">
-                Altere a chave Pix e o nome do titular exibidos no botão "Opção de presente" do convite.
+                Altere a chave Pix e o nome do titular exibidos no botão "Sugestão de presente" do convite.
               </p>
             </div>
 
@@ -757,7 +757,7 @@ export default function AdminPage({ onBack }) {
                   type="text"
                   value={config.pixTitular}
                   onChange={(e) => setConfig({ ...config, pixTitular: e.target.value })}
-                  placeholder="Ex: Jessica e Julio"
+                  placeholder="Ex: Jéssica e Julio"
                   className="w-full px-3.5 py-2.5 rounded-xl bg-[#FCFDF9] border border-[#7A8C4B]/35 text-xs font-medium text-[#2F3A1D] outline-none focus:border-[#6B7A42]"
                 />
               </div>

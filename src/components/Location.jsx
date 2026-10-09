@@ -9,8 +9,8 @@ export default function Location() {
     venueName: "Espaço Villa Jardins",
     address: "Av. das Palmeiras, 1500 - Jardim Primavera, São Paulo - SP",
     date: "14 de Novembro de 2026 (Sábado)",
-    ceremonyTime: "16:00h",
-    receptionTime: "18:00h",
+    ceremonyTime: "15:30h",
+    receptionTime: "17:30h",
     googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Av.+das+Palmeiras,+1500+-+Jardim+Primavera",
     wazeUrl: "https://waze.com/ul?q=Av.+das+Palmeiras,+1500+-+Jardim+Primavera"
   };

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, Heart } from 'lucide-react';
 import { CrossHeartIcon } from './FloralDecorations';
 
-export default function Hero({ weddingDate = '2026-11-14T16:00:00' }) {
+export default function Hero({ weddingDate = '2026-11-14T15:30:00' }) {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -66,7 +66,7 @@ export default function Hero({ weddingDate = '2026-11-14T16:00:00' }) {
         <h1
           className="font-cursive text-6xl sm:text-7xl md:text-8xl lg:text-9xl mb-3 text-[#2D312E] drop-shadow-sm font-normal tracking-wide"
         >
-          Jessica & Julio
+          Jéssica & Julio
         </h1>
 
         <p
@@ -79,7 +79,7 @@ export default function Hero({ weddingDate = '2026-11-14T16:00:00' }) {
         <div className="flex flex-wrap items-center justify-center gap-4 text-sm md:text-base mb-8 text-[#2D312E]">
           <div className="flex items-center gap-2 bg-white/80 backdrop-blur-md px-6 py-2.5 rounded-full border border-[#C5A880]/40 shadow-sm">
             <Calendar className="w-4 h-4 text-[#8C6B38]" />
-            <span className="font-bold">14 de Novembro de 2026 às 16:00h</span>
+            <span className="font-bold">14 de Novembro de 2026 às 15:30h</span>
           </div>
         </div>
 

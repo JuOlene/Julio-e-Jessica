@@ -106,7 +106,7 @@ export default function DressCode() {
                   <div>
                     <h4 className="font-bold text-sm text-wedding-charcoal">Pontualidade</h4>
                     <p className="text-xs text-wedding-charcoal/80 mt-0.5 font-medium">
-                      A cerimônia começará pontualmente às 16:00h. Programe-se para chegar com 20 minutos de antecedência.
+                      A cerimônia começará pontualmente às 15:30h. Programe-se para chegar com 20 minutos de antecedência.
                     </p>
                   </div>
                 </div>
