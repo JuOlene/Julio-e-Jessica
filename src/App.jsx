@@ -220,28 +220,28 @@ export default function App() {
             </div>
           </div>
 
-          {/* 2. Benção dos Pais - Alinhamento Perfeito e Reto */}
-          <div className="text-center my-1.5 sm:my-2 relative z-10 px-1 w-full max-w-[390px]">
+          {/* 2. Benção dos Pais - Cada Nome Reto em Linha Única Sem Cortar */}
+          <div className="text-center my-1.5 sm:my-2 relative z-10 px-0.5 w-full max-w-[430px]">
             <p className="font-allura text-2xl sm:text-3xl text-[#283516] leading-tight mb-1 tracking-wide font-medium drop-shadow-[0_1px_1px_rgba(255,255,255,0.95)]">
               com a bênção de seus pais...
             </p>
             
-            <div className="grid grid-cols-2 gap-2 sm:gap-4 text-[10.5px] sm:text-[12px] font-cinzel uppercase tracking-[0.02em] sm:tracking-[0.04em] text-[#1A230F]">
+            <div className="grid grid-cols-2 gap-1.5 sm:gap-3 font-cinzel uppercase text-[#1A230F] w-full">
               
               {/* Coluna 1: Pais da Noiva */}
               <div className="text-center flex flex-col justify-start">
-                {/* Linha das Mães com altura fixa exata para alinhamento horizontal reto */}
-                <div className="border-b border-[#5E7139]/30 pb-1 h-[40px] sm:h-[42px] flex items-center justify-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+                {/* Linha da Mãe da Noiva */}
+                <div className="border-b border-[#5E7139]/30 pb-1 h-[26px] sm:h-[30px] flex items-center justify-center">
+                  <span className="font-bold text-[#1A230F] whitespace-nowrap text-[8.5px] sm:text-[10.5px] tracking-tight sm:tracking-[0.02em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
                     {eventDetails.paisNoiva.mae}
                   </span>
                 </div>
-                {/* Linha dos Pais com altura fixa e alinhamento reto */}
-                <div className="pt-1 h-[46px] sm:h-[48px] flex flex-col justify-center items-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+                {/* Linha do Pai da Noiva */}
+                <div className="pt-1 flex flex-col items-center justify-center">
+                  <span className="font-bold text-[#1A230F] whitespace-nowrap text-[8.5px] sm:text-[10.5px] tracking-tight sm:tracking-[0.02em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
                     {eventDetails.paisNoiva.pai}
                   </span>
-                  <span className="block text-[#4B5A2C] text-[9.5px] sm:text-[10px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
+                  <span className="text-[#4B5A2C] text-[8px] sm:text-[9.5px] tracking-wider lowercase italic font-serif mt-0.5 font-semibold block">
                     (em memória)
                   </span>
                 </div>
@@ -249,18 +249,18 @@ export default function App() {
 
               {/* Coluna 2: Pais do Noivo */}
               <div className="text-center flex flex-col justify-start">
-                {/* Linha das Mães com altura fixa exata para alinhamento horizontal reto */}
-                <div className="border-b border-[#5E7139]/30 pb-1 h-[40px] sm:h-[42px] flex items-center justify-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+                {/* Linha da Mãe do Noivo */}
+                <div className="border-b border-[#5E7139]/30 pb-1 h-[26px] sm:h-[30px] flex items-center justify-center">
+                  <span className="font-bold text-[#1A230F] whitespace-nowrap text-[7.5px] sm:text-[9.5px] tracking-tighter sm:tracking-[0.01em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
                     {eventDetails.paisNoivo.mae}
                   </span>
                 </div>
-                {/* Linha dos Pais com altura fixa e alinhamento reto */}
-                <div className="pt-1 h-[46px] sm:h-[48px] flex flex-col justify-center items-center">
-                  <span className="block font-bold text-[#1A230F] leading-snug drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] text-center">
+                {/* Linha do Pai do Noivo */}
+                <div className="pt-1 flex flex-col items-center justify-center">
+                  <span className="font-bold text-[#1A230F] whitespace-nowrap text-[8.5px] sm:text-[10.5px] tracking-tight sm:tracking-[0.02em] drop-shadow-[0_1px_1px_rgba(255,255,255,0.9)] block">
                     {eventDetails.paisNoivo.pai}
                   </span>
-                  <span className="block text-[#4B5A2C] text-[9.5px] sm:text-[10px] tracking-widest lowercase italic font-serif mt-0.5 font-semibold">
+                  <span className="text-[#4B5A2C] text-[8px] sm:text-[9.5px] tracking-wider lowercase italic font-serif mt-0.5 font-semibold block">
                     (em memória)
                   </span>
                 </div>
