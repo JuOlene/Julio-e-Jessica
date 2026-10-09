@@ -181,19 +181,19 @@ export default function App() {
       )}
 
       {/* Cartão Central com Fundo do Modelo (Ondas Sálvia e Ramos) - Revelado com Suavidade */}
-      <div className={`w-full max-w-lg min-h-[100dvh] sm:min-h-0 sm:h-[96vh] relative flex flex-col justify-center items-center shadow-[0_20px_60px_rgba(47,58,29,0.18)] bg-[#FAF8F5] sm:rounded-3xl overflow-y-auto no-scrollbar overflow-hidden p-4 sm:p-6 transition-all duration-1000 ${
+      <div className={`w-full max-w-lg min-h-[100dvh] sm:min-h-0 sm:h-[96vh] relative flex flex-col justify-center items-center shadow-[0_20px_60px_rgba(47,58,29,0.18)] bg-[#FAF8F5] sm:rounded-3xl overflow-y-auto no-scrollbar overflow-hidden p-0 transition-all duration-1000 ${
         isEnvelopeOpened ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-4'
       }`}>
         
-        {/* Imagem Original Restaurada com a Arte Exata - Estendida para baixo */}
+        {/* Imagem Original Restaurada com a Arte Exata - 100% Estendida para baixo */}
         <img 
           src="/sage_original_nogold.jpg" 
           alt="Modelo Original Jéssica & Julio" 
-          className="absolute -top-[1%] -left-[2%] w-[104%] h-[112%] max-w-none object-cover object-top pointer-events-none -z-0 origin-top scale-[1.04]"
+          className="absolute inset-x-0 top-0 w-full h-[132%] object-cover object-top pointer-events-none -z-0 origin-top"
         />
 
         {/* Conteúdo Fluido com Escala Aumentada para Visualização no Mobile */}
-        <div className="w-full h-full relative z-10 flex flex-col justify-between items-center text-center px-3 sm:px-8 py-3 sm:py-5 pb-5 sm:pb-6 max-w-[440px] mx-auto">
+        <div className="w-full h-full relative z-10 flex flex-col justify-between items-center text-center px-4 sm:px-8 py-4 sm:py-6 max-w-[440px] mx-auto">
 
           {/* 1. Nomes dos Noivos - Grande e Destacado */}
           <div className="pt-1 text-center relative z-10 w-full">
